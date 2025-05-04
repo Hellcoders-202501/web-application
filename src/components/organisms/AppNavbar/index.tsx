@@ -32,8 +32,21 @@ const AppNavbar = () => {
 		<nav className="bg-main py-4 px-5">
 			<div className="flex justify-between items-center">
 				<div className="flex items-center gap-2">
-					<Image src={Logo} alt="Logo" width={57} height={57} />
-					<p className="text-white font-bold text-xl">FastPorte</p>
+					<Image
+						src={Logo}
+						alt="Logo"
+						width={57}
+						height={57}
+						className="hidden md:block"
+					/>
+					<Image
+						src={Logo}
+						alt="Logo"
+						width={32}
+						height={32}
+						className="md:hidden"
+					/>
+					<p className="text-white font-bold text-lg md:text-xl">FastPorte</p>
 				</div>
 				{/* Menu */}
 				<UserMenu />
@@ -43,7 +56,7 @@ const AppNavbar = () => {
 					{urls.map((url, index) => {
 						return (
 							<Link
-								className="mx-4 text-white text-lg"
+								className="md:mx-4 mx-1 text-white text-xs md:text-lg"
 								key={index}
 								href={url.url}
 							>
