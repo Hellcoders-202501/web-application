@@ -15,7 +15,7 @@ interface Props {
 
 const Register: FC<Props> = ({ state, handleChange, handleSubmit }) => {
 	return (
-		<div className="card-form w-xl mt-10 px-24 py-10">
+		<div className="card w-xl mt-10 px-24 py-10">
 			<Formik initialValues={state} onSubmit={handleSubmit}>
 				<Form className="flex flex-col gap-5">
 					<Input

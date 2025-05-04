@@ -20,7 +20,7 @@ const FillInformation: FC<Props> = ({
 	handleSubmit,
 }) => {
 	return (
-		<div className="card-form mt-10 px-24 py-10">
+		<div className="card mt-10 px-24 py-10">
 			<Formik initialValues={state} onSubmit={handleSubmit}>
 				<Form className="flex flex-col gap-5">
 					<div className="flex flex-col md:flex-row gap-5 md:gap-10">
