@@ -8,10 +8,13 @@
   --denied: #de1919;
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-inter: var(--font-inter);
+  --color-main: var(--main);
+  --color-accept: var(--accept);
+  --color-denied: var(--denied);
 }
 
 body {
