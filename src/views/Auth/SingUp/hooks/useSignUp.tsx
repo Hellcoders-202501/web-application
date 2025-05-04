@@ -1,0 +1,110 @@
+import { useEffect, useState } from "react";
+import Register from "../steps/register";
+import FillInformation from "../steps/fill-information";
+
+const useLogin = () => {
+	const [step, setStep] = useState(0);
+
+	const [signUpState, setSignUpState] = useState({
+		email: "",
+		password: "",
+		confirmPassword: "",
+		firstLastName: "",
+		secondLastName: "",
+		phone: "",
+		username: "",
+	});
+
+	const [userType, setUserType] = useState("client");
+	const [conditions, setConditions] = useState({
+		terms: false,
+		privacy: false,
+	});
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target;
+		setSignUpState((prevState) => ({
+			...prevState,
+			[name]: value,
+		}));
+	};
+
+	const handleUserType = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		setUserType(e.target.value);
+	};
+
+	const handleConditions = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, checked } = e.target;
+		setConditions((prevState) => ({
+			...prevState,
+			[name]: checked,
+		}));
+	};
+
+	const handleSubmit = () => {
+		// TODO: Implement login logic
+	};
+
+	const defineTitle = () => {
+		switch (step) {
+			case 0:
+				return "Create a new account";
+			case 1:
+				return "Fill in your user information";
+			default:
+				return "Register";
+		}
+	};
+
+	const defineStep = () => {
+		switch (step) {
+			case 0:
+				return (
+					<Register
+						state={{
+							email: signUpState.email,
+							password: signUpState.password,
+							confirmPassword: signUpState.password,
+						}}
+						handleChange={handleChange}
+						handleSubmit={() => setStep(1)}
+					/>
+				);
+			case 1:
+				return (
+					<FillInformation
+						state={{
+							...signUpState,
+							userType,
+							...conditions,
+						}}
+						handleChange={handleChange}
+						handleUserType={handleUserType}
+						handleConditions={handleConditions}
+						handleSubmit={handleSubmit}
+					/>
+				);
+			default:
+				return <p>Register</p>;
+		}
+	};
+
+	useEffect(() => {
+		console.log("signup", signUpState);
+	}, [signUpState]);
+
+	useEffect(() => {
+		console.log("userType", userType);
+	}, [userType]);
+
+	useEffect(() => {
+		console.log("conditions", conditions);
+	}, [conditions]);
+
+	return {
+		defineTitle,
+		defineStep,
+	};
+};
+
+export default useLogin;
