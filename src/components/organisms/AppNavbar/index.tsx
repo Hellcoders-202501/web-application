@@ -14,7 +14,7 @@ const urls = [
 		label: "Profile",
 	},
 	{
-		url: "/",
+		url: "/search",
 		label: "Search",
 	},
 	{
