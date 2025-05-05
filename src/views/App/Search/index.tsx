@@ -3,13 +3,14 @@ import { Form, Formik } from "formik";
 import useSearch from "./hooks/useSearch";
 import Input from "@components/atoms/Input";
 import ResultCard from "@components/molecules/ResultCard";
+import Select from "@components/atoms/Select";
 
 const SearchView = () => {
 	const { searchState } = useSearch();
 
 	return (
 		<div
-			className="flex flex-col lg:flex-row flex-center lg:justify-between max-w-5xl
+			className="flex flex-col lg:flex-row justify-center lg:justify-between max-w-5xl
             mx-auto w-10/12 lg:w-auto my-10 lg:my-20"
 		>
 			{/* Left */}
@@ -19,15 +20,11 @@ const SearchView = () => {
 					<Form className="flex flex-col gap-5">
 						<div className="flex flex-col gap-2">
 							<label htmlFor="">Type Of Service</label>
-							<select
-								name="typeService"
-								id="typeService"
-								className="border rounded-2xl mx-2 py-4 px-8"
-							>
+							<Select name="typeService" id="typeService">
 								<option value="Moving">Moving</option>
 								<option value="Transportation">Transportation</option>
 								<option value="Tourism">Tourism</option>
-							</select>
+							</Select>
 						</div>
 						<div className="flex flex-col">
 							<label htmlFor="">Capacity</label>
