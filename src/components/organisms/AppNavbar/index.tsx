@@ -22,7 +22,7 @@ const urls = [
 		label: "Contracts",
 	},
 	{
-		url: "/",
+		url: "/support",
 		label: "Support",
 	},
 ];
