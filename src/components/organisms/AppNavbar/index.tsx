@@ -18,11 +18,11 @@ const urls = [
 		label: "Search",
 	},
 	{
-		url: "/",
+		url: "/contracts",
 		label: "Contracts",
 	},
 	{
-		url: "/",
+		url: "/support",
 		label: "Support",
 	},
 ];

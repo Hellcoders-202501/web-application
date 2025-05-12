@@ -8,7 +8,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 const variantClasses: Record<InputVariant, string> = {
-	primary: "focus:ring-0 focus:outline-none focus:ring-0 focus:bg-transparent focus:shadow-none border-b placeholder:text-black/50",
+	primary: "focus:outline-none focus:ring-0 focus:bg-transparent focus:shadow-none border-b placeholder:text-black/50",
 };
 
 const Button: FC<Props> = ({
