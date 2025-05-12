@@ -91,18 +91,6 @@ const useLogin = () => {
 		}
 	};
 
-	useEffect(() => {
-		console.log("signup", signUpState);
-	}, [signUpState]);
-
-	useEffect(() => {
-		console.log("userType", userType);
-	}, [userType]);
-
-	useEffect(() => {
-		console.log("conditions", conditions);
-	}, [conditions]);
-
 	return {
 		defineTitle,
 		defineStep,

@@ -11,8 +11,6 @@ const PersonalInformation = ({
 	information: User;
 	setInformation: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
-    console.log(information);
-
 	return (
 		<div className="w-full mx-10">
 			<Formik initialValues={information} onSubmit={() => {}}>
