@@ -42,7 +42,9 @@ const useLogin = () => {
 	};
 
 	const handleSubmit = () => {
-		// TODO: Implement login logic
+		// TODO: Implement singup logic
+		localStorage.setItem("userType", userType);
+		window.location.href = "/"; // Redireccionar a la página de inicio después del registro
 	};
 
 	const defineTitle = () => {

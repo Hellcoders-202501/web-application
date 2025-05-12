@@ -37,7 +37,7 @@ const Register: FC<Props> = ({ state, handleChange, handleSubmit }) => {
 						type="password"
 					/>
 					<Button type="submit" className="mt-3">
-						Sign Up
+						Continue
 					</Button>
 				</Form>
 			</Formik>

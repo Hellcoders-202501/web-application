@@ -16,6 +16,8 @@ const useLogin = () => {
 
     const handleSubmit = () => {
         // TODO: Implement login logic
+		window.location.href = "/"; // Redirect to home page after login
+		localStorage.setItem("userType", "driver");
     }
 
 	return {
