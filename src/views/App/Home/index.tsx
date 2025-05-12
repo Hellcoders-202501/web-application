@@ -1,5 +1,5 @@
 import { FaRegUserCircle } from "react-icons/fa";
-import UserCard from "@components/molecules/UserCard";
+import UserCard from "@components/organisms/UserCard";
 import TripCard from "@components/molecules/TripCard";
 import Link from "next/link";
 

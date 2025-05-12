@@ -2,27 +2,27 @@ import type { FC } from "react";
 
 type InputVariant = "primary" | "disabled";
 
-interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
+interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
 	variant?: InputVariant;
 	className?: string;
 }
 
 const variantClasses: Record<InputVariant, string> = {
 	primary: "focus:outline-none focus:ring-0 focus:bg-transparent focus:shadow-none border-b placeholder:text-black/50",
-	disabled: "focus:outline-none focus:ring-0 bg-transparent placeholder:text-black/50 border-b border-black/20",
+	disabled: "bg-transparent placeholder:text-black/50",
 };
 
-const Input: FC<Props> = ({
+const TextArea: FC<Props> = ({
 	variant = "primary",
 	className = "",
 	...props
 }) => {
 	return (
-		<input
+		<textarea
 			className={`px-4 py-2 ${variantClasses[variant]} ${className}`}
 			{...props}
 		/>
 	);
 };
 
-export default Input;
+export default TextArea;

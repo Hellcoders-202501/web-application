@@ -4,18 +4,20 @@ import Logo from "@assets/logo.webp";
 import Notifications from "@components/molecules/Notifications";
 import UserMenu from "@components/molecules/UserMenu";
 
+const userType = localStorage.getItem("userType");
+
 const urls = [
 	{
 		url: "/",
 		label: "Home",
 	},
 	{
-		url: "/",
+		url: "/profile",
 		label: "Profile",
 	},
 	{
-		url: "/search",
-		label: "Search",
+		url: userType === "driver" ? "/search" : "/request",
+		label: userType === "driver" ? "Search" : "Request",
 	},
 	{
 		url: "/contracts",
