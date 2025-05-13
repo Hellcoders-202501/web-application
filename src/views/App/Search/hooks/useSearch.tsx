@@ -5,7 +5,8 @@ const useSearch = () => {
 		typeService: "",
 		capacity: 0,
 	});
+	const [watchRequest, setWatchRequest] = useState(false);
 
-	return { searchState, setSearchState };
+	return { searchState, setSearchState, watchRequest, setWatchRequest };
 };
 export default useSearch;

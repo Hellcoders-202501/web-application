@@ -1,8 +1,11 @@
-import Link from "next/link";
 import { FaChevronRight } from "react-icons/fa";
 import { FaCar } from "react-icons/fa";
 
-const ResultCard = () => {
+const ResultCard = ({
+	handleRedirect,
+}: {
+	handleRedirect: VoidFunction;
+}) => {
 	return (
 		<div className="card flex gap-5 items-center px-10 py-8 min-h-[200px]">
 			<FaCar size={120} />
@@ -13,9 +16,9 @@ const ResultCard = () => {
 				<p>To: Los Olivos</p>
 				<p>Amount: S/. 50</p>
 			</div>
-			<Link href="/" className="cursor-pointer">
+			<button type="button" onClick={handleRedirect}>
 				<FaChevronRight color="#0f15a3" size={48} />
-			</Link>
+			</button>
 		</div>
 	);
 };
