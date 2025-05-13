@@ -7,7 +7,7 @@ import Input from "@components/atoms/Input";
 import "react-day-picker/dist/style.css";
 import { DayPicker } from "react-day-picker";
 
-const CreateView = () => {
+const RequestView = () => {
 	const { requestState } = useRequestService();
 
 	return (
@@ -78,4 +78,4 @@ const CreateView = () => {
 		</div>
 	);
 };
-export default CreateView;
+export default RequestView;

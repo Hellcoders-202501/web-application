@@ -48,9 +48,9 @@ const ContractCard: FC<Props> = ({ variant = "history" }) => {
 					<p className="text-2xl font-bold">S/. 1560</p>
 				</div>
 				<div className="mt-4 flex gap-6">
-					{variant === "offer" && <Button variant="accept">Accept</Button>}
+					{variant === "offer" && <Button variant="accept" className="flex-1/2">Accept</Button>}
 					<Button variant="denied" className="flex-1/2">
-						Decline
+						{variant === "pending" ? "Cancel" : "Decline"}
 					</Button>
 				</div>
 			</div>

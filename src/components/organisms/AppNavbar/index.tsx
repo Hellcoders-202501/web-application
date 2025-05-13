@@ -16,8 +16,8 @@ const urls = [
 		label: "Profile",
 	},
 	{
-		url: userType === "driver" ? "/search" : "/request",
-		label: userType === "driver" ? "Search" : "Request",
+		url: userType === "driver" ? "/search" : "/requests",
+		label: userType === "driver" ? "Search" : "Requests",
 	},
 	{
 		url: "/contracts",
