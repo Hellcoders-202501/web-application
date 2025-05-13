@@ -7,7 +7,7 @@ const ProfileView = () => {
 	const { editable, setEditable, user, setUser, handleChange } = useProfile();
 
 	return (
-		<div className="flex justify-between gap-10 max-w-7xl w-full mx-auto py-20">
+		<div className="flex flex-col lg:flex-row justify-between gap-10 max-w-7xl w-full mx-auto py-20">
 			{/* LEFT */}
 			<UserProfile
 				editable={editable}

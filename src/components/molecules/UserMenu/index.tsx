@@ -4,7 +4,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 const UserMenu = () => {
 	const handleLogOut = () => {
 		localStorage.removeItem("token");
-		window.location.href = "/";
+		window.location.href = "/login";
 	};
 
 	return (

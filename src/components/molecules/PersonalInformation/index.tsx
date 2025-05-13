@@ -12,7 +12,7 @@ const PersonalInformation = ({
 	setInformation: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
 	return (
-		<div className="w-full mx-10">
+		<div className="w-full lg:mx-10">
 			<Formik initialValues={information} onSubmit={() => {}}>
 				<Form className="flex flex-col gap-10">
 					<div className="flex gap-10 justify-between items-end">

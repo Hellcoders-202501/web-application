@@ -7,20 +7,20 @@ import { MdEdit } from "react-icons/md";
 const UserProfile = ({
 	editable = false,
 	setEditable,
-    description,
-    setDescription,
+	description,
+	setDescription,
 }: {
 	editable: boolean;
 	setEditable?: VoidFunction;
-    description: string;
-    setDescription: (description: string) => void;
+	description: string;
+	setDescription: (description: string) => void;
 }) => {
 	return (
-		<div className="flex flex-col gap-5 items-center max-w-xl w-full">
+		<div className="flex flex-col gap-5 items-center w-10/12 mx-auto lg:max-w-xl lg:w-full">
 			<FaRegUserCircle size={120} />
 			<p className="font-bold text-4xl">Manuel Segura</p>
 			<TextArea
-				className="text-justify block"
+				className="text-justify block w-11/12 lg:w-full"
 				variant={editable ? "primary" : "disabled"}
 				disabled={!editable}
 				value={description}

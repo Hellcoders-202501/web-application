@@ -18,7 +18,7 @@ const ExperienceCard = () => {
 
 const Experience = () => {
 	return (
-		<div className="w-full mx-10 flex flex-col gap-10">
+		<div className="w-full lg:mx-10 flex flex-col gap-10">
 			{Array(2)
 				.fill(null)
 				.map((_, i) => (
