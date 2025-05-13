@@ -63,7 +63,7 @@ const AppNavbar = () => {
 					})}
 				</div>
 				{/* Notifications */}
-				<Notifications />
+				<Notifications userType={userType} />
 			</div>
 		</nav>
 	);
