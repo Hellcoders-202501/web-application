@@ -1,35 +1,30 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@assets/logo.webp";
 import Notifications from "@components/molecules/Notifications";
 import UserMenu from "@components/molecules/UserMenu";
-
-const userType = localStorage.getItem("userType");
-
-const urls = [
-	{
-		url: "/",
-		label: "Home",
-	},
-	{
-		url: "/profile",
-		label: "Profile",
-	},
-	{
-		url: userType === "driver" ? "/search" : "/requests",
-		label: userType === "driver" ? "Search" : "Requests",
-	},
-	{
-		url: "/contracts",
-		label: "Contracts",
-	},
-	{
-		url: "/support",
-		label: "Support",
-	},
-];
+import { useEffect, useState } from "react";
 
 const AppNavbar = () => {
+	const [userType, setUserType] = useState<string | null>(null);
+
+	useEffect(() => {
+		const stored = localStorage.getItem("userType");
+		setUserType(stored);
+	}, []);
+
+	const urls = [
+		{ url: "/", label: "Home" },
+		{ url: "/profile", label: "Profile" },
+		{
+			url: userType === "driver" ? "/search" : "/requests",
+			label: userType === "driver" ? "Search" : "Requests",
+		},
+		{ url: "/contracts", label: "Contracts" },
+		{ url: "/support", label: "Support" },
+	];
+
 	return (
 		<nav className="bg-main py-4 px-5">
 			<div className="flex justify-between items-center">

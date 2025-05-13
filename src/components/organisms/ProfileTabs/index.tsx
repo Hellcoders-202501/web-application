@@ -1,26 +1,11 @@
+"use client";
 import Experience from "@components/molecules/Experience";
 import PersonalInformation from "@components/molecules/PersonalInformation";
 import Vehicle from "@components/molecules/Vehicle";
 import Ratings from "@components/molecules/Ratings";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import type { User } from "@models/user";
-import { Fragment } from "react";
-
-const userType = localStorage.getItem("userType");
-
-const fields = [
-	{
-		label: "Personal Information",
-		value: "personal",
-	},
-	...(userType === "driver"
-		? [
-				{ label: "Experience", value: "experience" },
-				{ label: "Vehicle", value: "vehicle" },
-				{ label: "Ratings & Reviews", value: "ratings" },
-			]
-		: []),
-];
+import { Fragment, useEffect, useState } from "react";
 
 const ProfileTabs = ({
 	editable = false,
@@ -31,6 +16,27 @@ const ProfileTabs = ({
 	user: User;
 	setUser: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
+	const [userType, setUserType] = useState<string | null>(null);
+
+	useEffect(() => {
+		const stored = localStorage.getItem("userType");
+		setUserType(stored);
+	}, []);
+
+	const fields = [
+		{
+			label: "Personal Information",
+			value: "personal",
+		},
+		...(userType === "driver"
+			? [
+					{ label: "Experience", value: "experience" },
+					{ label: "Vehicle", value: "vehicle" },
+					{ label: "Ratings & Reviews", value: "ratings" },
+				]
+			: []),
+	];
+
 	const defineProfileTab = (tab: string) => {
 		switch (tab) {
 			case "personal":
@@ -58,7 +64,9 @@ const ProfileTabs = ({
 				{fields.map((field, index) => (
 					<Tab key={field.value} as={Fragment}>
 						{({ hover, selected }) => (
-							<div className={`flex justify-center outline-0 ${userType === "driver" ? "w-1/4" : "w-full"}`}>
+							<div
+								className={`flex justify-center outline-0 ${userType === "driver" ? "w-1/4" : "w-full"}`}
+							>
 								<button
 									className={`${(hover || selected) && "border-b-4 border-accept"}`}
 									type="button"

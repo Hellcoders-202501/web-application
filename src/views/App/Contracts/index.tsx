@@ -1,30 +1,37 @@
 "use client";
-import ContractCard from "@components/molecules/ContractCard";
+import ContractCard, {
+	type ContractVariant,
+} from "@components/molecules/ContractCard";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import { Fragment } from "react";
-
-const userType = localStorage.getItem("userType");
-
-const contracts = [
-	...(userType === "client"
-		? [
-				{
-					type: "Offer",
-					value: "offer",
-				},
-			]
-		: []),
-	{
-		type: "Pending",
-		value: "pending",
-	},
-	{
-		type: "History",
-		value: "history",
-	},
-];
+import { Fragment, useEffect, useState } from "react";
 
 const ContractsView = () => {
+	const [userType, setUserType] = useState<string | null>(null);
+
+	useEffect(() => {
+		const stored = localStorage.getItem("userType");
+		setUserType(stored);
+	}, []);
+
+	const contracts = [
+		...(userType === "client"
+			? [
+					{
+						type: "Offer",
+						value: "offer",
+					},
+				]
+			: []),
+		{
+			type: "Pending",
+			value: "pending",
+		},
+		{
+			type: "History",
+			value: "history",
+		},
+	];
+
 	return (
 		<div className="flex flex-col justify-center max-w-4xl mx-auto w-10/12 lg:w-auto my-10">
 			<TabGroup>
@@ -55,7 +62,10 @@ const ContractsView = () => {
 							{Array(3)
 								.fill(null)
 								.map((_, i) => (
-									<ContractCard variant={contract.value} />
+									<ContractCard
+										key={i}
+										variant={contract.value as ContractVariant}
+									/>
 								))}
 						</TabPanel>
 					))}

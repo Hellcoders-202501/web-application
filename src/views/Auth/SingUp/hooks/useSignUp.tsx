@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Register from "../steps/register";
 import FillInformation from "../steps/fill-information";
 
@@ -9,6 +9,7 @@ const useLogin = () => {
 		email: "",
 		password: "",
 		confirmPassword: "",
+		name: "",
 		firstLastName: "",
 		secondLastName: "",
 		phone: "",

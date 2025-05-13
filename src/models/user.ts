@@ -1,6 +1,10 @@
-export interface RegisterUser extends User {
+export interface RegisterUser {
+  name: string;
+  firstLastName: string;
+  secondLastName: string;
+  phone: string;
   password: string;
-  passwordConfirmation: string;
+  userType: string;
   terms: boolean;
   privacy: boolean;
 }
