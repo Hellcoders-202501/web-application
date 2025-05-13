@@ -16,7 +16,7 @@ const HomeView = () => {
 					</p>
 				</div>
 				<Link
-					href="/"
+					href="/contracts"
 					className="mt-5 lg:mt-0 lg:self-end text-xl text-[#0F15A3] font-semibold underline"
 				>
 					View History
