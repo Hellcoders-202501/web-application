@@ -65,6 +65,7 @@ const ContractsView = () => {
 									<ContractCard
 										key={i}
 										variant={contract.value as ContractVariant}
+										userType={userType}
 									/>
 								))}
 						</TabPanel>
