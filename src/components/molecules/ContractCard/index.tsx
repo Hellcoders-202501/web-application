@@ -1,5 +1,12 @@
 import Button from "@components/atoms/Button";
-import type { FC } from "react";
+import {
+	Description,
+	Dialog,
+	DialogPanel,
+	DialogTitle,
+} from "@headlessui/react";
+import { PayPalButtons } from "@paypal/react-paypal-js";
+import { useState, type FC } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 
 export type ContractVariant = "offer" | "pending" | "history" | "request";
@@ -11,6 +18,8 @@ interface Props {
 }
 
 const ContractCard: FC<Props> = ({ variant = "history", userType }) => {
+	const [showPaypal, setShowPaypal] = useState(false);
+
 	const defineText = () => {
 		if (userType === "client") {
 			switch (variant) {
@@ -72,14 +81,72 @@ const ContractCard: FC<Props> = ({ variant = "history", userType }) => {
 					</div>
 					<p className="text-2xl font-bold">S/. 100</p>
 				</div>
-				<div className="mt-4 flex gap-6">
-					<Button variant="accept" className="flex-1/2">
+				<div className="mt-4 flex gap-6 items-center">
+					<Button
+						variant="accept"
+						className="flex-1/2"
+						onClick={() => {
+							if (defineText() === "Finalizar") setShowPaypal(true);
+						}}
+					>
 						{defineText()}
 					</Button>
 					<Button variant="denied" className="flex-1/2">
 						{variant === "pending" ? "Cancelar" : "Declinar"}
 					</Button>
 				</div>
+				<Dialog
+					open={showPaypal}
+					onClose={() => setShowPaypal(false)}
+					className="relative z-50"
+				>
+					<div className="fixed inset-0 flex w-screen items-center justify-center p-4 bg-black/70">
+						<DialogPanel className="max-w-lg space-y-4 border bg-white p-12 max-h-10/12 overflow-y-auto">
+							<DialogTitle className="font-bold">Pagar el servicio</DialogTitle>
+							<Description>
+								Has marcado el servicio de transporte como finalizado. Por
+								favor, realiza el pago.
+							</Description>
+							<div className="flex flex-col gap-5">
+								<PayPalButtons
+									style={{ layout: "vertical" }}
+									className="w-full"
+									createOrder={(data, actions) => {
+										return actions.order.create({
+											purchase_units: [
+												{
+													amount: {
+														currency_code: "USD",
+														value: "100.00",
+													},
+												},
+											],
+											intent: "CAPTURE"
+										});
+									}}
+									onApprove={async (data, actions) => {
+										const details = await actions.order?.capture();
+										console.log("Transaction completed by ", details);
+										setShowPaypal(false);
+									}}
+									onError={(err) => {
+										console.error("Error al procesar el pago", err);
+									}}
+									onCancel={() => {
+										console.log("Pago cancelado");
+									}}
+								/>
+								<Button
+									variant="denied"
+									onClick={() => setShowPaypal(false)}
+									type="button"
+								>
+									Cancelar
+								</Button>
+							</div>
+						</DialogPanel>
+					</div>
+				</Dialog>
 			</div>
 		);
 

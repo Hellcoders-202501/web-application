@@ -1,8 +1,9 @@
 "use client";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Provider } from "react-redux";
 import store from "@core/store";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { Provider } from "react-redux";
 
 const inter = Inter({
 	variable: "--font-inter",
@@ -17,7 +18,9 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<Provider store={store}>
-				<body className={`${inter.className} antialiased`}>{children}</body>
+				<PayPalScriptProvider options={{ clientId: "test" }}>
+					<body className={`${inter.className} antialiased`}>{children}</body>
+				</PayPalScriptProvider>
 			</Provider>
 		</html>
 	);
