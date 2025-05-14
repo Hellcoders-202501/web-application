@@ -60,7 +60,7 @@ const FillInformation: FC<Props> = ({
 						className="border rounded-2xl mx-2 py-4 px-8"
 						onChange={handleUserType}
 					>
-						<option value="client">Pasajero</option>
+						<option value="client">Cliente</option>
 						<option value="driver">Conductor</option>
 					</select>
 

@@ -14,14 +14,6 @@ const ContractsView = () => {
 	}, []);
 
 	const contracts = [
-		...(userType === "client"
-			? [
-					{
-						type: "Ofertas",
-						value: "offer",
-					},
-				]
-			: []),
 		{
 			type: "Pendientes",
 			value: "pending",

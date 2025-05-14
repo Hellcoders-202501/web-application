@@ -1,5 +1,5 @@
 import Button from "@components/atoms/Button";
-import { FC } from "react";
+import type { FC } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 
 export type ContractVariant = "offer" | "pending" | "history" | "request";
