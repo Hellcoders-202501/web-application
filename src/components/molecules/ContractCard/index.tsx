@@ -87,13 +87,16 @@ const ContractCard: FC<Props> = ({ variant = "history", userType }) => {
 		return (
 			<div>
 				<div className="card flex gap-5 px-10 py-8 min-h-[200px] max-w-[405px]">
-					<div>
-						<FaRegUserCircle size={100} />
-						<div className="text-center mt-2">
-							<p className="font-semibold">Conductor</p>
-							<p>Oscar Canellas</p>
+					{variant === "history" && (
+						<div>
+							<FaRegUserCircle size={100} />
+							<div className="text-center mt-2">
+								<p className="font-semibold">Conductor</p>
+								<p>Oscar Canellas</p>
+							</div>
 						</div>
-					</div>
+					)}
+
 					<div>
 						<p className="font-semibold">Detalles:</p>
 						<p className="mt-4">
