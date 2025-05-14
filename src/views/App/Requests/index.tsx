@@ -35,7 +35,7 @@ const RequestView = () => {
 									}`}
 									type="button"
 								>
-									Lista de solicitudes
+									Solicitudes realizadas
 								</button>
 							</div>
 						)}

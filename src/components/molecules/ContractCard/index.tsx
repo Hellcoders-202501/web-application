@@ -70,7 +70,7 @@ const ContractCard: FC<Props> = ({ variant = "history", userType }) => {
 							</div>
 						</div>
 					</div>
-					<p className="text-2xl font-bold">S/. 1560</p>
+					<p className="text-2xl font-bold">S/. 100</p>
 				</div>
 				<div className="mt-4 flex gap-6">
 					<Button variant="accept" className="flex-1/2">
