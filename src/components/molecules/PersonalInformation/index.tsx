@@ -16,7 +16,7 @@ const PersonalInformation = ({
 			<Formik initialValues={information} onSubmit={() => {}}>
 				<Form className="flex flex-col gap-10">
 					<div className="flex gap-10 justify-between items-end">
-						<label htmlFor="">Name</label>
+						<label htmlFor="">Nombre</label>
 						<Input
 							variant={editable ? "primary" : "disabled"}
 							disabled={!editable}
@@ -26,7 +26,7 @@ const PersonalInformation = ({
 						/>
 					</div>
 					<div className="flex gap-10 justify-between items-end">
-						<label htmlFor="">First Last Name</label>
+						<label htmlFor="">Apellido paterno</label>
 						<Input
 							variant={editable ? "primary" : "disabled"}
 							disabled={!editable}
@@ -36,7 +36,7 @@ const PersonalInformation = ({
 						/>
 					</div>
 					<div className="flex gap-10 justify-between items-end">
-						<label htmlFor="">Second Last Name</label>
+						<label htmlFor="">Apellido materno</label>
 						<Input
 							variant={editable ? "primary" : "disabled"}
 							disabled={!editable}
@@ -46,7 +46,7 @@ const PersonalInformation = ({
 						/>
 					</div>
 					<div className="flex gap-10 justify-between items-end">
-						<label htmlFor="">Phone</label>
+						<label htmlFor="">Número telefónico</label>
 						<Input
 							variant={editable ? "primary" : "disabled"}
 							disabled={!editable}

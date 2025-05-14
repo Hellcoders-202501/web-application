@@ -25,14 +25,14 @@ const ProfileTabs = ({
 
 	const fields = [
 		{
-			label: "Personal Information",
+			label: "Información personal",
 			value: "personal",
 		},
 		...(userType === "driver"
 			? [
-					{ label: "Experience", value: "experience" },
-					{ label: "Vehicle", value: "vehicle" },
-					{ label: "Ratings & Reviews", value: "ratings" },
+					{ label: "Experiencia", value: "experience" },
+					{ label: "Vehículos", value: "vehicle" },
+					{ label: "Calificación y comentarios", value: "ratings" },
 				]
 			: []),
 	];

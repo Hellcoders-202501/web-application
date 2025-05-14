@@ -7,15 +7,16 @@ const VehicleCard = () => {
 	return (
 		<div className="flex flex-col gap-5 items-end max-w-xl w-full">
 			<div className="flex gap-10 justify-between items-end w-full">
-				<label htmlFor="">Brand</label>
+				<label htmlFor="">Marca</label>
 				<Input className="w-8/12 text-center" />
 			</div>
 			<div className="flex gap-10 justify-between items-end w-full">
-				<label htmlFor="">Type Service</label>
+				<label htmlFor="">Tipo de servicio</label>
 				<Select className="w-8/12 text-center">
-					<option value="Moving">Moving</option>
-					<option value="Transportation">Transportation</option>
-					<option value="Tourism">Tourism</option>
+					<option value="Moving">Mudanza</option>
+					<option value="Transportation">Transporte</option>
+					<option value="Tourism">Turismo</option>
+					<option value="Tourism">Transporte de mercadería</option>
 				</Select>
 			</div>
 			<Image
@@ -40,7 +41,7 @@ const Vehicle = () => {
 					))}
 			</div>
 			<Button variant="accept" className="w-fit self-end">
-				Add vehicle
+				Agregar vehículo
 			</Button>
 		</div>
 	);

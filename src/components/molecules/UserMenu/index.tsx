@@ -30,7 +30,7 @@ const UserMenu = () => {
 						onClick={handleLogOut}
 						className="w-full cursor-pointer text-sm md:text-base"
 					>
-						Log out
+						Cerrar sesión
 					</button>
 				</MenuItem>
 			</MenuItems>

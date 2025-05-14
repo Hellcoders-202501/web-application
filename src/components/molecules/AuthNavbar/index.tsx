@@ -5,15 +5,15 @@ import Logo from "@assets/logo.webp"
 const urls = [
 	{
 		url: "/",
-		label: "Home",
+		label: "Inicio",
 	},
 	{
 		url: "/",
-		label: "Us",
+		label: "Nosotros",
 	},
 	{
 		url: "/",
-		label: "Contact us",
+		label: "Contáctanos",
 	},
 ];
 

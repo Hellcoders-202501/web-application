@@ -11,31 +11,31 @@ const LoginView = () => {
 
 	return (
 		<div className="flex flex-col justify-center items-center h-full">
-			<Title title="Welcome, let's get started!" />
+			<Title title="Bienvenido, vamos a iniciar!" />
 			<div className="card w-xl mt-10 px-24 py-10">
 				<Formik initialValues={loginSate} onSubmit={handleSubmit}>
 					<Form className="flex flex-col gap-5">
 						<Input
-							placeholder="Email address"
+							placeholder="Correo electrónico"
 							onChange={handleChange}
 							type="email"
 						/>
 						<Input
-							placeholder="Password"
+							placeholder="Contraseña"
 							onChange={handleChange}
 							type="password"
 						/>
-						<Button type="submit" className="mt-3">Login</Button>
+						<Button type="submit" className="mt-3">Iniciar sesión</Button>
 					</Form>
 				</Formik>
 				<div className="flex flex-col gap-4 mt-10 items-center">
 					<Link href="/forgot-password" className="text-[#62637C] underline">
-						Forgot your password?
+						Olvidaste tu contraseña?
 					</Link>
 					<div className="flex gap-2">
-						<p className="text-[#62637C]">No account yet?</p>
+						<p className="text-[#62637C]">No tienes una cuenta todavía?</p>
 						<Link href="/signup" className="text-[#60A3F0] underline">
-							Create Account
+							Crear cuenta
 						</Link>
 					</div>
 				</div>

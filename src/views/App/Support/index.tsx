@@ -18,24 +18,24 @@ const SupportView = () => {
 		>
 			{/* Left */}
 			<div>
-				<p className="text-6xl font-bold text-center">Do you need help?</p>
+				<p className="text-6xl font-bold text-center">Necesitas ayuda?</p>
 				<Formik initialValues={{}} onSubmit={() => {}}>
 					<Form className="flex flex-col gap-10 my-20 mx-10">
 						<div className="flex flex-col md:flex-row gap-5 justify-between">
 							<div className="flex flex-col gap-5 md:w-5/12">
-								<label htmlFor="">Name</label>
+								<label htmlFor="">Nombre</label>
 								<Input />
 							</div>
 							<div className="flex flex-col gap-5 md:w-5/12">
-								<label htmlFor="">Email</label>
+								<label htmlFor="">Correo electrónico</label>
 								<Input />
 							</div>
 						</div>
 						<div className="flex flex-col gap-5">
-							<label htmlFor="">Message</label>
+							<label htmlFor="">Mensaje</label>
 							<TextArea />
 						</div>
-						<Button>Send message</Button>
+						<Button>Enviar mensaje</Button>
 					</Form>
 				</Formik>
 			</div>
@@ -61,7 +61,7 @@ const SupportView = () => {
 					</Link>
 				</div>
 				{/* <Button>Send us a message</Button> */}
-				<Button>Frequently questions</Button>
+				<Button>Preguntas frecuentes</Button>
 			</div>
 		</div>
 	);

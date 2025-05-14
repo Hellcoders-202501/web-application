@@ -12,14 +12,14 @@ const HomeView = () => {
 					<FaRegUserCircle size={120} className="hidden lg:block" />
 					<FaRegUserCircle size={100} className="lg:hidden" />
 					<p className="text-2xl lg:text-4xl font-bold">
-						Hi, <br className="hidden lg:block" /> Mario
+						Hola, <br className="hidden lg:block" /> Mario
 					</p>
 				</div>
 				<Link
 					href="/contracts"
 					className="mt-5 lg:mt-0 lg:self-end text-xl text-[#0F15A3] font-semibold underline"
 				>
-					View History
+					Ver Historial
 				</Link>
 			</div>
 			{/* CENTER */}
@@ -32,7 +32,7 @@ const HomeView = () => {
 				</div>
 				{/* Recent */}
 				<div className="flex flex-col gap-10">
-					<p className="text-3xl font-semibold border-l-2 pl-4">Recents</p>
+					<p className="text-3xl font-semibold border-l-2 pl-4">Recientes</p>
 					<TripCard />
 					<TripCard />
 				</div>

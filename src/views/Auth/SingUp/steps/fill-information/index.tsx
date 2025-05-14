@@ -26,13 +26,13 @@ const FillInformation: FC<Props> = ({
 					<div className="flex flex-col md:flex-row gap-5 md:gap-10">
 						<div className="flex flex-col gap-5">
 							<Input
-								placeholder="Name"
+								placeholder="Nombre"
 								onChange={handleChange}
 								name="name"
 								type="text"
 							/>
 							<Input
-								placeholder="First Lastname"
+								placeholder="Apellido paterno"
 								onChange={handleChange}
 								name="firstLastName"
 								type="text"
@@ -40,13 +40,13 @@ const FillInformation: FC<Props> = ({
 						</div>
 						<div className="flex flex-col gap-5">
 							<Input
-								placeholder="Second Lastname"
+								placeholder="Apellido materno"
 								onChange={handleChange}
 								name="secondLastName"
 								type="text"
 							/>
 							<Input
-								placeholder="Phonenumber"
+								placeholder="Número telefónico"
 								onChange={handleChange}
 								name="phone"
 								type="number"
@@ -60,8 +60,8 @@ const FillInformation: FC<Props> = ({
 						className="border rounded-2xl mx-2 py-4 px-8"
 						onChange={handleUserType}
 					>
-						<option value="client">Client</option>
-						<option value="driver">Driver</option>
+						<option value="client">Pasajero</option>
+						<option value="driver">Conductor</option>
 					</select>
 
 					<div className="flex flex-col gap-2">
@@ -73,7 +73,7 @@ const FillInformation: FC<Props> = ({
 								onChange={handleConditions}
 							/>
 							<label htmlFor="">
-								I declare that I have read and accepted the terms and conditions
+								Declaro haber leído los términos y condiciones
 							</label>
 						</div>
 						<div className="flex gap-2 items-center">
@@ -82,11 +82,11 @@ const FillInformation: FC<Props> = ({
 								name="privacy"
 								onChange={handleConditions}
 							/>
-							<label htmlFor="">I agree to the use of my information.</label>
+							<label htmlFor="">Estoy de acuerdo con que usen mi información</label>
 						</div>
 					</div>
 					<Button type="submit" className="mt-3">
-						Sign Up
+						Registrar
 					</Button>
 				</Form>
 			</Formik>

@@ -15,9 +15,9 @@ const ContractCard: FC<Props> = ({ variant = "history", userType }) => {
 		if (userType === "client") {
 			switch (variant) {
 				case "offer":
-					return "Accept";
+					return "Aceptar";
 				case "pending":
-					return "Finish";
+					return "Finalizar";
 				default:
 					return "";
 			}
@@ -27,7 +27,7 @@ const ContractCard: FC<Props> = ({ variant = "history", userType }) => {
 				case "offer":
 					return "";
 				case "pending":
-					return "Complete";
+					return "Completar";
 				default:
 					return "";
 			}
@@ -38,27 +38,27 @@ const ContractCard: FC<Props> = ({ variant = "history", userType }) => {
 	if (variant === "offer" || variant === "pending")
 		return (
 			<div className="card px-10 py-8 min-h-[370px] max-w-[405px]">
-				<p className="text-xl font-semibold">Resume</p>
+				<p className="text-xl font-semibold">Información</p>
 				<div className="mt-4">
 					<p>
-						From: <b>Comas</b>
+						Desde: <b>Comas</b>
 					</p>
 					<p>
-						To: <b>Los Olivos</b>
+						Hasta: <b>Los Olivos</b>
 					</p>
 					<p>
-						Date: <b>12/11/23</b>
+						Fecha: <b>12/11/23</b>
 					</p>
 					<p>
-						Capacity: <b>20</b>
+						Capacidad: <b>20</b>
 					</p>
 				</div>
 				<div
 					className="flex justify-between font-semibold text-lg border-t mt-4
                     pt-2"
 				>
-					<p>Client data</p>
-					<p>Amount</p>
+					<p>Información del Cliente</p>
+					<p>Pago</p>
 				</div>
 				<div className="flex justify-between items-end gap-10">
 					<div>
@@ -77,7 +77,7 @@ const ContractCard: FC<Props> = ({ variant = "history", userType }) => {
 						{defineText()}
 					</Button>
 					<Button variant="denied" className="flex-1/2">
-						{variant === "pending" ? "Cancel" : "Decline"}
+						{variant === "pending" ? "Cancelar" : "Declinar"}
 					</Button>
 				</div>
 			</div>
@@ -90,31 +90,31 @@ const ContractCard: FC<Props> = ({ variant = "history", userType }) => {
 					<div>
 						<FaRegUserCircle size={100} />
 						<div className="text-center mt-2">
-							<p className="font-semibold">Driver</p>
+							<p className="font-semibold">Conductor</p>
 							<p>Oscar Canellas</p>
 						</div>
 					</div>
 					<div>
-						<p className="font-semibold">Details:</p>
+						<p className="font-semibold">Detalles:</p>
 						<p className="mt-4">
-							Date: <b>12/11/23</b>
+							Fecha: <b>12/11/23</b>
 						</p>
 						<p>
-							From: <b>Comas</b>
+							Desde: <b>Comas</b>
 						</p>
 						<p>
-							To: <b>Los Olivos</b>
+							Hasta: <b>Los Olivos</b>
 						</p>
 						<p>
-							Amount: <b>S/. 450</b>
+							Pago: <b>S/. 450</b>
 						</p>
 					</div>
 				</div>
 				{variant === "request" && (
 					<div className="flex justify-center mt-4">
-						<Button className="w-1/2">Edit</Button>
+						<Button className="w-1/2">Editar</Button>
 						<Button className="w-1/2 ml-4" variant="denied">
-							Delete
+							Borrar
 						</Button>
 					</div>
 				)}

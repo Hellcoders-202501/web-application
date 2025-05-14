@@ -27,7 +27,7 @@ const RequestForm: FC<RequestFormProps> = ({ requestState, editable }) => {
 			>
 				<div className="flex flex-col gap-7 flex-1/2">
 					<div className="flex justify-between items-center">
-						<label htmlFor="">From</label>
+						<label htmlFor="">Desde</label>
 						<Input
 							variant={!editable ? "disabled" : "primary"}
 							disabled={!editable}
@@ -35,7 +35,7 @@ const RequestForm: FC<RequestFormProps> = ({ requestState, editable }) => {
 						/>
 					</div>
 					<div className="lg:hidden flex justify-between items-center">
-						<label htmlFor="">To</label>
+						<label htmlFor="">Hasta</label>
 						<Input
 							variant={!editable ? "disabled" : "primary"}
 							disabled={!editable}
@@ -43,19 +43,20 @@ const RequestForm: FC<RequestFormProps> = ({ requestState, editable }) => {
 						/>
 					</div>
 					<div className="flex justify-between items-center">
-						<label htmlFor="">Type Service</label>
+						<label htmlFor="">Tipos de Servicio</label>
 						<Select
 							disabled={!editable}
 							defaultOption={!editable}
 							value={requestState.typeService}
 						>
-							<option value="Moving">Moving</option>
-							<option value="Transportation">Transportation</option>
-							<option value="Tourism">Tourism</option>
+							<option value="Moving">Mudanza</option>
+							<option value="Transportation">Transporte</option>
+							<option value="Tourism">Turismo</option>
+							<option value="Tourism">Transporte de mercadería</option>
 						</Select>
 					</div>
 					<div className="flex flex-col gap-2 lg:gap-0 md:flex-row justify-between items-start">
-						<label htmlFor="">Date</label>
+						<label htmlFor="">Fecha</label>
 						<div className="bg-main p-6 rounded-xl w-[320px] text-white">
 							<DayPicker
 								mode="single"
@@ -72,7 +73,7 @@ const RequestForm: FC<RequestFormProps> = ({ requestState, editable }) => {
 				</div>
 				<div className="flex flex-col gap-7 flex-1/2 mt-5 lg:mt-0">
 					<div className="lg:flex justify-between items-center hidden">
-						<label htmlFor="">To</label>
+						<label htmlFor="">Hasta</label>
 						<Input
 							variant={!editable ? "disabled" : "primary"}
 							disabled={!editable}
@@ -81,7 +82,7 @@ const RequestForm: FC<RequestFormProps> = ({ requestState, editable }) => {
 					</div>
 					<div className="flex justify-between items-center">
 						<div className="flex flex-col gap-2">
-							<label htmlFor="">Departure Hour</label>
+							<label htmlFor="">Hora salida</label>
 							<Select
 								defaultOption={false}
 								disabled={!editable}
@@ -95,7 +96,7 @@ const RequestForm: FC<RequestFormProps> = ({ requestState, editable }) => {
 							</Select>
 						</div>
 						<div className="flex flex-col gap-2">
-							<label htmlFor="">Arrival Hour</label>
+							<label htmlFor="">Hora llegada</label>
 							<Select
 								defaultOption={false}
 								disabled={!editable}
@@ -110,7 +111,7 @@ const RequestForm: FC<RequestFormProps> = ({ requestState, editable }) => {
 						</div>
 					</div>
 					<div className="flex justify-between items-center">
-						<label htmlFor="">Capacity</label>
+						<label htmlFor="">Capacidad</label>
 						<Input
 							variant={!editable ? "disabled" : "primary"}
 							disabled={!editable}
@@ -120,11 +121,11 @@ const RequestForm: FC<RequestFormProps> = ({ requestState, editable }) => {
 						/>
 					</div>
 					<div className="flex justify-between items-center">
-						<label htmlFor="">Amount</label>
+						<label htmlFor="">Pago</label>
 						<Input value={requestState.amount} />
 					</div>
 					<div className="flex justify-between items-center">
-						<label htmlFor="">Description</label>
+						<label htmlFor="">Descripción</label>
 						<TextArea
 							name=""
 							id=""
@@ -134,7 +135,7 @@ const RequestForm: FC<RequestFormProps> = ({ requestState, editable }) => {
 						/>
 					</div>
 					<Button variant="accept" className="w-full">
-						{!editable ? "Offer" : "Request"}
+						{!editable ? "Ofertar" : "Solicitar"}
 					</Button>
 				</div>
 			</Form>

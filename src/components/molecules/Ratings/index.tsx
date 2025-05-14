@@ -6,7 +6,7 @@ const RatingCard = () => {
 			<FaRegUserCircle size={120} />
 			<div className="max-w-xl">
 				<p className="font-semibold text-lg">Oscar Canellas</p>
-				<p className="text-sm">This services was really good, I recommend it!</p>
+				<p className="text-sm">Este servicio fue muy bueno, lo recomiendo!</p>
 			</div>
 			<div>
 				<span>5</span>

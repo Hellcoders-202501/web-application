@@ -36,7 +36,7 @@ const UserProfile = ({
 					))}
 			</div>
 			<Button className="flex gap-2 items-center" onClick={setEditable}>
-				<p>{editable ? "Save" : "Edit Profile"}</p>
+				<p>{editable ? "Guardar" : "Editar perfil"}</p>
 				{!editable && <MdEdit />}
 			</Button>
 		</div>

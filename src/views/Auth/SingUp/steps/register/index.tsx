@@ -19,25 +19,25 @@ const Register: FC<Props> = ({ state, handleChange, handleSubmit }) => {
 			<Formik initialValues={state} onSubmit={handleSubmit}>
 				<Form className="flex flex-col gap-5">
 					<Input
-						placeholder="Email address"
+						placeholder="Correo electrónico"
 						onChange={handleChange}
 						name="email"
 						type="email"
 					/>
 					<Input
-						placeholder="Password"
+						placeholder="Contraseña"
 						onChange={handleChange}
 						name="password"
 						type="password"
 					/>
 					<Input
-						placeholder="Confirm password"
+						placeholder="Confirmar contraseña"
 						onChange={handleChange}
 						name="confirmPassword"
 						type="password"
 					/>
 					<Button type="submit" className="mt-3">
-						Continue
+						Continuar
 					</Button>
 				</Form>
 			</Formik>

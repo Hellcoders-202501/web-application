@@ -51,11 +51,11 @@ const useLogin = () => {
 	const defineTitle = () => {
 		switch (step) {
 			case 0:
-				return "Create a new account";
+				return "Crear una nueva cuenta";
 			case 1:
-				return "Fill in your user information";
+				return "Completar tu información de usuario";
 			default:
-				return "Register";
+				return "Registro";
 		}
 	};
 
@@ -88,7 +88,7 @@ const useLogin = () => {
 					/>
 				);
 			default:
-				return <p>Register</p>;
+				return <p>Registo</p>;
 		}
 	};
 

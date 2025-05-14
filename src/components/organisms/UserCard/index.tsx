@@ -6,8 +6,8 @@ const UserCard = () => {
 			<FaRegUserCircle size={120} />
 			<div>
 				<p className="text-2xl font-semibold">Oscar Canellas</p>
-				<p>Phone Number: 983288372</p>
-				<p>Rating: 5</p>
+				<p>Número telefónico: 983288372</p>
+				<p>Calificación: 5</p>
 			</div>
 		</div>
 	);

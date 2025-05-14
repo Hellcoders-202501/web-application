@@ -15,14 +15,14 @@ const AppNavbar = () => {
 	}, []);
 
 	const urls = [
-		{ url: "/", label: "Home" },
-		{ url: "/profile", label: "Profile" },
+		{ url: "/", label: "Inicio" },
+		{ url: "/profile", label: "Perfil" },
 		{
 			url: userType === "driver" ? "/search" : "/requests",
-			label: userType === "driver" ? "Search" : "Requests",
+			label: userType === "driver" ? "Búsqueda" : "Solicitudes",
 		},
-		{ url: "/contracts", label: "Contracts" },
-		{ url: "/support", label: "Support" },
+		{ url: "/contracts", label: "Contratos" },
+		{ url: "/support", label: "Ayuda" },
 	];
 
 	return (

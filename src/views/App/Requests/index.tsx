@@ -19,7 +19,7 @@ const RequestView = () => {
 									className={`${(hover || selected) && "border-b-4 border-accept"}`}
 									type="button"
 								>
-									Make a Request
+									Hacer una solicitud
 								</button>
 							</div>
 						)}
@@ -31,7 +31,7 @@ const RequestView = () => {
 									className={`${(hover || selected) && "border-b-4 border-accept"}`}
 									type="button"
 								>
-									List of Requests
+									Lista de solicitudes
 								</button>
 							</div>
 						)}
@@ -43,7 +43,7 @@ const RequestView = () => {
 						mt-10 max-w-5xl mx-auto w-10/12 lg:w-auto "
 					>
 						<p className="self-start mb-5 text-4xl font-semibold">
-							Request service
+							Solicitar servicio
 						</p>
 						<RequestForm requestState={requestState} />
 					</TabPanel>

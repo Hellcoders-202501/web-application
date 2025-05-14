@@ -17,17 +17,17 @@ const ContractsView = () => {
 		...(userType === "client"
 			? [
 					{
-						type: "Offer",
+						type: "Ofertas",
 						value: "offer",
 					},
 				]
 			: []),
 		{
-			type: "Pending",
+			type: "Pendientes",
 			value: "pending",
 		},
 		{
-			type: "History",
+			type: "Historial",
 			value: "history",
 		},
 	];

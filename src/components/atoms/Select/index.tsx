@@ -12,7 +12,7 @@ const Select: FC<Props> = ({ children, className = "", ...props }) => {
 			className={`border rounded-2xl mx-2 py-4 px-8 ${className}`}
 			{...props}
 		>
-			{props.defaultOption && <option value="default">Choose an option</option>}
+			{props.defaultOption && <option value="default">Elige una opción</option>}
 			{children}
 		</select>
 	);

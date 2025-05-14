@@ -5,11 +5,11 @@ const ExperienceCard = () => {
 	return (
 		<div className="flex flex-col gap-5 items-end max-w-xl w-full">
 			<div className="flex gap-10 justify-between items-end w-full">
-				<label htmlFor="">Job</label>
+				<label htmlFor="">Trabajo</label>
 				<Input className="w-8/12 text-center" />
 			</div>
 			<div className="flex gap-10 justify-between items-end w-full">
-				<label htmlFor="">Experience</label>
+				<label htmlFor="">Tiempo</label>
 				<Input className="w-8/12 text-center" />
 			</div>
 		</div>
@@ -24,7 +24,7 @@ const Experience = () => {
 				.map((_, i) => (
 					<ExperienceCard key={i} />
 				))}
-            <Button variant="accept" className="w-fit self-end">Add experience</Button>
+            <Button variant="accept" className="w-fit self-end">Agregar experiencia</Button>
 		</div>
 	);
 };
