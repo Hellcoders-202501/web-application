@@ -43,7 +43,7 @@ const SupportView = () => {
 			<div className="flex flex-col gap-6">
 				<div className="card rounded-4xl flex gap-4 px-5 py-4">
 					<CiMail size={24} color="#0760A0" />
-					<p>FastPorte_support@gmail.com</p>
+					<p>fastporte@gmail.com</p>
 				</div>
 				<div className="card rounded-4xl flex gap-4 px-5 py-4">
 					<IoPersonOutline size={24} color="#0760A0" />

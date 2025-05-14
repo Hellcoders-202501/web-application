@@ -6,7 +6,7 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { Fragment } from "react";
 
 const RequestView = () => {
-	const { requestState } = useRequestService();
+	const { requestState, handleChange } = useRequestService();
 
 	return (
 		<div className="flex flex-col justify-center max-w-4xl mx-auto w-10/12 lg:w-auto my-10">

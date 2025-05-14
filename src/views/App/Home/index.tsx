@@ -12,7 +12,7 @@ const HomeView = () => {
 					<FaRegUserCircle size={120} className="hidden lg:block" />
 					<FaRegUserCircle size={100} className="lg:hidden" />
 					<p className="text-2xl lg:text-4xl font-bold">
-						Hola, <br className="hidden lg:block" /> Mario
+						Hola, <br className="hidden lg:block" /> Manuel
 					</p>
 				</div>
 				<Link

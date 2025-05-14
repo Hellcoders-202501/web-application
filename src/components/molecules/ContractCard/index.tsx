@@ -47,7 +47,7 @@ const ContractCard: FC<Props> = ({ variant = "history", userType }) => {
 						Hasta: <b>Los Olivos</b>
 					</p>
 					<p>
-						Fecha: <b>12/11/23</b>
+						Fecha: <b>12/05/25</b>
 					</p>
 					<p>
 						Capacidad: <b>20</b>
@@ -57,7 +57,7 @@ const ContractCard: FC<Props> = ({ variant = "history", userType }) => {
 					className="flex justify-between font-semibold text-lg border-t mt-4
                     pt-2"
 				>
-					<p>Información del Cliente</p>
+					<p>Datos del {userType === "client" ? "Conductor" : "Cliente"}</p>
 					<p>Pago</p>
 				</div>
 				<div className="flex justify-between items-end gap-10">
@@ -91,7 +91,9 @@ const ContractCard: FC<Props> = ({ variant = "history", userType }) => {
 						<div>
 							<FaRegUserCircle size={100} />
 							<div className="text-center mt-2">
-								<p className="font-semibold">Conductor</p>
+								<p className="font-semibold">
+									{userType === "client" ? "Conductor" : "Cliente"}
+								</p>
 								<p>Oscar Canellas</p>
 							</div>
 						</div>
@@ -100,7 +102,7 @@ const ContractCard: FC<Props> = ({ variant = "history", userType }) => {
 					<div>
 						<p className="font-semibold">Detalles:</p>
 						<p className="mt-4">
-							Fecha: <b>12/11/23</b>
+							Fecha: <b>12/05/25</b>
 						</p>
 						<p>
 							Desde: <b>Comas</b>

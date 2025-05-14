@@ -7,6 +7,7 @@ import "react-day-picker/dist/style.css";
 import type { FC } from "react";
 import TextArea from "@components/atoms/TextArea";
 import type { RequestContract } from "@models/contract";
+import { es } from "date-fns/locale";
 
 interface RequestFormProps {
 	requestState: RequestContract;
@@ -62,6 +63,7 @@ const RequestForm: FC<RequestFormProps> = ({ requestState, editable }) => {
 								mode="single"
 								defaultMonth={new Date()}
 								selected={new Date()}
+								locale={es}
 								classNames={{
 									selected: "bg-white text-main rounded-full",
 									today: "text-accept",
