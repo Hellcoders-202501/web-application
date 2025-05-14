@@ -16,17 +16,17 @@ const SearchView = () => {
 			 	my-10 lg:my-20"
 			>
 				<p className="self-start mb-5 text-4xl font-semibold">
-					Request from Oscar Canellas
+					Solicitud por Oscar Canellas
 				</p>
 				<RequestForm requestState={{
 					from: "Comas",
 					to: "Los Olivos",
-					typeService: "Transportation",
+					typeService: "Transporte",
 					departureHour: "12:00",
 					arrivalHour: "18:00",
 					amount: 50,
 					capacity: 2,
-					description: "I need a vehicle for 2 people",
+					description: "Necesito un vehículo para 2 personas",
 				}} editable={false} />
 			</div>
 		);
@@ -38,19 +38,19 @@ const SearchView = () => {
 		>
 			{/* Left */}
 			<div>
-				<p className="mb-10 text-4xl font-semibold">Search Vehicles</p>
+				<p className="mb-10 text-4xl font-semibold">Buscar vehículos</p>
 				<Formik initialValues={searchState} onSubmit={() => {}}>
 					<Form className="flex flex-col gap-5">
 						<div className="flex flex-col gap-2">
-							<label htmlFor="">Type Of Service</label>
+							<label htmlFor="">Tipo de servicios</label>
 							<Select name="typeService" id="typeService">
-								<option value="Moving">Moving</option>
-								<option value="Transportation">Transportation</option>
-								<option value="Tourism">Tourism</option>
+								<option value="Moving">Mudanza</option>
+								<option value="Transportation">Transporte</option>
+								<option value="Tourism">Turismo</option>
 							</Select>
 						</div>
 						<div className="flex flex-col">
-							<label htmlFor="">Capacity</label>
+							<label htmlFor="">Capacidad</label>
 							<Input />
 						</div>
 					</Form>
@@ -58,7 +58,7 @@ const SearchView = () => {
 			</div>
 			{/* Right */}
 			<div>
-				<p className="mb-10 text-4xl font-semibold mt-10 lg:mt-0">Results</p>
+				<p className="mb-10 text-4xl font-semibold mt-10 lg:mt-0">Resultados</p>
 				<div className="flex flex-col gap-5">
 					{Array(2)
 						.fill(null)
