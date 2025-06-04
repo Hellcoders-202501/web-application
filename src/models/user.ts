@@ -1,3 +1,12 @@
+export interface IUserReduxState {
+  user: User | undefined;
+}
+
+export interface LoginState {
+  email: string;
+  password: string;
+}
+
 export interface RegisterUser {
   name: string;
   firstLastName: string;

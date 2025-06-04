@@ -17,15 +17,23 @@ const LoginView = () => {
 					<Form className="flex flex-col gap-5">
 						<Input
 							placeholder="Correo electrónico"
-							onChange={handleChange}
+							value={loginSate.email}
+							onChange={(e) => handleChange(e)}
 							type="email"
+							id="email"
+							name="email"
 						/>
 						<Input
 							placeholder="Contraseña"
+							value={loginSate.password}
 							onChange={handleChange}
 							type="password"
+							id="password"
+							name="password"
 						/>
-						<Button type="submit" className="mt-3">Iniciar sesión</Button>
+						<Button type="submit" className="mt-3">
+							Iniciar sesión
+						</Button>
 					</Form>
 				</Formik>
 				<div className="flex flex-col gap-4 mt-10 items-center">

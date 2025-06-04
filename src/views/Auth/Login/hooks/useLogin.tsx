@@ -1,7 +1,12 @@
 import { useState } from "react";
+import { sigin } from "@redux/user/userThunk";
+import { LoginState } from "@models/user";
+import { useAppDispatch } from "@core/store";
 
 const useLogin = () => {
-	const [loginSate, setLoginState] = useState({
+	const dispatch = useAppDispatch();
+
+	const [loginSate, setLoginState] = useState<LoginState>({
 		email: "",
 		password: "",
 	});
@@ -15,9 +20,10 @@ const useLogin = () => {
 	};
 
     const handleSubmit = () => {
+		dispatch(sigin(loginSate));
         // TODO: Implement login logic
-		window.location.href = "/"; // Redirect to home page after login
-		localStorage.setItem("userType", "driver");
+		// window.location.href = "/"; // Redirect to home page after login
+		// localStorage.setItem("userType", "driver");
     }
 
 	return {
