@@ -1,9 +1,11 @@
 import { useContext, useState } from "react";
 import { LoginState } from "@models/user";
 import { AuthContext } from "@context/auth/AuthContext";
+import { IRootState, useAppSelector } from "@core/store";
 
 const useLogin = () => {
   const { handleLogIn } = useContext(AuthContext);
+  const loading = useAppSelector((state: IRootState) => state.user.loading);
 
   const [loginSate, setLoginState] = useState<LoginState>({
     email: "",
@@ -24,6 +26,7 @@ const useLogin = () => {
 
   return {
     loginSate,
+    loading,
     handleChange,
     handleSubmit,
   };

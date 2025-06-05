@@ -2,6 +2,7 @@ import store from "@core/store";
 import type { LoginState, User } from "@models/user";
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import userServices from "@services/userServices";
+import type { AxiosError } from "axios";
 
 export const setToken = createAction<string>("SET_TOKEN");
 export const setUserType = createAction<string>("SET_USER_TYPE");
@@ -21,9 +22,10 @@ export const signin = createAsyncThunk(
         return response.token;
       }
     } catch (error) {
+      const err = error as AxiosError;
       return rejectWithValue({
-        status: error.response?.status,
-        message: error.response?.data?.message || error.message,
+        status: err.response?.status,
+        message: err.response?.data,
       });
     }
   },
@@ -46,9 +48,10 @@ export const getCurrentUserById = createAsyncThunk(
         }
       }
     } catch (error) {
+      const err = error as AxiosError;
       return rejectWithValue({
-        status: error.response?.status,
-        message: error.response?.data?.message || error.message,
+        status: err.response?.status,
+        message: err.response?.data,
       });
     }
   },
@@ -64,9 +67,10 @@ export const getClientById = createAsyncThunk(
         return response;
       }
     } catch (error) {
+      const err = error as AxiosError;
       return rejectWithValue({
-        status: error.response?.status,
-        message: error.response?.data?.message || error.message,
+        status: err.response?.status,
+        message: err.response?.data,
       });
     }
   },
@@ -82,9 +86,10 @@ export const getDriverById = createAsyncThunk(
         return response;
       }
     } catch (error) {
+      const err = error as AxiosError;
       return rejectWithValue({
-        status: error.response?.status,
-        message: error.response?.data?.message || error.message,
+        status: err.response?.status,
+        message: err.response?.data,
       });
     }
   },

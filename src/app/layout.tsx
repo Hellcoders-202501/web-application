@@ -20,9 +20,9 @@ export default function RootLayout({
     <html lang="en">
       <Provider store={store}>
         <PayPalScriptProvider options={{ clientId: "test" }}>
-          <AuthProvider>
-            <body className={`${inter.className} antialiased`}>{children}</body>
-          </AuthProvider>
+          <body className={`${inter.className} antialiased`}>
+            <AuthProvider>{children}</AuthProvider>
+          </body>
         </PayPalScriptProvider>
       </Provider>
     </html>

@@ -4,11 +4,22 @@ import React, { FC, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { useAppDispatch } from "@core/store";
 import useAuth from "@hooks/useAuth";
-import { getCurrentUserById, setUserType, signin } from "@redux/user/userThunk";
+import {
+  getCurrentUserById,
+  setToken,
+  setUserType,
+  signin,
+} from "@redux/user/userThunk";
 import { jwtDecode } from "jwt-decode";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { LoginState } from "@models/user";
-import { removeLocalToken } from "@util/storageUtil";
+import { getLocalToken, removeLocalToken } from "@util/storageUtil";
+import Loading from "@components/atoms/Loading";
+
+interface CustomJwtPayload {
+  role: string;
+  id: number;
+}
 
 /**
  * If user is logged in, call the requeried user information and settings;
@@ -23,27 +34,38 @@ const AuthProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isClient, setisClient] = useState(false);
 
   const router = useRouter();
+
   useEffect(() => {
     setisClient(true);
-    /* Get current user and validate session if token exists */
-    if (token) {
-      const userType = jwtDecode(token)?.role;
-      const userId = jwtDecode(token)?.id;
+
+    const sessionToken = token || getLocalToken();
+    if (!sessionToken) {
+      router.replace("/login");
+      return;
+    }
+
+    dispatch(setToken(sessionToken)); // solo si no está ya seteado
+
+    try {
+      const decoded = jwtDecode<CustomJwtPayload>(sessionToken);
+      const userType = decoded?.role;
+      const userId = decoded?.id;
+
       if (userType === "ROLE_CLIENT") {
         dispatch(setUserType("CLIENT"));
         dispatch(getCurrentUserById({ id: userId, type: "CLIENT" }));
-      }
-      if (userType === "ROLE_DRIVER") {
+      } else if (userType === "ROLE_DRIVER") {
         dispatch(setUserType("DRIVER"));
         dispatch(getCurrentUserById({ id: userId, type: "DRIVER" }));
       }
-      // getUserNotifications();
+    } catch (err) {
+      console.error("Invalid token format", err);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
-  const handleLogIn = (loginForm: LoginState) => {
+  const handleLogIn = (loginForm?: LoginState) => {
+    if (!loginForm) return;
+
     dispatch(
       signin({
         ...loginForm,
@@ -55,13 +77,15 @@ const AuthProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
     });
   };
 
-  /* const contextValidator = () => {
+  const publicRoutes = ["/login", "/signup", "/forgot-password"];
+  const pathname = usePathname();
+  const isPublicRoute = publicRoutes.includes(pathname);
+
+  const contextValidator = () => {
     if (token) {
       return currentUser !== undefined;
-    } else {
-      return !othersLoading.getProducts;
     }
-  }; */
+  };
 
   const handleLogOut = () => {
     removeLocalToken();
@@ -82,15 +106,13 @@ const AuthProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
         handleLogOut,
       }}
     >
-      {/* {contextValidator() && isClient ? ( */}
-      <>{children}</>
-      {/* ) : (
-        <>
-          <div className="h-screen flex justify-center items-center">
-            <LoadingComponent />
-          </div>
-        </>
-      )} */}
+      {(contextValidator() || isPublicRoute) && isClient ? (
+        <>{children}</>
+      ) : (
+        <div className="h-screen flex justify-center items-center">
+          <Loading />
+        </div>
+      )}
     </AuthContext.Provider>
   );
 };
