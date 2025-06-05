@@ -1,19 +1,25 @@
 "use client";
 import Button from "@components/atoms/Button";
 import Input from "@components/atoms/Input";
-import { Form, Formik } from "formik";
+import { ErrorMessage, Form, Formik } from "formik";
 import useLogin from "./hooks/useLogin";
 import Title from "@components/molecules/Title";
 import Link from "next/link";
 
 const LoginView = () => {
-  const { loginSate, loading, handleChange, handleSubmit } = useLogin();
+  const { loginSate, loading, handleChange, handleSubmit, loginValidation } =
+    useLogin();
 
   return (
     <div className="flex flex-col justify-center items-center h-full">
       <Title title="Bienvenido, vamos a iniciar!" />
       <div className="card md:w-xl mt-10 px-24 py-10">
-        <Formik initialValues={loginSate} onSubmit={handleSubmit}>
+        <Formik
+          enableReinitialize
+          initialValues={loginSate}
+          onSubmit={handleSubmit}
+          validationSchema={loginValidation}
+        >
           <Form className="flex flex-col gap-5">
             <Input
               placeholder="Correo electrónico"
@@ -21,6 +27,11 @@ const LoginView = () => {
               onChange={(e) => handleChange(e)}
               type="email"
               id="email"
+              name="email"
+            />
+            <ErrorMessage
+              component="div"
+              className="text-red-500 text-sm pl-2"
               name="email"
             />
             <Input
@@ -31,7 +42,17 @@ const LoginView = () => {
               id="password"
               name="password"
             />
-            <Button type="submit" className="mt-3" disabled={loading}>
+            <ErrorMessage
+              component="div"
+              className="text-red-500 text-sm pl-2"
+              name="password"
+            />
+            <Button
+              type="submit"
+              className="mt-3"
+              disabled={loading}
+              loading={loading}
+            >
               Iniciar sesión
             </Button>
           </Form>

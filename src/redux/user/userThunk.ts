@@ -1,5 +1,5 @@
 import store from "@core/store";
-import type { LoginState, User } from "@models/user";
+import type { CreateUser, LoginState, User } from "@models/user";
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import userServices from "@services/userServices";
 import type { AxiosError } from "axios";
@@ -20,6 +20,42 @@ export const signin = createAsyncThunk(
         store.dispatch(setToken(response.token));
 
         return response.token;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  },
+);
+
+export const signup = createAsyncThunk(
+  "SIGNUP",
+  async (
+    payload: {
+      userType: string;
+      user: CreateUser;
+    },
+    { rejectWithValue },
+  ) => {
+    try {
+      if (payload.userType === "CLIENT") {
+        const response = (await userServices.registerClient(
+          payload.user,
+        )) as User;
+        if (response) {
+          return response;
+        }
+      }
+      if (payload.userType === "DRIVER") {
+        const response = (await userServices.registerDriver(
+          payload.user,
+        )) as User;
+        if (response) {
+          return response;
+        }
       }
     } catch (error) {
       const err = error as AxiosError;

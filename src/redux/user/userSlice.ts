@@ -1,6 +1,6 @@
 import type { IUserReduxState } from "@models/user";
 import { createSlice } from "@reduxjs/toolkit";
-import { getCurrentUserById, setToken, setUserType, signin } from "./userThunk";
+import { getCurrentUserById, setToken, setUserType, signin, signup } from "./userThunk";
 import { saveLocalToken } from "@util/storageUtil";
 
 const initialState: IUserReduxState = {
@@ -43,6 +43,18 @@ const userSlice = createSlice({
     });
     builder.addCase(setUserType, (state, action) => {
       state.userType = action.payload;
+    });
+    builder.addCase(signup.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(signup.fulfilled, (state, action) => {
+      console.log("signup successfully");
+      window.location.href = "/login"; // Redireccionar a la página de inicio después del registro
+      state.loading = false;
+    });
+    builder.addCase(signup.rejected, (state, action) => {
+      console.log("signup failed");
+      state.loading = false;
     });
   },
 });

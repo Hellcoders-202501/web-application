@@ -21,6 +21,15 @@ export interface RegisterUser {
   privacy: boolean;
 }
 
+export interface CreateUser {
+  name: string;
+  firstLastName: string;
+  secondLastName: string;
+  email: string;
+  phone: string;
+  password: string;
+}
+
 export interface User {
   id: number;
   name: string;
