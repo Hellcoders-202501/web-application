@@ -21,7 +21,7 @@ const ContractCard: FC<Props> = ({ variant = "history", userType }) => {
 	const [showPaypal, setShowPaypal] = useState(false);
 
 	const defineText = () => {
-		if (userType === "client") {
+		if (userType === "CLIENT") {
 			switch (variant) {
 				case "offer":
 					return "Aceptar";
@@ -31,7 +31,7 @@ const ContractCard: FC<Props> = ({ variant = "history", userType }) => {
 					return "";
 			}
 		}
-		if (userType === "driver") {
+		if (userType === "DRIVER") {
 			switch (variant) {
 				case "offer":
 					return "";
@@ -66,7 +66,7 @@ const ContractCard: FC<Props> = ({ variant = "history", userType }) => {
 					className="flex justify-between font-semibold text-lg border-t mt-4
                     pt-2"
 				>
-					<p>Datos del {userType === "client" ? "Conductor" : "Cliente"}</p>
+					<p>Datos del {userType === "CLIENT" ? "Conductor" : "Cliente"}</p>
 					<p>Pago</p>
 				</div>
 				<div className="flex justify-between items-end gap-10">
@@ -159,7 +159,7 @@ const ContractCard: FC<Props> = ({ variant = "history", userType }) => {
 							<FaRegUserCircle size={100} />
 							<div className="text-center mt-2">
 								<p className="font-semibold">
-									{userType === "client" ? "Conductor" : "Cliente"}
+									{userType === "CLIENT" ? "Conductor" : "Cliente"}
 								</p>
 								<p>Oscar Canellas</p>
 							</div>

@@ -1,23 +1,21 @@
 "use client";
+import useAuth from "@hooks/useAuth";
 import type { User } from "@models/user";
 import { useEffect, useState } from "react";
 
 const useProfile = () => {
-	const [userType, setUserType] = useState<string | null>(null);
+  const { userType } = useAuth();
 
 	useEffect(() => {
-		const stored = localStorage.getItem("userType");
-		setUserType(stored);
-
-		if (stored === "client")
+		if (userType === "CLIENT")
 			setUser({
 				...user,
 				description:
-					stored === "client"
+					userType === "CLIENT"
 						? "Soy Manuel y me interesa contratar servicios de transporte, mayormente para realizar viajes o excursiones."
 						: "Hola. Me llamo Manuel y tengo un coche que uso para dar servicio turístico. Tengo mucha experiencia, ya que empecé en este trabajo hace 10 años. Prometo brindarte el mejor servicio y no te arrepentirás. Puedes llamarme a cualquier hora del día y también escribirme por WhatsApp.",
 			});
-	}, []);
+	}, [userType]);
 
 	const [editable, setEditable] = useState(false);
 	const [user, setUser] = useState<User>({

@@ -1,15 +1,91 @@
-import { LoginState } from "@models/user";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import store from "@core/store";
+import type { LoginState, User } from "@models/user";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import userServices from "@services/userServices";
 
-export const sigin = createAsyncThunk(
-    "SIGNIN",
-    async (payload: LoginState, { rejectWithValue }) => {
-        try {
-            const response = await userServices.signIn(payload.email, payload.password);
-            // console.log("response", response);
-            return response;
-        } catch (error) {
-            return rejectWithValue(error);
+export const setToken = createAction<string>("SET_TOKEN");
+export const setUserType = createAction<string>("SET_USER_TYPE");
+
+export const signin = createAsyncThunk(
+  "SIGNIN",
+  async (payload: LoginState, { rejectWithValue }) => {
+    try {
+      const response = (await userServices.signIn(
+        payload.email,
+        payload.password,
+      )) as { token: string };
+
+      if (response?.token) {
+        store.dispatch(setToken(response.token));
+
+        return response.token;
+      }
+    } catch (error) {
+      return rejectWithValue({
+        status: error.response?.status,
+        message: error.response?.data?.message || error.message,
+      });
+    }
+  },
+);
+
+export const getCurrentUserById = createAsyncThunk(
+  "GET_CURRENT_USER_BY_ID",
+  async (payload: { id: number; type: string }, { rejectWithValue }) => {
+    try {
+      if (payload.type === "DRIVER") {
+        const response = (await userServices.getDriverById(payload.id)) as User;
+        if (response) {
+          return response;
         }
-});
+      }
+      if (payload.type === "CLIENT") {
+        const response = (await userServices.getClientById(payload.id)) as User;
+        if (response) {
+          return response;
+        }
+      }
+    } catch (error) {
+      return rejectWithValue({
+        status: error.response?.status,
+        message: error.response?.data?.message || error.message,
+      });
+    }
+  },
+);
+
+export const getClientById = createAsyncThunk(
+  "GET_CLIENT_BY_ID",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = (await userServices.getClientById(id)) as User;
+
+      if (response) {
+        return response;
+      }
+    } catch (error) {
+      return rejectWithValue({
+        status: error.response?.status,
+        message: error.response?.data?.message || error.message,
+      });
+    }
+  },
+);
+
+export const getDriverById = createAsyncThunk(
+  "GET_DRIVER_BY_ID",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = (await userServices.getDriverById(id)) as User;
+
+      if (response) {
+        return response;
+      }
+    } catch (error) {
+      return rejectWithValue({
+        status: error.response?.status,
+        message: error.response?.data?.message || error.message,
+      });
+    }
+  },
+);

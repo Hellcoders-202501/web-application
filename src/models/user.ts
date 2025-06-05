@@ -1,5 +1,8 @@
 export interface IUserReduxState {
   user: User | undefined;
+  token: string | undefined;
+  userType: string | null;
+  loading: boolean;
 }
 
 export interface LoginState {

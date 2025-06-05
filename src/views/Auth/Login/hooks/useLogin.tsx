@@ -1,36 +1,32 @@
-import { useState } from "react";
-import { sigin } from "@redux/user/userThunk";
+import { useContext, useState } from "react";
 import { LoginState } from "@models/user";
-import { useAppDispatch } from "@core/store";
+import { AuthContext } from "@context/auth/AuthContext";
 
 const useLogin = () => {
-	const dispatch = useAppDispatch();
+  const { handleLogIn } = useContext(AuthContext);
 
-	const [loginSate, setLoginState] = useState<LoginState>({
-		email: "",
-		password: "",
-	});
+  const [loginSate, setLoginState] = useState<LoginState>({
+    email: "",
+    password: "",
+  });
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-		setLoginState((prevState) => ({
-			...prevState,
-			[name]: value,
-		}));
-	};
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setLoginState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
-    const handleSubmit = () => {
-		dispatch(sigin(loginSate));
-        // TODO: Implement login logic
-		// window.location.href = "/"; // Redirect to home page after login
-		// localStorage.setItem("userType", "driver");
-    }
+  const handleSubmit = () => {
+    handleLogIn(loginSate);
+  };
 
-	return {
-		loginSate,
-		handleChange,
-		handleSubmit,
-	};
+  return {
+    loginSate,
+    handleChange,
+    handleSubmit,
+  };
 };
 
 export default useLogin;

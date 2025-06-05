@@ -4,69 +4,64 @@ import Link from "next/link";
 import Logo from "@assets/logo.webp";
 import Notifications from "@components/molecules/Notifications";
 import UserMenu from "@components/molecules/UserMenu";
-import { useEffect, useState } from "react";
+import useAuth from "@hooks/useAuth";
 
 const AppNavbar = () => {
-	const [userType, setUserType] = useState<string | null>(null);
+  const { userType } = useAuth();
 
-	useEffect(() => {
-		const stored = localStorage.getItem("userType");
-		setUserType(stored);
-	}, []);
+  const urls = [
+    { url: "/", label: "Inicio" },
+    { url: "/profile", label: "Perfil" },
+    {
+      url: userType === "DRIVER" ? "/search" : "/requests",
+      label: userType === "DRIVER" ? "Búsqueda" : "Solicitudes",
+    },
+    { url: "/contracts", label: "Contratos" },
+    { url: "/support", label: "Ayuda" },
+  ];
 
-	const urls = [
-		{ url: "/", label: "Inicio" },
-		{ url: "/profile", label: "Perfil" },
-		{
-			url: userType === "driver" ? "/search" : "/requests",
-			label: userType === "driver" ? "Búsqueda" : "Solicitudes",
-		},
-		{ url: "/contracts", label: "Contratos" },
-		{ url: "/support", label: "Ayuda" },
-	];
-
-	return (
-		<nav className="bg-main py-4 px-5">
-			<div className="flex justify-between items-center">
-				<div className="flex items-center gap-2">
-					<Image
-						src={Logo}
-						alt="Logo"
-						width={57}
-						height={57}
-						className="hidden md:block"
-					/>
-					<Image
-						src={Logo}
-						alt="Logo"
-						width={32}
-						height={32}
-						className="md:hidden"
-					/>
-					<p className="text-white font-bold text-lg md:text-xl">FastPorte</p>
-				</div>
-				{/* Menu */}
-				<UserMenu />
-			</div>
-			<div className="flex justify-between items-center pt-4">
-				<div>
-					{urls.map((url, index) => {
-						return (
-							<Link
-								className="md:mx-4 mx-1 text-white text-xs md:text-lg"
-								key={index}
-								href={url.url}
-							>
-								{url.label}
-							</Link>
-						);
-					})}
-				</div>
-				{/* Notifications */}
-				<Notifications userType={userType} />
-			</div>
-		</nav>
-	);
+  return (
+    <nav className="bg-main py-4 px-5">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <Image
+            src={Logo}
+            alt="Logo"
+            width={57}
+            height={57}
+            className="hidden md:block"
+          />
+          <Image
+            src={Logo}
+            alt="Logo"
+            width={32}
+            height={32}
+            className="md:hidden"
+          />
+          <p className="text-white font-bold text-lg md:text-xl">FastPorte</p>
+        </div>
+        {/* Menu */}
+        <UserMenu />
+      </div>
+      <div className="flex justify-between items-center pt-4">
+        <div>
+          {urls.map((url, index) => {
+            return (
+              <Link
+                className="md:mx-4 mx-1 text-white text-xs md:text-lg"
+                key={index}
+                href={url.url}
+              >
+                {url.label}
+              </Link>
+            );
+          })}
+        </div>
+        {/* Notifications */}
+        <Notifications userType={userType} />
+      </div>
+    </nav>
+  );
 };
 
 export default AppNavbar;

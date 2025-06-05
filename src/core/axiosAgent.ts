@@ -1,9 +1,40 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-var */
 /* eslint-disable prefer-const */
+import { getLocalToken } from "@util/storageUtil";
 import axios, { AxiosResponse } from "axios";
 
-const responseBody = <T>(response: AxiosResponse<T>) => response;
+axios.interceptors.request.use((config) => {
+  const token = getLocalToken();
+
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      const { status } = error.response;
+      switch (status) {
+        case 401:
+          console.warn("No autorizado.");
+          break;
+        case 403:
+          console.error("Acceso denegado.");
+          break;
+        case 404:
+          console.error("No encontrado.");
+          break;
+        default:
+          console.error("Error inesperado:", error.response.data);
+      }
+    }
+    return Promise.reject(error);
+  },
+);
+
+const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL || "";
 
@@ -25,3 +56,4 @@ const requests = {
 };
 
 export { requests };
+
