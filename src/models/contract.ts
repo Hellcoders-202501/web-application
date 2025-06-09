@@ -1,12 +1,18 @@
 export interface IContractReduxState {
-  requestResultList: RequestContract[];
-  requestResult: RequestContract | null;
+  requestResultList: TripResult[];
+  requestResult: TripResult | null;
+  pendingTripsList: TripResult[];
+  historyTripsList: TripResult[];
   loading: boolean;
 }
 
 export interface RequestContract extends Trip {
   typeService: number;
   capacity: number;
+}
+
+export interface TripResult extends Trip {
+  id: number;
 }
 
 export interface Trip {
@@ -18,4 +24,11 @@ export interface Trip {
   date: string;
   subject: string;
   description: string;
+}
+
+export interface Application {
+  message: "string";
+  proposedAmount: 0;
+  requestId: 0;
+  driverId: 0;
 }

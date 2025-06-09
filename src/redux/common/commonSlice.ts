@@ -1,9 +1,10 @@
-import { ICommonReduxState } from "@models/common";
+import type { ICommonReduxState } from "@models/common";
 import { createSlice } from "@reduxjs/toolkit";
-import { getServiceTypes } from "./commonThunk";
+import { getServiceTypes, getTripStatus } from "./commonThunk";
 
 const initialState: ICommonReduxState = {
   serviceTypes: [],
+  tripStatus: [],
   loading: false,
 };
 
@@ -20,6 +21,16 @@ const commonSlice = createSlice({
       state.serviceTypes = action.payload as [];
     });
     builder.addCase(getServiceTypes.rejected, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(getTripStatus.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(getTripStatus.fulfilled, (state, action) => {
+      state.loading = false;
+      state.tripStatus = action.payload as [];
+    });
+    builder.addCase(getTripStatus.rejected, (state, action) => {
       state.loading = false;
     });
   },

@@ -47,6 +47,8 @@ const requests = {
       .then(responseBody),
   post: <T>(url: string, body: {}) =>
     axios.post<T>(url, body, { withCredentials: true }).then(responseBody),
+  postWithoutBody: <T>(url: string) =>
+    axios.post<T>(url, { withCredentials: true }).then(responseBody),
   put: <T>(url: string, body: {}) =>
     axios.put<T>(url, body, { withCredentials: true }).then(responseBody),
   patch: <T>(url: string, body: {}) =>
@@ -56,4 +58,3 @@ const requests = {
 };
 
 export { requests };
-

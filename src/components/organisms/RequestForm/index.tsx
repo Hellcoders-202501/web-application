@@ -116,6 +116,7 @@ const RequestForm: FC<RequestFormProps> = ({
             <div className="bg-main p-6 rounded-xl w-[320px] text-white">
               <DayPicker
                 mode="single"
+                required
                 selected={selected}
                 onSelect={setSelected}
                 locale={es}

@@ -4,7 +4,7 @@ import Loading from "@components/atoms/Loading";
 import { useAppDispatch } from "@core/store";
 import useAuth from "@hooks/useAuth";
 import { LoginState } from "@models/user";
-import { getServiceTypes } from "@redux/common/commonThunk";
+import { getServiceTypes, getTripStatus } from "@redux/common/commonThunk";
 import {
   getCurrentUserById,
   setToken,
@@ -61,6 +61,7 @@ const AuthProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
       }
 
       dispatch(getServiceTypes());
+      dispatch(getTripStatus());
     } catch (err) {
       console.error("Invalid token format", err);
     }

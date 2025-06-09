@@ -1,7 +1,11 @@
 import { IRootState, useAppDispatch, useAppSelector } from "@core/store";
+import useAuth from "@hooks/useAuth";
 import type { RequestContract } from "@models/contract";
 import { getServiceTypes } from "@redux/common/commonThunk";
-import { makeRequest } from "@redux/contract/contractThunk";
+import {
+  getRequestsByClientId,
+  makeRequest,
+} from "@redux/contract/contractThunk";
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
 
@@ -10,7 +14,10 @@ const useRequestService = () => {
   const serviceTypes = useAppSelector(
     (state: IRootState) => state.common.serviceTypes,
   );
-  const loading = useAppSelector((state: IRootState) => state.contract.loading);
+  const { loading, requestResultList } = useAppSelector(
+    (state: IRootState) => state.contract,
+  );
+  const { currentUser } = useAuth();
 
   const requestValidation = () => {
     return Yup.object().shape({
@@ -53,23 +60,44 @@ const useRequestService = () => {
     }));
   };
 
-  const handleSubmit = (requestDate: Date) => {
+  const handleSubmit = async (requestDate: Date) => {
     setRequestState((prevState) => ({
       ...prevState,
       date: requestDate.toISOString().split("T")[0],
     }));
     const { typeService, capacity, ...request } = requestState;
-    dispatch(
+
+    const resultAction = await dispatch(
       makeRequest({
-        clientId: 1,
+        clientId: currentUser?.id as number,
         serviceId: typeService,
         trip: request,
       }),
     );
+
+    if (makeRequest.fulfilled.match(resultAction)) {
+      // Resetear el formulario
+      setRequestState({
+        origin: "",
+        destination: "",
+        typeService: 1,
+        startTime: "",
+        endTime: "",
+        capacity: 0,
+        amount: 0,
+        date: new Date().toISOString().split("T")[0],
+        subject: "",
+        description: "",
+      });
+    }
   };
 
   useEffect(() => {
     if (serviceTypes.length === 0) dispatch(getServiceTypes());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getRequestsByClientId(currentUser?.id as number));
   }, []);
 
   return {
@@ -79,6 +107,7 @@ const useRequestService = () => {
     requestValidation,
     loading,
     serviceTypes,
+    requestResultList,
   };
 };
 

@@ -5,18 +5,22 @@ import ContractCard, {
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import useAuth from "@hooks/useAuth";
 import { Fragment } from "react";
+import useContracts from "./hooks/useContracts";
 
 const ContractsView = () => {
   const { userType } = useAuth();
+  const { pendingTripsList, historyTripsList } = useContracts();
 
   const contracts = [
     {
       type: "Pendientes",
       value: "pending",
+      trips: pendingTripsList,
     },
     {
       type: "Historial",
       value: "history",
+      trips: historyTripsList,
     },
   ];
 
@@ -47,15 +51,24 @@ const ContractsView = () => {
               className="flex flex-col md:flex-row flex-wrap justify-between gap-y-10
               mt-10 mx-4"
             >
-              {Array(3)
-                .fill(null)
-                .map((_, i) => (
-                  <ContractCard
-                    key={i}
-                    variant={contract.value as ContractVariant}
-                    userType={userType}
-                  />
-                ))}
+              {contract.trips.length === 0 ? (
+                <div className="flex justify-center items-center">
+                  <p className="text-center text-lg text-gray-500">
+                    No tienes contratos
+                  </p>
+                </div>
+              ) : (
+                <>
+                  {contract.trips.map((trip) => (
+                    <ContractCard
+                      key={trip.id}
+                      variant={contract.value as ContractVariant}
+                      userType={userType}
+                      contract={trip}
+                    />
+                  ))}
+                </>
+              )}
             </TabPanel>
           ))}
         </TabPanels>
