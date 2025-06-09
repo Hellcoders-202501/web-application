@@ -2,14 +2,18 @@ export interface IContractReduxState {
   loading: boolean;
 }
 
-export interface RequestContract {
+export interface RequestContract extends Trip {
+	typeService: number;
+	capacity: number;
+}
+
+export interface Trip {
 	origin: string;
 	destination: string;
-	typeService: string;
 	startTime: string;
 	endTime: string;
-	capacity: number;
 	amount: number;
+  date: string;
 	subject: string;
 	description: string;
 }

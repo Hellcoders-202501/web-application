@@ -1,13 +1,20 @@
-import { RequestContract } from "@models/contract";
+import type { Trip } from "@models/contract";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import contractsService from "@services/contractsService";
-import { AxiosError } from "axios";
+import type { AxiosError } from "axios";
 
 export const makeRequest = createAsyncThunk(
   "CREATE_REQUEST",
-  async (request: RequestContract, { rejectWithValue }) => {
+  async (
+    request: {
+      clientId: number;
+      serviceId: number;
+      trip: Trip;
+    },
+    { rejectWithValue },
+  ) => {
     try {
-      const response = (await contractsService.makeRequest(request));
+      const response = await contractsService.makeRequest(request);
 
       if (response) {
         return response;

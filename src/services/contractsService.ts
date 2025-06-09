@@ -1,10 +1,14 @@
 import { requests } from "@core/axiosAgent";
-import { RequestContract } from "@models/contract";
+import type { Trip } from "@models/contract";
 
-const makeRequest = (request: RequestContract) => {
-    return requests.post("/request", request);
+const makeRequest = (request: {
+  clientId: number;
+  serviceId: number;
+  trip: Trip;
+}) => {
+  return requests.post("/request", request);
 };
 
 export default {
-    makeRequest,
+  makeRequest,
 };
