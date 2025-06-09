@@ -1,22 +1,40 @@
 import { IRootState, useAppDispatch, useAppSelector } from "@core/store";
 import type { RequestContract } from "@models/contract";
 import { getServiceTypes } from "@redux/common/commonThunk";
+import { makeRequest } from "@redux/contract/contractThunk";
 import { useEffect, useState } from "react";
+import * as Yup from "yup";
 
 const useRequestService = () => {
 	const dispatch = useAppDispatch();
 	const serviceTypes = useAppSelector(
 		(state: IRootState) => state.common.serviceTypes
 	)
+	const loading = useAppSelector(
+		(state: IRootState) => state.contract.loading
+	)
+
+	const requestValidation = () => {
+		return Yup.object().shape({
+			origin: Yup.string().required("Origen del servicio requerido"),
+			destination: Yup.string().required("Destino del servicio requerido"),
+			typeService: Yup.string().required("Tipo de servicio requerido"),
+			startTime: Yup.string().required("Hora de inicio requerido"),
+			endTime: Yup.string().required("Hora de termino requerido"),
+			capacity: Yup.number().min(1, "Debe ser mínimo 1").required("Capaciadad requerida"),
+			amount: Yup.number().min(10, "El pago debe ser mínimo 10").required("Pago requerido"),
+		});
+	}
 
 	const [requestState, setRequestState] = useState<RequestContract>({
-		from: "",
-		to: "",
+		origin: "",
+		destination: "",
 		typeService: "",
-		arrivalHour: "",
-		departureHour: "",
+		startTime: "",
+		endTime: "",
 		capacity: 0,
 		amount: 0,
+		subject: "",
 		description: "",
 	});
 
@@ -32,6 +50,10 @@ const useRequestService = () => {
 		));
 	};
 
+	const handleSubmit = () => {
+		dispatch(makeRequest(requestState));
+	}
+
 	useEffect(() => {
 		if (serviceTypes.length === 0)
 			dispatch(getServiceTypes());
@@ -40,6 +62,9 @@ const useRequestService = () => {
 	return {
 		requestState,
 		handleChange,
+		handleSubmit,
+		requestValidation,
+		loading,
 		serviceTypes,
 	};
 };

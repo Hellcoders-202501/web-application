@@ -1,12 +1,19 @@
 "use client";
 import ContractCard from "@components/molecules/ContractCard";
-import useRequestService from "./hooks/useRequestService";
 import RequestForm from "@components/organisms/RequestForm";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { Fragment } from "react";
+import useRequestService from "./hooks/useRequestService";
 
 const RequestView = () => {
-	const { requestState, handleChange, serviceTypes } = useRequestService();
+	const {
+		requestState,
+		handleChange,
+		handleSubmit,
+		requestValidation,
+		loading,
+		serviceTypes
+	} = useRequestService();
 
 	return (
 		<div className="flex flex-col justify-center max-w-4xl mx-auto w-10/12 lg:w-auto my-10">
@@ -60,7 +67,15 @@ const RequestView = () => {
 						<p className="self-start mb-5 text-4xl font-semibold">
 							Solicitar servicio
 						</p>
-						<RequestForm requestState={requestState} handleChange={handleChange} serviceTypes={serviceTypes} editable />
+						<RequestForm
+							requestState={requestState}
+							handleChange={handleChange}
+							handleSubmit={handleSubmit}
+							requestValidation={requestValidation}
+							loading={loading}
+							serviceTypes={serviceTypes}
+							editable
+						/>
 					</TabPanel>
 					<TabPanel
 						className="flex flex-col md:flex-row flex-wrap justify-between gap-y-10

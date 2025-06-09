@@ -1,10 +1,15 @@
+export interface IContractReduxState {
+  loading: boolean;
+}
+
 export interface RequestContract {
-	from: string;
-	to: string;
+	origin: string;
+	destination: string;
 	typeService: string;
-	departureHour: string;
-	arrivalHour: string;
+	startTime: string;
+	endTime: string;
 	capacity: number;
 	amount: number;
+	subject: string;
 	description: string;
 }
