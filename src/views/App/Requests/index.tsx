@@ -101,7 +101,7 @@ const RequestView = () => {
                   <ContractCard
                     key={request.id}
                     variant="request"
-                    contract={request}
+                    request={request}
                   />
                 ))}
               </>

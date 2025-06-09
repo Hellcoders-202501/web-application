@@ -1,4 +1,7 @@
-import type { IContractReduxState, TripResult } from "@models/contract";
+import type {
+  IContractReduxState,
+  RequestResult,
+} from "@models/contract";
 import { createSlice } from "@reduxjs/toolkit";
 import {
   createApplication,
@@ -16,7 +19,7 @@ import {
 
 const initialState: IContractReduxState = {
   requestResultList: [],
-  requestResult: null,
+  // requestResult: null,
   pendingTripsList: [],
   historyTripsList: [],
   loading: false,
@@ -54,8 +57,8 @@ const contractSlice = createSlice({
     });
     builder.addCase(getRequestById.fulfilled, (state, action) => {
       state.loading = false;
-      state.requestResult = (action.payload as TripResult)
-        ? (action.payload as TripResult)
+      state.requestResult = (action.payload as RequestResult)
+        ? (action.payload as RequestResult)
         : null;
     });
     builder.addCase(getRequestById.rejected, (state, action) => {

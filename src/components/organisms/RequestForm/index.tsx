@@ -18,7 +18,7 @@ interface RequestFormProps {
     >,
   ) => void;
   handleSubmit: (date: Date) => void;
-  requestValidation: VoidFunction;
+  requestValidation: VoidFunction | any;
   loading: boolean;
   editable?: boolean;
   serviceTypes: Array<ServiceType>;
@@ -60,7 +60,7 @@ const RequestForm: FC<RequestFormProps> = ({
                 variant={!editable ? "disabled" : "primary"}
                 disabled={!editable}
                 value={requestState.origin}
-                onChange={handleChange}
+                onChange={editable ? handleChange : undefined}
               />
             </div>
             <ErrorMessage
@@ -78,7 +78,7 @@ const RequestForm: FC<RequestFormProps> = ({
                 variant={!editable ? "disabled" : "primary"}
                 disabled={!editable}
                 value={requestState.destination}
-                onChange={handleChange}
+                onChange={editable ? handleChange : undefined}
               />
             </div>
             <ErrorMessage
@@ -96,7 +96,7 @@ const RequestForm: FC<RequestFormProps> = ({
                 disabled={!editable}
                 defaultOption={!editable}
                 value={requestState.typeService}
-                onChange={handleChange}
+                onChange={editable ? handleChange : undefined}
               >
                 {serviceTypes.map((service) => (
                   <option value={service.id} key={service.id}>
@@ -119,6 +119,7 @@ const RequestForm: FC<RequestFormProps> = ({
                 required
                 selected={selected}
                 onSelect={setSelected}
+                disabled={!editable}
                 locale={es}
                 classNames={{
                   selected: "bg-white text-main rounded-full",
@@ -139,7 +140,7 @@ const RequestForm: FC<RequestFormProps> = ({
                 variant={!editable ? "disabled" : "primary"}
                 disabled={!editable}
                 value={requestState.destination}
-                onChange={handleChange}
+                onChange={editable ? handleChange : undefined}
               />
             </div>
             <ErrorMessage
@@ -157,7 +158,7 @@ const RequestForm: FC<RequestFormProps> = ({
                 defaultOption={false}
                 disabled={!editable}
                 value={requestState.startTime}
-                onChange={handleChange}
+                onChange={editable ? handleChange : undefined}
               >
                 {hours.map((hour) => (
                   <option key={hour} value={hour}>
@@ -179,7 +180,7 @@ const RequestForm: FC<RequestFormProps> = ({
                 defaultOption={false}
                 disabled={!editable}
                 value={requestState.endTime}
-                onChange={handleChange}
+                onChange={editable ? handleChange : undefined}
               >
                 {hours.map((hour) => (
                   <option key={hour} value={hour}>
@@ -203,7 +204,7 @@ const RequestForm: FC<RequestFormProps> = ({
                 variant={!editable ? "disabled" : "primary"}
                 disabled={!editable}
                 value={requestState.capacity}
-                onChange={handleChange}
+                onChange={editable ? handleChange : undefined}
                 type="number"
               />
             </div>
@@ -238,7 +239,7 @@ const RequestForm: FC<RequestFormProps> = ({
               variant={!editable ? "disabled" : "primary"}
               disabled={!editable}
               value={requestState.description}
-              onChange={handleChange}
+              onChange={editable ? handleChange : undefined}
             />
             <ErrorMessage
               component="div"

@@ -5,7 +5,7 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { Trip } from "@models/contract";
+import { RequestResult, Trip } from "@models/contract";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useState, type FC } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
@@ -13,7 +13,8 @@ import { FaRegUserCircle } from "react-icons/fa";
 export type ContractVariant = "offer" | "pending" | "history" | "request";
 
 interface Props {
-  contract: Trip;
+  contract?: Trip;
+  request?: RequestResult;
   variant?: ContractVariant;
   userType?: string | null;
   onClick?: () => void;
@@ -23,6 +24,7 @@ const ContractCard: FC<Props> = ({
   variant = "history",
   userType,
   contract,
+  request,
   onClick,
 }) => {
   const [showPaypal, setShowPaypal] = useState(false);
@@ -168,7 +170,9 @@ const ContractCard: FC<Props> = ({
                 <p className="font-semibold">
                   {userType === "CLIENT" ? "Conductor" : "Cliente"}
                 </p>
-                <p>Oscar Canellas</p>
+                <p>
+                  {/* {contract?.client.name} {request?.client.firstLastName} */}
+                </p>
               </div>
             </div>
           )}
@@ -176,16 +180,16 @@ const ContractCard: FC<Props> = ({
           <div>
             <p className="font-semibold">Detalles:</p>
             <p className="mt-4">
-              Fecha: <b>12/05/25</b>
+              Fecha: <b>{request?.trip.date}</b>
             </p>
             <p>
-              Desde: <b>Comas</b>
+              Desde: <b>{request?.trip.origin}</b>
             </p>
             <p>
-              Hasta: <b>Los Olivos</b>
+              Hasta: <b>{request?.trip.destination}</b>
             </p>
             <p>
-              Pago: <b>S/. 450</b>
+              Pago: <b>S/. {request?.trip.amount}</b>
             </p>
           </div>
         </div>

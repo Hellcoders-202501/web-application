@@ -100,10 +100,12 @@ export const createApplication = createAsyncThunk(
       const response = await contractsService.createApplication(application);
 
       if (response) {
+        alert("Oferta realizada con exito!");
         return response;
       }
     } catch (error) {
       const err = error as AxiosError;
+      alert("Error al realizar la oferta");
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,

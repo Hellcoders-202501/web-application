@@ -7,18 +7,25 @@ import Select from "@components/atoms/Select";
 import RequestForm from "@components/organisms/RequestForm";
 import Button from "@components/atoms/Button";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import { RequestContract } from "@models/contract";
 
 const SearchView = () => {
   const {
     searchState,
+    setSearchState,
     watchRequest,
     setWatchRequest,
+    requestResult,
+    setRequestResult,
     serviceTypes,
     requestResultList,
-    requestResult,
     loading,
     handleSearch,
+    handleBack,
+    handleChange,
+    handleSubmit,
+    requestValidation,
+    amount,
+    setAmount,
   } = useSearch();
 
   if (watchRequest)
@@ -27,23 +34,25 @@ const SearchView = () => {
         className="flex flex-col items-center max-w-5xl mx-auto w-10/12 lg:w-auto
 			 	my-10 lg:my-20"
       >
-        <p className="self-start mb-5 text-4xl font-semibold">Solicitud</p>
+        <div className="flex justify-between items-center w-full mb-5">
+          <p className="self-start text-4xl font-semibold">Solicitud</p>
+          <Button type="button" variant="accept" onClick={handleBack}>
+            Volver
+          </Button>
+        </div>
         <RequestForm
-          requestState={requestResult as RequestContract}
+          requestState={{
+            typeService: requestResult?.service.id as number,
+            ...requestResult!.trip,
+            amount: amount,
+            capacity: 10,
+          }}
           editable={false}
-          handleChange={function (
-            e: React.ChangeEvent<
-              HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-            >,
-          ): void {
-            throw new Error("Function not implemented.");
-          }}
-          handleSubmit={function (date: Date): void {
-            throw new Error("Function not implemented.");
-          }}
-          requestValidation={undefined}
-          loading={false}
-          serviceTypes={[]}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          requestValidation={requestValidation}
+          loading={loading}
+          serviceTypes={serviceTypes}
         />
       </div>
     );
@@ -63,8 +72,17 @@ const SearchView = () => {
         >
           <Form className="flex items-center gap-5">
             <div className="flex flex-col gap-2">
-              <label htmlFor="">Tipos de servicio</label>
-              <Select name="typeService" id="typeService">
+              <label htmlFor="typeService">Tipos de servicio</label>
+              <Select
+                name="typeService"
+                id="typeService"
+                onChange={(e) => {
+                  setSearchState((prevState) => ({
+                    ...prevState,
+                    typeService: Number(e.target.value),
+                  }));
+                }}
+              >
                 {serviceTypes.map((service) => (
                   <option key={service.id} value={service.id}>
                     {service.name}
@@ -72,7 +90,12 @@ const SearchView = () => {
                 ))}
               </Select>
             </div>
-            <Button className="h-fit mt-8" loading={loading} disabled={loading}>
+            <Button
+              type="submit"
+              className="h-fit mt-8"
+              loading={loading}
+              disabled={loading}
+            >
               <FaMagnifyingGlass />
             </Button>
             {/* </Button>
@@ -92,7 +115,10 @@ const SearchView = () => {
                 key={request.id}
                 handleRedirect={() => {
                   setWatchRequest(true);
+                  setRequestResult(request);
+                  setAmount(request?.trip.amount);
                 }}
+                request={request}
                 {...request}
               />
             ))}
