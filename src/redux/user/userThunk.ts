@@ -1,7 +1,7 @@
 import store from "@core/store";
 import type { CreateUser, LoginState, User } from "@models/user";
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import userServices from "@services/userServices";
+import userServices from "@services/userService";
 import type { AxiosError } from "axios";
 
 export const setToken = createAction<string>("SET_TOKEN");

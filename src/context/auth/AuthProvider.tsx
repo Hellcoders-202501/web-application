@@ -1,20 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import React, { FC, useEffect, useState } from "react";
-import { AuthContext } from "./AuthContext";
+import Loading from "@components/atoms/Loading";
 import { useAppDispatch } from "@core/store";
 import useAuth from "@hooks/useAuth";
+import { LoginState } from "@models/user";
+import { getServiceTypes } from "@redux/common/commonThunk";
 import {
   getCurrentUserById,
   setToken,
   setUserType,
   signin,
 } from "@redux/user/userThunk";
+import { getLocalToken, removeLocalToken } from "@util/storageUtil";
 import { jwtDecode } from "jwt-decode";
 import { usePathname, useRouter } from "next/navigation";
-import { LoginState } from "@models/user";
-import { getLocalToken, removeLocalToken } from "@util/storageUtil";
-import Loading from "@components/atoms/Loading";
+import React, { FC, useEffect, useState } from "react";
+import { AuthContext } from "./AuthContext";
 
 interface CustomJwtPayload {
   role: string;
@@ -58,6 +59,8 @@ const AuthProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
         dispatch(setUserType("DRIVER"));
         dispatch(getCurrentUserById({ id: userId, type: "DRIVER" }));
       }
+
+      dispatch(getServiceTypes());
     } catch (err) {
       console.error("Invalid token format", err);
     }

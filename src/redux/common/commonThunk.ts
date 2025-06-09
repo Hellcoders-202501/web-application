@@ -1,0 +1,22 @@
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import commonService from "@services/commonService";
+import { AxiosError } from "axios";
+
+export const getServiceTypes = createAsyncThunk(
+  "GET_SERVICE_TYPES",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = (await commonService.getServiceTypes());
+
+      if (response) {
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  },
+);
