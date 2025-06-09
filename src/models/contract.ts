@@ -1,19 +1,21 @@
 export interface IContractReduxState {
+  requestResultList: RequestContract[];
+  requestResult: RequestContract | null;
   loading: boolean;
 }
 
 export interface RequestContract extends Trip {
-	typeService: number;
-	capacity: number;
+  typeService: number;
+  capacity: number;
 }
 
 export interface Trip {
-	origin: string;
-	destination: string;
-	startTime: string;
-	endTime: string;
-	amount: number;
+  origin: string;
+  destination: string;
+  startTime: string;
+  endTime: string;
+  amount: number;
   date: string;
-	subject: string;
-	description: string;
+  subject: string;
+  description: string;
 }

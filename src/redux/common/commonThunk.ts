@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import commonService from "@services/commonService";
-import { AxiosError } from "axios";
+import type { AxiosError } from "axios";
 
 export const getServiceTypes = createAsyncThunk(
   "GET_SERVICE_TYPES",
