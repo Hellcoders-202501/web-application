@@ -43,9 +43,25 @@ const getTripsByDriverIdAndStatusId = (driverId: number, statusId: number) => {
   return requests.get(`/trips/driver/${driverId}/status/${statusId}`);
 };
 
+const getTripsByDriverId = (driverId: number) => {
+  return requests.get(`/trips/driver/${driverId}`);
+};
+
 const getTripsByClientIdAndStatusId = (clientId: number, statusId: number) => {
   return requests.get(`/trips/client/${clientId}/status/${statusId}`);
 };
+
+const getTripsByClientId = (clientId: number) => {
+  return requests.get(`/trips/client/${clientId}`);
+};
+
+const startTripById = (id: number) => {
+  return requests.postWithoutBody(`/trips/${id}/start`);
+};
+
+const deleteTripById = (id: number) => {
+  return requests.delete(`/trips/${id}`);
+}
 
 export default {
   makeRequest,
@@ -56,5 +72,9 @@ export default {
   getApplicationByRequestId,
   createContractByApplicationId,
   getTripsByDriverIdAndStatusId,
+  getTripsByDriverId,
   getTripsByClientIdAndStatusId,
+  getTripsByClientId,
+  startTripById,
+  deleteTripById,
 };

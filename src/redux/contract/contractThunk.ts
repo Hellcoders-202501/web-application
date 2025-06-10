@@ -156,19 +156,16 @@ export const createContractByApplicationId = createAsyncThunk(
 
 // Trips
 
-export const getPendingTripsByDriverId = createAsyncThunk(
-  "GET_PENDING_TRIPS_BY_DRIVER_ID",
+export const getTripsByDriverId = createAsyncThunk(
+  "GET_TRIPS_BY_DRIVER_ID",
   async (driverId: number, { rejectWithValue, getState }) => {
     try {
-      const state = getState() as IRootState;
-      const pendingId = state.common.tripStatus.find(
-        (status) => status.status === "PENDING"
-      )?.id as number;
+      // const state = getState() as IRootState;
+      // const pendingId = state.common.tripStatus.find(
+      //   (status) => status.status === "PENDING"
+      // )?.id as number;
 
-      const response = await contractsService.getTripsByDriverIdAndStatusId(
-        driverId,
-        pendingId
-      );
+      const response = await contractsService.getTripsByDriverId(driverId);
 
       if (response) {
         return response;
@@ -210,19 +207,16 @@ export const getHistoryTripsByDriverId = createAsyncThunk(
   }
 );
 
-export const getPendingTripsByClientId = createAsyncThunk(
-  "GET_PENDING_TRIPS_BY_CLIENT_ID",
+export const getTripsByClientId = createAsyncThunk(
+  "GET_TRIPS_BY_CLIENT_ID",
   async (clientId: number, { rejectWithValue, getState }) => {
     try {
-      const state = getState() as IRootState;
-      const pendingId = state.common.tripStatus.find(
-        (status) => status.status === "PENDING"
-      )?.id as number;
+      // const state = getState() as IRootState;
+      // const pendingId = state.common.tripStatus.find(
+      //   (status) => status.status === "PENDING"
+      // )?.id as number;
 
-      const response = await contractsService.getTripsByClientIdAndStatusId(
-        clientId,
-        pendingId
-      );
+      const response = await contractsService.getTripsByClientId(clientId);
 
       if (response) {
         return response;
@@ -256,6 +250,46 @@ export const getHistoryTripsByClientId = createAsyncThunk(
       }
     } catch (error) {
       const err = error as AxiosError;
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  }
+);
+
+export const startTripById = createAsyncThunk(
+  "START_TRIP_BY_ID",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await contractsService.startTripById(id);
+      if (response) {
+        alert("Contrato iniciado con exito!");
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      alert("Error al iniciar el contrato");
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  }
+);
+
+export const deleteTripById = createAsyncThunk(
+  "DELETE_TRIP_BY_ID",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await contractsService.deleteTripById(id);
+      if (response) {
+        alert("Contrato eliminado con exito!");
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      alert("Error al eliminar el contrato");
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,

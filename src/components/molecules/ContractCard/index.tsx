@@ -5,7 +5,11 @@ import {
 	DialogPanel,
 	DialogTitle,
 } from "@headlessui/react";
-import type { ApplicationInformation, RequestResult } from "@models/contract";
+import type {
+	ApplicationInformation,
+	RequestResult,
+	TripResult,
+} from "@models/contract";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { type FC, useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
@@ -15,10 +19,13 @@ export type ContractVariant = "offer" | "pending" | "history" | "request";
 interface Props {
 	request?: RequestResult;
 	application?: ApplicationInformation;
+	contract?: TripResult;
 	variant?: ContractVariant;
 	userType?: string | null;
 	seeOffers?: (id: number) => void;
 	acceptContract?: (id: number) => void;
+	startContract?: (id: number) => void;
+	deleteContract?: (id: number) => void;
 }
 
 const ContractCard: FC<Props> = ({
@@ -26,31 +33,27 @@ const ContractCard: FC<Props> = ({
 	userType,
 	request,
 	application,
+	contract,
 	seeOffers,
 	acceptContract,
+	startContract,
+	deleteContract,
 }) => {
 	const [showPaypal, setShowPaypal] = useState(false);
 
 	const defineText = () => {
 		if (userType === "CLIENT") {
-			switch (variant) {
-				case "offer":
-					return "Aceptar";
-				case "pending":
-					return "Finalizar";
-				default:
-					return "";
-			}
+			if (variant === "pending" && contract?.status === "STARTED")
+				return "Finalizar";
+			return "";
 		}
+
 		if (userType === "DRIVER") {
-			switch (variant) {
-				case "offer":
-					return "";
-				case "pending":
-					return "Completar";
-				default:
-					return "";
-			}
+			if (variant === "pending" && contract?.status === "PENDING")
+				return "Empezar";
+			if (variant === "pending" && contract?.status === "STARTED")
+				return "Completar";
+			return "";
 		}
 		return "";
 	};
@@ -103,17 +106,17 @@ const ContractCard: FC<Props> = ({
 				<p className="text-xl font-semibold">Información</p>
 				<div className="mt-4">
 					<p>
-						Desde: <b>Comas</b>
+						Desde: <b>{contract?.origin}</b>
 					</p>
 					<p>
-						Hasta: <b>Los Olivos</b>
+						Hasta: <b>{contract?.destination}</b>
 					</p>
 					<p>
-						Fecha: <b>12/05/25</b>
+						Fecha: <b>{contract?.date}</b>
 					</p>
-					<p>
+					{/* <p>
 						Capacidad: <b>20</b>
-					</p>
+					</p> */}
 				</div>
 				<div
 					className="flex justify-between font-semibold text-lg border-t mt-4
@@ -132,19 +135,27 @@ const ContractCard: FC<Props> = ({
 							</div>
 						</div>
 					</div>
-					<p className="text-2xl font-bold">S/. 100</p>
+					<p className="text-2xl font-bold">S/. {contract?.amount}</p>
 				</div>
 				<div className="mt-4 flex gap-6 items-center">
 					<Button
 						variant="accept"
 						className="flex-1/2"
+						type="button"
 						onClick={() => {
 							if (defineText() === "Finalizar") setShowPaypal(true);
+							if (defineText() === "Empezar")
+								startContract?.(contract?.id as number);
 						}}
 					>
 						{defineText()}
 					</Button>
-					<Button variant="denied" className="flex-1/2">
+					<Button
+						variant="denied"
+						className="flex-1/2"
+						type="button"
+						onClick={() => deleteContract?.(contract?.id as number)}
+					>
 						Cancelar
 					</Button>
 				</div>

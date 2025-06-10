@@ -7,20 +7,23 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   createApplication,
   createContractByApplicationId,
+  deleteTripById,
   getApplicationsByRequestId,
   getHistoryTripsByClientId,
   getHistoryTripsByDriverId,
-  getPendingTripsByClientId,
-  getPendingTripsByDriverId,
   getRequestById,
   getRequestsByClientId,
   getRequestsByServiceId,
+  getTripsByClientId,
+  getTripsByDriverId,
   makeRequest,
+  startTripById,
 } from "./contractThunk";
 
 const initialState: IContractReduxState = {
   requestResultList: [],
   requestResult: null,
+  tripsList: [],
   pendingTripsList: [],
   historyTripsList: [],
   applicationList: [],
@@ -111,31 +114,27 @@ const contractSlice = createSlice({
     builder.addCase(createContractByApplicationId.rejected, (state, action) => {
       state.loading = false;
     });
-    builder.addCase(getPendingTripsByDriverId.pending, (state, action) => {
+    builder.addCase(getTripsByDriverId.pending, (state, action) => {
       state.loading = true;
     });
-    builder.addCase(getPendingTripsByDriverId.fulfilled, (state, action) => {
+    builder.addCase(getTripsByDriverId.fulfilled, (state, action) => {
       state.loading = false;
-      state.pendingTripsList = Array.isArray(action.payload)
-        ? action.payload
-        : [];
+      state.tripsList = Array.isArray(action.payload) ? action.payload : [];
     });
-    builder.addCase(getPendingTripsByDriverId.rejected, (state, action) => {
+    builder.addCase(getTripsByDriverId.rejected, (state, action) => {
       state.loading = false;
-      state.pendingTripsList = [];
+      state.tripsList = [];
     });
-    builder.addCase(getPendingTripsByClientId.pending, (state, action) => {
+    builder.addCase(getTripsByClientId.pending, (state, action) => {
       state.loading = true;
     });
-    builder.addCase(getPendingTripsByClientId.fulfilled, (state, action) => {
+    builder.addCase(getTripsByClientId.fulfilled, (state, action) => {
       state.loading = false;
-      state.pendingTripsList = Array.isArray(action.payload)
-        ? action.payload
-        : [];
+      state.tripsList = Array.isArray(action.payload) ? action.payload : [];
     });
-    builder.addCase(getPendingTripsByClientId.rejected, (state, action) => {
+    builder.addCase(getTripsByClientId.rejected, (state) => {
       state.loading = false;
-      state.pendingTripsList = [];
+      state.tripsList = [];
     });
     builder.addCase(getHistoryTripsByDriverId.pending, (state, action) => {
       state.loading = true;
@@ -162,6 +161,24 @@ const contractSlice = createSlice({
     builder.addCase(getHistoryTripsByClientId.rejected, (state, action) => {
       state.loading = false;
       state.historyTripsList = [];
+    });
+    builder.addCase(startTripById.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(startTripById.fulfilled, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(startTripById.rejected, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(deleteTripById.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteTripById.fulfilled, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(deleteTripById.rejected, (state, action) => {
+      state.loading = false;
     });
   },
 });
