@@ -1,4 +1,5 @@
 import type {
+  ApplicationResult,
   IContractReduxState,
   RequestResult,
 } from "@models/contract";
@@ -6,7 +7,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   createApplication,
   createContractByApplicationId,
-  getApplicationByRequestId,
+  getApplicationsByRequestId,
   getHistoryTripsByClientId,
   getHistoryTripsByDriverId,
   getPendingTripsByClientId,
@@ -19,9 +20,10 @@ import {
 
 const initialState: IContractReduxState = {
   requestResultList: [],
-  // requestResult: null,
+  requestResult: null,
   pendingTripsList: [],
   historyTripsList: [],
+  applicationList: [],
   loading: false,
 };
 
@@ -86,14 +88,16 @@ const contractSlice = createSlice({
     builder.addCase(createApplication.rejected, (state, action) => {
       state.loading = false;
     });
-    builder.addCase(getApplicationByRequestId.pending, (state, action) => {
+    builder.addCase(getApplicationsByRequestId.pending, (state, action) => {
       state.loading = true;
     });
-    builder.addCase(getApplicationByRequestId.fulfilled, (state, action) => {
+    builder.addCase(getApplicationsByRequestId.fulfilled, (state, action) => {
       state.loading = false;
+      state.applicationList = action.payload as ApplicationResult;
     });
-    builder.addCase(getApplicationByRequestId.rejected, (state, action) => {
+    builder.addCase(getApplicationsByRequestId.rejected, (state, action) => {
       state.loading = false;
+      state.applicationList = null;
     });
     builder.addCase(createContractByApplicationId.pending, (state, action) => {
       state.loading = true;
@@ -102,7 +106,7 @@ const contractSlice = createSlice({
       createContractByApplicationId.fulfilled,
       (state, action) => {
         state.loading = false;
-      },
+      }
     );
     builder.addCase(createContractByApplicationId.rejected, (state, action) => {
       state.loading = false;

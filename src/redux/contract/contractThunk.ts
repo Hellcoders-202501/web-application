@@ -1,4 +1,4 @@
-import store, { IRootState } from "@core/store";
+import type { IRootState } from "@core/store";
 import type { Application, Trip } from "@models/contract";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import contractsService from "@services/contractsService";
@@ -14,7 +14,7 @@ export const makeRequest = createAsyncThunk(
       serviceId: number;
       trip: Trip;
     },
-    { rejectWithValue },
+    { rejectWithValue }
   ) => {
     try {
       const response = await contractsService.makeRequest(request);
@@ -31,7 +31,7 @@ export const makeRequest = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const getRequestById = createAsyncThunk(
@@ -50,7 +50,7 @@ export const getRequestById = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const getRequestsByClientId = createAsyncThunk(
@@ -69,7 +69,7 @@ export const getRequestsByClientId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const getRequestsByServiceId = createAsyncThunk(
@@ -88,7 +88,7 @@ export const getRequestsByServiceId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 // Applications
@@ -111,10 +111,10 @@ export const createApplication = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
-export const getApplicationByRequestId = createAsyncThunk(
+export const getApplicationsByRequestId = createAsyncThunk(
   "GET_APPLICATION_BY_REQUEST_ID",
   async (id: number, { rejectWithValue }) => {
     try {
@@ -130,7 +130,7 @@ export const getApplicationByRequestId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const createContractByApplicationId = createAsyncThunk(
@@ -140,16 +140,18 @@ export const createContractByApplicationId = createAsyncThunk(
       const response = await contractsService.createContractByApplicationId(id);
 
       if (response) {
+        alert("Contrato aceptado con exito!");
         return response;
       }
     } catch (error) {
       const err = error as AxiosError;
+      alert("Error al aceptar la oferta");
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 // Trips
@@ -160,12 +162,12 @@ export const getPendingTripsByDriverId = createAsyncThunk(
     try {
       const state = getState() as IRootState;
       const pendingId = state.common.tripStatus.find(
-        (status) => status.status === "PENDING",
+        (status) => status.status === "PENDING"
       )?.id as number;
 
       const response = await contractsService.getTripsByDriverIdAndStatusId(
         driverId,
-        pendingId,
+        pendingId
       );
 
       if (response) {
@@ -178,7 +180,7 @@ export const getPendingTripsByDriverId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const getHistoryTripsByDriverId = createAsyncThunk(
@@ -187,12 +189,12 @@ export const getHistoryTripsByDriverId = createAsyncThunk(
     try {
       const state = getState() as IRootState;
       const completedId = state.common.tripStatus.find(
-        (status) => status.status === "COMPLETED",
+        (status) => status.status === "COMPLETED"
       )?.id as number;
 
       const response = await contractsService.getTripsByDriverIdAndStatusId(
         driverId,
-        completedId,
+        completedId
       );
 
       if (response) {
@@ -205,7 +207,7 @@ export const getHistoryTripsByDriverId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const getPendingTripsByClientId = createAsyncThunk(
@@ -214,12 +216,12 @@ export const getPendingTripsByClientId = createAsyncThunk(
     try {
       const state = getState() as IRootState;
       const pendingId = state.common.tripStatus.find(
-        (status) => status.status === "PENDING",
+        (status) => status.status === "PENDING"
       )?.id as number;
 
       const response = await contractsService.getTripsByClientIdAndStatusId(
         clientId,
-        pendingId,
+        pendingId
       );
 
       if (response) {
@@ -232,7 +234,7 @@ export const getPendingTripsByClientId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const getHistoryTripsByClientId = createAsyncThunk(
@@ -241,12 +243,12 @@ export const getHistoryTripsByClientId = createAsyncThunk(
     try {
       const state = getState() as IRootState;
       const completedId = state.common.tripStatus.find(
-        (status) => status.status === "COMPLETED",
+        (status) => status.status === "COMPLETED"
       )?.id as number;
 
       const response = await contractsService.getTripsByClientIdAndStatusId(
         clientId,
-        completedId,
+        completedId
       );
 
       if (response) {
@@ -259,5 +261,5 @@ export const getHistoryTripsByClientId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );

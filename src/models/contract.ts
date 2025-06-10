@@ -1,8 +1,9 @@
 export interface IContractReduxState {
   requestResultList: RequestResult[];
-  // requestResult: RequestResult | null;
+  requestResult: RequestResult | null;
   pendingTripsList: TripResult[];
   historyTripsList: TripResult[];
+  applicationList: ApplicationResult | null;
   loading: boolean;
 }
 
@@ -49,4 +50,23 @@ export interface RequestResult {
   status: string;
   trip: Trip;
   contract: {};
+}
+
+export interface ApplicationResult {
+  applications: ApplicationInformation[];
+  trip: Trip;
+}
+
+export interface ApplicationInformation {
+  id: number;
+  message: string;
+  proposedAmount: number;
+  driver: {
+    id: number;
+    name: string;
+    firstLastName: string;
+    imageUrl: string;
+    phone: string;
+    rating: number;
+  };
 }
