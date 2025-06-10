@@ -19,6 +19,7 @@ const RequestView = () => {
 		handleOffers,
 		applicationList,
 		acceptContract,
+		declineOffer,
 	} = useRequestService();
 
 	return (
@@ -129,6 +130,7 @@ const RequestView = () => {
 										userType="client"
 										application={application}
 										acceptContract={acceptContract}
+										declineOffer={declineOffer}
 									/>
 								))}
 							</>

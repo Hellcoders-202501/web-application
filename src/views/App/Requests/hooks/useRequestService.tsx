@@ -4,6 +4,7 @@ import type { RequestContract } from "@models/contract";
 import { getServiceTypes } from "@redux/common/commonThunk";
 import {
 	createContractByApplicationId,
+	declineApplication,
 	getApplicationsByRequestId,
 	getRequestsByClientId,
 	makeRequest,
@@ -116,6 +117,10 @@ const useRequestService = () => {
 		dispatch(createContractByApplicationId(id));
 	};
 
+	const declineOffer = (id: number) => {
+		dispatch(declineApplication(id));
+	};
+
 	return {
 		requestState,
 		handleChange,
@@ -129,6 +134,7 @@ const useRequestService = () => {
 		handleOffers,
 		applicationList,
 		acceptContract,
+		declineOffer,
 	};
 };
 

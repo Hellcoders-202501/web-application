@@ -7,7 +7,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   createApplication,
   createContractByApplicationId,
+  declineApplication,
   deleteTripById,
+  finishTripByClient,
+  finishTripByDriver,
   getApplicationsByRequestId,
   getHistoryTripsByClientId,
   getHistoryTripsByDriverId,
@@ -26,7 +29,7 @@ const initialState: IContractReduxState = {
   tripsList: [],
   pendingTripsList: [],
   historyTripsList: [],
-  applicationList: [],
+  applicationList: null,
   loading: false,
 };
 
@@ -114,6 +117,15 @@ const contractSlice = createSlice({
     builder.addCase(createContractByApplicationId.rejected, (state, action) => {
       state.loading = false;
     });
+    builder.addCase(declineApplication.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(declineApplication.fulfilled, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(declineApplication.rejected, (state, action) => {
+      state.loading = false;
+    });
     builder.addCase(getTripsByDriverId.pending, (state, action) => {
       state.loading = true;
     });
@@ -178,6 +190,24 @@ const contractSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(deleteTripById.rejected, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(finishTripByDriver.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(finishTripByDriver.fulfilled, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(finishTripByDriver.rejected, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(finishTripByClient.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(finishTripByClient.fulfilled, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(finishTripByClient.rejected, (state, action) => {
       state.loading = false;
     });
   },

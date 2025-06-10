@@ -154,6 +154,26 @@ export const createContractByApplicationId = createAsyncThunk(
   }
 );
 
+export const declineApplication = createAsyncThunk(
+  "DECLINE_APPLICATION",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await contractsService.declineApplication(id);
+      if (response) {
+        alert("Oferta rechazada con exito!");
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      alert("Error al rechazar la oferta");
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  }
+);
+
 // Trips
 
 export const getTripsByDriverId = createAsyncThunk(
@@ -290,6 +310,46 @@ export const deleteTripById = createAsyncThunk(
     } catch (error) {
       const err = error as AxiosError;
       alert("Error al eliminar el contrato");
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  }
+);
+
+export const finishTripByClient = createAsyncThunk(
+  "FINISH_TRIP_BY_CLIENT",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await contractsService.finishTripByClient(id);
+      if (response) {
+        alert("Contrato finalizado con exito!");
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      alert("Error al finalizar el contrato");
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  }
+);
+
+export const finishTripByDriver = createAsyncThunk(
+  "FINISH_TRIP_BY_DRIVER",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await contractsService.finishTripByDriver(id);
+      if (response) {
+        alert("Contrato marcado como finalizado con exito!");
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      alert("Error al finalizar el contrato");
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,

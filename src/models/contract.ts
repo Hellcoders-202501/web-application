@@ -1,9 +1,9 @@
 export interface IContractReduxState {
   requestResultList: RequestResult[];
   requestResult: RequestResult | null;
-  tripsList: TripResult[];
-  pendingTripsList: TripResult[];
-  historyTripsList: TripResult[];
+  tripsList: RequestResult[];
+  pendingTripsList: RequestResult[];
+  historyTripsList: RequestResult[];
   applicationList: ApplicationResult | null;
   loading: boolean;
 }
@@ -51,7 +51,21 @@ export interface RequestResult {
   };
   status: string;
   trip: Trip;
-  contract: {};
+  contract: {
+    driver: {
+      id: number;
+      name: string;
+      firstLastName: string;
+      imageUrl: string;
+      phone: string;
+      rating: number;
+    };
+    payment: {
+      id: number;
+      amount: number;
+      status: string;
+    }
+  };
 }
 
 export interface ApplicationResult {

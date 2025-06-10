@@ -37,6 +37,10 @@ const createContractByApplicationId = (id: number) => {
   return requests.postWithoutBody(`/contracts/${id}/create`);
 };
 
+const declineApplication = (id: number) => {
+  return requests.delete(`/applications/${id}`);
+};
+
 // Trips
 
 const getTripsByDriverIdAndStatusId = (driverId: number, statusId: number) => {
@@ -61,7 +65,15 @@ const startTripById = (id: number) => {
 
 const deleteTripById = (id: number) => {
   return requests.delete(`/trips/${id}`);
-}
+};
+
+const finishTripByDriver = (id: number) => {
+  return requests.postWithoutBody(`/trips/${id}/finish-by-driver`);
+};
+
+const finishTripByClient = (id: number) => {
+  return requests.postWithoutBody(`/trips/${id}/finish-by-client`);
+};
 
 export default {
   makeRequest,
@@ -71,10 +83,13 @@ export default {
   createApplication,
   getApplicationByRequestId,
   createContractByApplicationId,
+  declineApplication,
   getTripsByDriverIdAndStatusId,
   getTripsByDriverId,
   getTripsByClientIdAndStatusId,
   getTripsByClientId,
   startTripById,
   deleteTripById,
+  finishTripByDriver,
+  finishTripByClient,
 };

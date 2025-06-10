@@ -2,15 +2,17 @@ import { type IRootState, useAppDispatch, useAppSelector } from "@core/store";
 import useAuth from "@hooks/useAuth";
 import { useEffect, useState } from "react";
 import {
-  deleteTripById,
+	deleteTripById,
+	finishTripByClient,
+	finishTripByDriver,
 	getHistoryTripsByClientId,
 	getHistoryTripsByDriverId,
 	getTripsByClientId,
 	getTripsByDriverId,
-  startTripById,
+	startTripById,
 } from "@redux/contract/contractThunk";
 import { getTripStatus } from "@redux/common/commonThunk";
-import type { TripResult } from "@models/contract";
+import type { RequestResult, TripResult } from "@models/contract";
 
 const useContracts = () => {
 	const dispatch = useAppDispatch();
@@ -20,7 +22,7 @@ const useContracts = () => {
 	const { tripsList, historyTripsList } = useAppSelector(
 		(state: IRootState) => state.contract,
 	);
-	const [pendingTripsList, setPendingTripsList] = useState<TripResult[]>([]);
+	const [pendingTripsList, setPendingTripsList] = useState<RequestResult[]>([]);
 
 	const { userType, currentUser } = useAuth();
 
@@ -54,19 +56,29 @@ const useContracts = () => {
 		if (tripStatus.length === 0) dispatch(getTripStatus());
 	}, []);
 
-  const startContract = (id: number) => {
-    dispatch(startTripById(id));
-  }
+	const startContract = (id: number) => {
+		dispatch(startTripById(id));
+	};
 
-  const deleteContract = (id: number) => {
-    dispatch(deleteTripById(id));
-  };
+	const deleteContract = (id: number) => {
+		dispatch(deleteTripById(id));
+	};
+
+	const completeContract = (id: number) => {
+		dispatch(finishTripByDriver(id));
+	};
+
+	const finishContract = (id: number) => {
+		dispatch(finishTripByClient(id));
+	};
 
 	return {
 		pendingTripsList,
 		historyTripsList,
-    startContract,
-    deleteContract,
+		startContract,
+		deleteContract,
+		completeContract,
+		finishContract,
 	};
 };
 export default useContracts;

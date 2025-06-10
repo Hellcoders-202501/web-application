@@ -3,7 +3,7 @@
 import Loading from "@components/atoms/Loading";
 import { useAppDispatch } from "@core/store";
 import useAuth from "@hooks/useAuth";
-import { LoginState } from "@models/user";
+import type { LoginState } from "@models/user";
 import { getServiceTypes, getTripStatus } from "@redux/common/commonThunk";
 import {
   getCurrentUserById,
@@ -14,7 +14,8 @@ import {
 import { getLocalToken, removeLocalToken } from "@util/storageUtil";
 import { jwtDecode } from "jwt-decode";
 import { usePathname, useRouter } from "next/navigation";
-import React, { FC, useEffect, useState } from "react";
+import type React from "react";
+import { type FC, useEffect, useState } from "react"
 import { AuthContext } from "./AuthContext";
 
 interface CustomJwtPayload {
@@ -55,13 +56,14 @@ const AuthProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
       if (userType === "ROLE_CLIENT") {
         dispatch(setUserType("CLIENT"));
         dispatch(getCurrentUserById({ id: userId, type: "CLIENT" }));
+        dispatch(getServiceTypes());
+        dispatch(getTripStatus());
       } else if (userType === "ROLE_DRIVER") {
         dispatch(setUserType("DRIVER"));
         dispatch(getCurrentUserById({ id: userId, type: "DRIVER" }));
+        dispatch(getServiceTypes());
+        dispatch(getTripStatus());
       }
-
-      dispatch(getServiceTypes());
-      dispatch(getTripStatus());
     } catch (err) {
       console.error("Invalid token format", err);
     }

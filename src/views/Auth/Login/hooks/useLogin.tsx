@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
-import { LoginState } from "@models/user";
+import type { LoginState } from "@models/user";
 import { AuthContext } from "@context/auth/AuthContext";
-import { IRootState, useAppSelector } from "@core/store";
+import { type IRootState, useAppSelector } from "@core/store";
 import * as Yup from "yup";
 
 const useLogin = () => {

@@ -5,13 +5,9 @@ import {
 	DialogPanel,
 	DialogTitle,
 } from "@headlessui/react";
-import type {
-	ApplicationInformation,
-	RequestResult,
-	TripResult,
-} from "@models/contract";
+import type { ApplicationInformation, RequestResult } from "@models/contract";
 import { PayPalButtons } from "@paypal/react-paypal-js";
-import { type FC, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 
 export type ContractVariant = "offer" | "pending" | "history" | "request";
@@ -19,13 +15,15 @@ export type ContractVariant = "offer" | "pending" | "history" | "request";
 interface Props {
 	request?: RequestResult;
 	application?: ApplicationInformation;
-	contract?: TripResult;
 	variant?: ContractVariant;
 	userType?: string | null;
 	seeOffers?: (id: number) => void;
 	acceptContract?: (id: number) => void;
+	declineOffer?: (id: number) => void;
 	startContract?: (id: number) => void;
 	deleteContract?: (id: number) => void;
+	completeContract?: (id: number) => void;
+	finishContract?: (id: number) => void;
 }
 
 const ContractCard: FC<Props> = ({
@@ -33,30 +31,48 @@ const ContractCard: FC<Props> = ({
 	userType,
 	request,
 	application,
-	contract,
 	seeOffers,
 	acceptContract,
+	declineOffer,
 	startContract,
 	deleteContract,
+	completeContract,
+	finishContract,
 }) => {
 	const [showPaypal, setShowPaypal] = useState(false);
 
-	const defineText = () => {
-		if (userType === "CLIENT") {
-			if (variant === "pending" && contract?.status === "STARTED")
-				return "Finalizar";
-			return "";
-		}
+	const [buttonAction, setButtonAction] = useState<{
+		show: boolean;
+		message: string;
+	}>({
+		show: false,
+		message: "",
+	});
 
-		if (userType === "DRIVER") {
-			if (variant === "pending" && contract?.status === "PENDING")
-				return "Empezar";
-			if (variant === "pending" && contract?.status === "STARTED")
-				return "Completar";
-			return "";
+	useEffect(() => {
+		if (userType === "CLIENT") {
+			if (variant === "pending" && request?.status === "FINISHED_BY_DRIVER")
+				setButtonAction({
+					show: true,
+					message: "Finalizar",
+				});
 		}
-		return "";
-	};
+		if (userType === "DRIVER") {
+			if (
+				(variant === "pending" && request?.status === "PENDING") ||
+				request?.status === "TAKEN"
+			)
+				setButtonAction({
+					show: true,
+					message: "Empezar",
+				});
+			if (variant === "pending" && request?.status === "STARTED")
+				setButtonAction({
+					show: true,
+					message: "Completar",
+				});
+		}
+	}, []);
 
 	if (variant === "offer")
 		return (
@@ -87,15 +103,21 @@ const ContractCard: FC<Props> = ({
 				</div>
 				<div className="mt-4 flex gap-6 items-center">
 					<Button
+						type="button"
 						variant="accept"
 						className="flex-1/2"
 						onClick={() => acceptContract?.(application?.id as number)}
 					>
 						Aceptar
 					</Button>
-					{/* <Button variant="denied" className="flex-1/2">
+					<Button
+						type="button"
+						variant="denied"
+						className="flex-1/2"
+						onClick={() => declineOffer?.(application?.id as number)}
+					>
 						Declinar
-					</Button> */}
+					</Button>
 				</div>
 			</div>
 		);
@@ -106,13 +128,13 @@ const ContractCard: FC<Props> = ({
 				<p className="text-xl font-semibold">Información</p>
 				<div className="mt-4">
 					<p>
-						Desde: <b>{contract?.origin}</b>
+						Desde: <b>{request?.trip.origin}</b>
 					</p>
 					<p>
-						Hasta: <b>{contract?.destination}</b>
+						Hasta: <b>{request?.trip.destination}</b>
 					</p>
 					<p>
-						Fecha: <b>{contract?.date}</b>
+						Fecha: <b>{request?.trip.date}</b>
 					</p>
 					{/* <p>
 						Capacidad: <b>20</b>
@@ -130,31 +152,46 @@ const ContractCard: FC<Props> = ({
 						<div className="flex gap-2 items-center">
 							<FaRegUserCircle size={32} />
 							<div className="text-sm">
-								<p>Oscar Canellas</p>
-								<p>983288372</p>
+								<p>
+									{userType === "CLIENT"
+										? request?.contract.driver.name
+										: request?.client.name}
+								</p>
+								<p>
+									{userType === "CLIENT"
+										? request?.contract.driver.phone
+										: request?.client.phone}
+								</p>
 							</div>
 						</div>
 					</div>
-					<p className="text-2xl font-bold">S/. {contract?.amount}</p>
+					<p className="text-2xl font-bold">
+						S/. {request?.contract.payment.amount}
+					</p>
 				</div>
 				<div className="mt-4 flex gap-6 items-center">
-					<Button
-						variant="accept"
-						className="flex-1/2"
-						type="button"
-						onClick={() => {
-							if (defineText() === "Finalizar") setShowPaypal(true);
-							if (defineText() === "Empezar")
-								startContract?.(contract?.id as number);
-						}}
-					>
-						{defineText()}
-					</Button>
+					{buttonAction.show && (
+						<Button
+							variant="accept"
+							className="flex-1/2"
+							type="button"
+							onClick={() => {
+								if (buttonAction.message === "Finalizar") setShowPaypal(true);
+								if (buttonAction.message === "Empezar")
+									startContract?.(request?.id as number);
+								if (buttonAction.message === "Completar")
+									completeContract?.(request?.id as number);
+							}}
+						>
+							{buttonAction.message}
+						</Button>
+					)}
+
 					<Button
 						variant="denied"
 						className="flex-1/2"
 						type="button"
-						onClick={() => deleteContract?.(contract?.id as number)}
+						onClick={() => deleteContract?.(request?.id as number)}
 					>
 						Cancelar
 					</Button>
@@ -192,6 +229,7 @@ const ContractCard: FC<Props> = ({
 										const details = await actions.order?.capture();
 										console.log("Transaction completed by ", details);
 										setShowPaypal(false);
+										finishContract?.(request?.id as number);
 									}}
 									onError={(err) => {
 										console.error("Error al procesar el pago", err);
@@ -226,7 +264,9 @@ const ContractCard: FC<Props> = ({
 									{userType === "CLIENT" ? "Conductor" : "Cliente"}
 								</p>
 								<p>
-									{/* {contract?.client.name} {request?.client.firstLastName} */}
+									{userType === "CLIENT"
+										? request?.contract.driver.name
+										: request?.client.name}
 								</p>
 							</div>
 						</div>

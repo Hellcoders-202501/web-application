@@ -9,8 +9,14 @@ import useContracts from "./hooks/useContracts";
 
 const ContractsView = () => {
 	const { userType } = useAuth();
-	const { pendingTripsList, historyTripsList, startContract, deleteContract } =
-		useContracts();
+	const {
+		pendingTripsList,
+		historyTripsList,
+		startContract,
+		deleteContract,
+		completeContract,
+		finishContract,
+	} = useContracts();
 
 	const contracts = [
 		{
@@ -50,7 +56,7 @@ const ContractsView = () => {
 						<TabPanel
 							key={contract.value}
 							className="flex flex-col md:flex-row flex-wrap justify-between gap-y-10
-              mt-10 mx-4"
+              				mt-10 mx-4"
 						>
 							{contract.trips.length === 0 ? (
 								<div className="flex justify-center items-center">
@@ -65,9 +71,11 @@ const ContractsView = () => {
 											key={trip.id}
 											variant={contract.value as ContractVariant}
 											userType={userType}
-											contract={trip}
+											request={trip}
 											startContract={startContract}
 											deleteContract={deleteContract}
+											completeContract={completeContract}
+											finishContract={finishContract}
 										/>
 									))}
 								</>
