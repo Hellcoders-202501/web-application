@@ -185,7 +185,7 @@ const ContractCard: FC<Props> = ({
 
 	if (variant === "pending")
 		return (
-			<div className="card px-10 py-8 min-h-[370px] max-w-[405px]">
+			<div className="card px-10 py-8 min-h-[300px] max-w-[405px]">
 				<p className="text-xl font-semibold">Información</p>
 				<div className="mt-4">
 					<p>
@@ -249,22 +249,22 @@ const ContractCard: FC<Props> = ({
 						</Button>
 					)}
 					{(userType === "DRIVER" &&
-						request?.trip.status !== "FINISHED_BY_DRIVER") ||
-					(userType === "CLIENT" &&
-						request?.trip.status !== "FINISHED_BY_CLIENT") ? (
-						<Button
+						request?.trip.status === "FINISHED_BY_DRIVER") ||
+						(userType === "CLIENT" &&
+							request?.trip.status === "FINISHED_BY_CLIENT" && (
+								<p className="text-lg mt-5 text-center w-full">
+									Haz <b>FINALIZADO</b> <br /> este contrato
+								</p>
+							))}
+
+					{/* <Button
 							variant="denied"
 							className="flex-1/2"
 							type="button"
 							onClick={() => deleteContract?.(request?.trip.id as number)}
 						>
 							Cancelar
-						</Button>
-					) : (
-						<p className="text-lg mt-5 text-center w-full">
-							Haz <b>FINALIZADO</b> <br /> este contrato
-						</p>
-					)}
+						</Button> */}
 				</div>
 			</div>
 		);

@@ -24,7 +24,7 @@ axios.interceptors.response.use(
           console.error("Acceso denegado.");
           break;
         case 404:
-          console.error("No encontrado.");
+          // console.error("No encontrado.");
           break;
         default:
           console.error("Error inesperado:", error.response.data);

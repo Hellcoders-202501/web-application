@@ -114,7 +114,11 @@ const useRequestService = () => {
 	};
 
 	const acceptContract = (id: number) => {
-		dispatch(createContractByApplicationId(id));
+		dispatch(createContractByApplicationId(id)).then((res) => {
+			if (createContractByApplicationId.fulfilled.match(res)) {
+				setTabIndex(0);
+			}
+		});
 	};
 
 	const declineOffer = (id: number) => {

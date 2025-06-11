@@ -6,21 +6,21 @@ import useAuth from "@hooks/useAuth";
 import type { LoginState } from "@models/user";
 import { getServiceTypes, getTripStatus } from "@redux/common/commonThunk";
 import {
-  getCurrentUserById,
-  setToken,
-  setUserType,
-  signin,
+	getCurrentUserById,
+	setToken,
+	setUserType,
+	signin,
 } from "@redux/user/userThunk";
 import { getLocalToken, removeLocalToken } from "@util/storageUtil";
 import { jwtDecode } from "jwt-decode";
 import { usePathname, useRouter } from "next/navigation";
 import type React from "react";
-import { type FC, useEffect, useState } from "react"
+import { type FC, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 
 interface CustomJwtPayload {
-  role: string;
-  id: number;
+	role: string;
+	id: number;
 }
 
 /**
@@ -30,97 +30,102 @@ interface CustomJwtPayload {
  * @returns {React.ReactNode} children
  */
 const AuthProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
-  const dispatch = useAppDispatch();
-  const { currentUser, token } = useAuth();
+	const dispatch = useAppDispatch();
+	const { currentUser, token } = useAuth();
 
-  const [isClient, setisClient] = useState(false);
+	const [isClient, setisClient] = useState(false);
 
-  const router = useRouter();
+	const router = useRouter();
 
-  useEffect(() => {
-    setisClient(true);
+	useEffect(() => {
+		setisClient(true);
 
-    const sessionToken = token || getLocalToken();
-    if (!sessionToken) {
-      router.replace("/login");
-      return;
-    }
+		const sessionToken = token || getLocalToken();
+		if (!sessionToken) {
+			router.replace("/login");
+			return;
+		}
 
-    dispatch(setToken(sessionToken)); // solo si no está ya seteado
+		dispatch(setToken(sessionToken)); // solo si no está ya seteado
 
-    try {
-      const decoded = jwtDecode<CustomJwtPayload>(sessionToken);
-      const userType = decoded?.role;
-      const userId = decoded?.id;
+		const saveParameters = () => {
+			// if (!localStorage.getItem("serviceTypes"))
+			dispatch(getServiceTypes());
+			// if (!localStorage.getItem("tripStatus"))
+			dispatch(getTripStatus());
+		};
 
-      if (userType === "ROLE_CLIENT") {
-        dispatch(setUserType("CLIENT"));
-        dispatch(getCurrentUserById({ id: userId, type: "CLIENT" }));
-        dispatch(getServiceTypes());
-        dispatch(getTripStatus());
-      } else if (userType === "ROLE_DRIVER") {
-        dispatch(setUserType("DRIVER"));
-        dispatch(getCurrentUserById({ id: userId, type: "DRIVER" }));
-        dispatch(getServiceTypes());
-        dispatch(getTripStatus());
-      }
-    } catch (err) {
-      console.error("Invalid token format", err);
-    }
-  }, [token]);
+		try {
+			const decoded = jwtDecode<CustomJwtPayload>(sessionToken);
+			const userType = decoded?.role;
+			const userId = decoded?.id;
 
-  const handleLogIn = (loginForm?: LoginState) => {
-    if (!loginForm) return;
+			if (userType === "ROLE_CLIENT") {
+				dispatch(setUserType("CLIENT"));
+				dispatch(getCurrentUserById({ id: userId, type: "CLIENT" }));
+        saveParameters();
+			} else if (userType === "ROLE_DRIVER") {
+				dispatch(setUserType("DRIVER"));
+				dispatch(getCurrentUserById({ id: userId, type: "DRIVER" }));
+        saveParameters();
+			}
+		} catch (err) {
+			console.error("Invalid token format", err);
+		}
+	}, [token]);
 
-    dispatch(
-      signin({
-        ...loginForm,
-      }),
-    ).then((e) => {
-      if (e.meta.requestStatus === "fulfilled") {
-        router.replace("/");
-      }
-    });
-  };
+	const handleLogIn = (loginForm?: LoginState) => {
+		if (!loginForm) return;
 
-  const publicRoutes = ["/login", "/signup", "/forgot-password"];
-  const pathname = usePathname();
-  const isPublicRoute = publicRoutes.includes(pathname);
+		dispatch(
+			signin({
+				...loginForm,
+			}),
+		).then((e) => {
+			if (e.meta.requestStatus === "fulfilled") {
+				router.replace("/");
+			}
+		});
+	};
 
-  const contextValidator = () => {
-    if (token) {
-      return currentUser !== undefined;
-    }
-  };
+	const publicRoutes = ["/login", "/signup", "/forgot-password"];
+	const pathname = usePathname();
+	const isPublicRoute = publicRoutes.includes(pathname);
 
-  const handleLogOut = () => {
-    removeLocalToken();
+	const contextValidator = () => {
+		if (token) {
+			return currentUser !== undefined;
+		}
+	};
 
-    window.location.replace("/login");
-  };
+	const handleLogOut = () => {
+		removeLocalToken();
 
-  /* const getUserNotifications = () => {
+		window.location.replace("/login");
+	};
+
+	/* const getUserNotifications = () => {
     dispatch(getUserNotificationsAction());
   }; */
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user: currentUser,
-        isLoggedIn: false,
-        handleLogIn,
-        handleLogOut,
-      }}
-    >
-      {(contextValidator() || isPublicRoute) && isClient ? (
-        <>{children}</>
-      ) : (
-        <div className="h-screen flex justify-center items-center">
-          <Loading />
-        </div>
-      )}
-    </AuthContext.Provider>
-  );
+	return (
+		<AuthContext.Provider
+			value={{
+				user: currentUser,
+				isLoggedIn: false,
+				handleLogIn,
+				handleLogOut,
+			}}
+		>
+			{(contextValidator() || isPublicRoute) && isClient ? (
+				<>{children}</>
+			) : (
+				<div className="h-screen flex justify-center items-center">
+					<Loading />
+				</div>
+			)}
+		</AuthContext.Provider>
+	);
 };
 
 export default AuthProvider;

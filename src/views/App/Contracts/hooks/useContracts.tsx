@@ -38,10 +38,16 @@ const useContracts = () => {
 	};
 
 	useEffect(() => {
-		getTrips();
-	}, []);
+		if (tripStatus.length === 0) dispatch(getTripStatus());
+	}, [tripStatus]);
 
 	useEffect(() => {
+		if (tripStatus.length === 0) return;
+		getTrips();
+	}, [tripStatus]);
+
+	useEffect(() => {
+		if (tripStatus.length === 0) return;
 		if (tripsList.length && historyTripsList.length) {
 			const pendingTrips = tripsList.filter(
 				(trip) =>
@@ -55,11 +61,7 @@ const useContracts = () => {
 			);
 			setPendingTripsList(pendingTrips);
 		}
-	}, [tripsList, historyTripsList]);
-
-	useEffect(() => {
-		if (tripStatus.length === 0) dispatch(getTripStatus());
-	}, []);
+	}, [tripsList, historyTripsList, tripStatus]);
 
 	const startContract = (id: number) => {
 		dispatch(startTripById(id));

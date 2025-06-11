@@ -1,8 +1,12 @@
 import type { IRootState } from "@core/store";
 import type { Application, Trip } from "@models/contract";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import contractsService from "@services/contractsService";
 import type { AxiosError } from "axios";
+
+// Actions
+
+export const clearApplications = createAction("CLEAR_APPLICATIONS");
 
 // Requests
 
@@ -14,13 +18,16 @@ export const makeRequest = createAsyncThunk(
       serviceId: number;
       trip: Trip;
     },
-    { rejectWithValue }
+    { rejectWithValue, dispatch, getState }
   ) => {
     try {
       const response = await contractsService.makeRequest(request);
 
       if (response) {
         alert("Solicitud realizada con exito!");
+        const state = getState() as IRootState;
+        const clientId = state.user.user?.id;
+        await dispatch(getRequestsByClientId(clientId as number));
         return response;
       }
     } catch (error) {
@@ -125,6 +132,9 @@ export const getApplicationsByRequestId = createAsyncThunk(
       }
     } catch (error) {
       const err = error as AxiosError;
+      if (err.status === 404) {
+        alert("No se encontraron ofertas para la solicitud");
+      }
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
@@ -135,12 +145,16 @@ export const getApplicationsByRequestId = createAsyncThunk(
 
 export const createContractByApplicationId = createAsyncThunk(
   "CREATE_CONTRACT_BY_APPLICATION_ID",
-  async (id: number, { rejectWithValue }) => {
+  async (id: number, { rejectWithValue, getState, dispatch }) => {
     try {
       const response = await contractsService.createContractByApplicationId(id);
 
       if (response) {
         alert("Contrato aceptado con exito!");
+        const state = getState() as IRootState;
+        const clientId = state.user.user?.id;
+        dispatch(clearApplications());
+        await dispatch(getRequestsByClientId(clientId as number));
         return response;
       }
     } catch (error) {
@@ -280,11 +294,14 @@ export const getHistoryTripsByClientId = createAsyncThunk(
 
 export const startTripById = createAsyncThunk(
   "START_TRIP_BY_ID",
-  async (id: number, { rejectWithValue }) => {
+  async (id: number, { rejectWithValue, getState, dispatch }) => {
     try {
       const response = await contractsService.startTripById(id);
       if (response) {
         alert("Contrato iniciado con exito!");
+        const state = getState() as IRootState;
+        const driverId = state.user.user?.id;
+        await dispatch(getTripsByDriverId(driverId as number));
         return response;
       }
     } catch (error) {
@@ -320,11 +337,20 @@ export const deleteTripById = createAsyncThunk(
 
 export const finishTripByClient = createAsyncThunk(
   "FINISH_TRIP_BY_CLIENT",
-  async (id: number, { rejectWithValue }) => {
+  async (id: number, { rejectWithValue, getState, dispatch }) => {
     try {
       const response = await contractsService.finishTripByClient(id);
       if (response) {
         alert("Contrato finalizado con exito!");
+        const state = getState() as IRootState;
+        const clientId = state.user.user?.id;
+        
+        // Wait for both dispatch operations to complete before returning
+        await Promise.all([
+          dispatch(getTripsByClientId(clientId as number)).unwrap(),
+          dispatch(getHistoryTripsByClientId(clientId as number)).unwrap()
+        ]);
+
         return response;
       }
     } catch (error) {
@@ -340,11 +366,14 @@ export const finishTripByClient = createAsyncThunk(
 
 export const finishTripByDriver = createAsyncThunk(
   "FINISH_TRIP_BY_DRIVER",
-  async (id: number, { rejectWithValue }) => {
+  async (id: number, { rejectWithValue, getState, dispatch }) => {
     try {
       const response = await contractsService.finishTripByDriver(id);
       if (response) {
         alert("Contrato marcado como finalizado con exito!");
+        const state = getState() as IRootState;
+        const driverId = state.user.user?.id;
+        await dispatch(getTripsByDriverId(driverId as number));
         return response;
       }
     } catch (error) {
