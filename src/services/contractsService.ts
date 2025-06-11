@@ -60,7 +60,7 @@ const getTripsByClientId = (clientId: number) => {
 };
 
 const startTripById = (id: number) => {
-  return requests.postWithoutBody(`/trips/${id}/start`);
+  return requests.postWithoutBody(`/trips/${id}/starts`);
 };
 
 const deleteTripById = (id: number) => {

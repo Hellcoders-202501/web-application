@@ -51,22 +51,22 @@ const ContractCard: FC<Props> = ({
 
 	useEffect(() => {
 		if (userType === "CLIENT") {
-			if (variant === "pending" && request?.status === "FINISHED_BY_DRIVER")
+			if (
+				variant === "pending" &&
+				request?.trip.status === "FINISHED_BY_DRIVER"
+			)
 				setButtonAction({
 					show: true,
 					message: "Finalizar",
 				});
 		}
 		if (userType === "DRIVER") {
-			if (
-				(variant === "pending" && request?.status === "PENDING") ||
-				request?.status === "TAKEN"
-			)
+			if (variant === "pending" && request?.trip.status === "PENDING")
 				setButtonAction({
 					show: true,
 					message: "Empezar",
 				});
-			if (variant === "pending" && request?.status === "STARTED")
+			if (variant === "pending" && request?.trip.status === "STARTED")
 				setButtonAction({
 					show: true,
 					message: "Completar",
@@ -106,7 +106,7 @@ const ContractCard: FC<Props> = ({
 						type="button"
 						variant="accept"
 						className="flex-1/2"
-						onClick={() => acceptContract?.(application?.id as number)}
+						onClick={() => setShowPaypal(true)}
 					>
 						Aceptar
 					</Button>
@@ -119,6 +119,67 @@ const ContractCard: FC<Props> = ({
 						Declinar
 					</Button>
 				</div>
+				<Dialog
+					open={showPaypal}
+					onClose={() => setShowPaypal(false)}
+					className="relative z-50"
+				>
+					<div className="fixed inset-0 flex w-screen items-center justify-center p-4 bg-black/70">
+						<DialogPanel className="max-w-lg space-y-4 border bg-white p-12 max-h-10/12 overflow-y-auto">
+							<DialogTitle className="font-bold">Pagar el servicio</DialogTitle>
+							<Description>
+								Has marcado el servicio de transporte como finalizado. Por
+								favor, realiza el pago.
+							</Description>
+							<div className="flex flex-col gap-5">
+								<PayPalButtons
+									style={{ layout: "vertical" }}
+									className="w-full"
+									createOrder={(data, actions) => {
+										return actions.order.create({
+											purchase_units: [
+												{
+													amount: {
+														currency_code: "USD",
+														value: "100.00",
+													},
+												},
+											],
+											intent: "CAPTURE",
+										});
+									}}
+									onApprove={async (data, actions) => {
+										const details = await actions.order?.capture();
+										console.log("Transaction completed by ", details);
+									}}
+									onError={(err) => {
+										console.error("Error al procesar el pago", err);
+									}}
+									onCancel={() => {
+										console.log("Pago cancelado");
+									}}
+								/>
+								<Button
+									variant="accept"
+									type="button"
+									onClick={() => {
+										acceptContract?.(application?.id as number);
+										setShowPaypal(false);
+									}}
+								>
+									Realizar Pago
+								</Button>
+								<Button
+									variant="denied"
+									onClick={() => setShowPaypal(false)}
+									type="button"
+								>
+									Cancelar
+								</Button>
+							</div>
+						</DialogPanel>
+					</div>
+				</Dialog>
 			</div>
 		);
 
@@ -176,79 +237,35 @@ const ContractCard: FC<Props> = ({
 							className="flex-1/2"
 							type="button"
 							onClick={() => {
-								if (buttonAction.message === "Finalizar") setShowPaypal(true);
+								if (buttonAction.message === "Finalizar")
+									finishContract?.(request?.trip.id as number);
 								if (buttonAction.message === "Empezar")
-									startContract?.(request?.id as number);
+									startContract?.(request?.trip.id as number);
 								if (buttonAction.message === "Completar")
-									completeContract?.(request?.id as number);
+									completeContract?.(request?.trip.id as number);
 							}}
 						>
 							{buttonAction.message}
 						</Button>
 					)}
-
-					<Button
-						variant="denied"
-						className="flex-1/2"
-						type="button"
-						onClick={() => deleteContract?.(request?.id as number)}
-					>
-						Cancelar
-					</Button>
+					{(userType === "DRIVER" &&
+						request?.trip.status !== "FINISHED_BY_DRIVER") ||
+					(userType === "CLIENT" &&
+						request?.trip.status !== "FINISHED_BY_CLIENT") ? (
+						<Button
+							variant="denied"
+							className="flex-1/2"
+							type="button"
+							onClick={() => deleteContract?.(request?.trip.id as number)}
+						>
+							Cancelar
+						</Button>
+					) : (
+						<p className="text-lg mt-5 text-center w-full">
+							Haz <b>FINALIZADO</b> <br /> este contrato
+						</p>
+					)}
 				</div>
-				<Dialog
-					open={showPaypal}
-					onClose={() => setShowPaypal(false)}
-					className="relative z-50"
-				>
-					<div className="fixed inset-0 flex w-screen items-center justify-center p-4 bg-black/70">
-						<DialogPanel className="max-w-lg space-y-4 border bg-white p-12 max-h-10/12 overflow-y-auto">
-							<DialogTitle className="font-bold">Pagar el servicio</DialogTitle>
-							<Description>
-								Has marcado el servicio de transporte como finalizado. Por
-								favor, realiza el pago.
-							</Description>
-							<div className="flex flex-col gap-5">
-								<PayPalButtons
-									style={{ layout: "vertical" }}
-									className="w-full"
-									createOrder={(data, actions) => {
-										return actions.order.create({
-											purchase_units: [
-												{
-													amount: {
-														currency_code: "USD",
-														value: "100.00",
-													},
-												},
-											],
-											intent: "CAPTURE",
-										});
-									}}
-									onApprove={async (data, actions) => {
-										const details = await actions.order?.capture();
-										console.log("Transaction completed by ", details);
-										setShowPaypal(false);
-										finishContract?.(request?.id as number);
-									}}
-									onError={(err) => {
-										console.error("Error al procesar el pago", err);
-									}}
-									onCancel={() => {
-										console.log("Pago cancelado");
-									}}
-								/>
-								<Button
-									variant="denied"
-									onClick={() => setShowPaypal(false)}
-									type="button"
-								>
-									Cancelar
-								</Button>
-							</div>
-						</DialogPanel>
-					</div>
-				</Dialog>
 			</div>
 		);
 

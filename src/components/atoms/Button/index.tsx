@@ -19,12 +19,13 @@ const Button: FC<Props> = ({
   children,
   variant = "primary",
   className = "",
+  loading = false,
   ...props
 }) => {
   return (
     <button
       className={`px-4 py-2 rounded-4xl cursor-pointer ${variantClasses[variant]} ${className}
-      ${props.loading ? "opacity-50 cursor-not-allowed" : ""}`}
+      ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
       {...props}
     >
       {children}

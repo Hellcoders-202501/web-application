@@ -44,11 +44,16 @@ const useContracts = () => {
 	useEffect(() => {
 		if (tripsList.length && historyTripsList.length) {
 			const pendingTrips = tripsList.filter(
-				(trip) => !historyTripsList.some((h) => h.id === trip.id),
+				(trip) =>
+					!historyTripsList.some((h) => h.id === trip.id) &&
+					trip.status !== "PUBLISHED",
 			);
 			setPendingTripsList(pendingTrips);
 		} else {
-			setPendingTripsList(tripsList);
+			const pendingTrips = tripsList.filter(
+				(trip) => trip.status !== "PUBLISHED",
+			);
+			setPendingTripsList(pendingTrips);
 		}
 	}, [tripsList, historyTripsList]);
 

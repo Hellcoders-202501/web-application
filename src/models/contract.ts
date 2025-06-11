@@ -50,7 +50,7 @@ export interface RequestResult {
     name: string;
   };
   status: string;
-  trip: Trip;
+  trip: TripResult;
   contract: {
     driver: {
       id: number;
