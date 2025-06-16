@@ -23,6 +23,10 @@ const getRequestsByServiceId = (serviceId: number) => {
   return requests.get(`/request/service/${serviceId}`);
 };
 
+const deleteRequestById = (id: number) => {
+  return requests.delete(`/request/${id}`);
+};
+
 // Applications
 
 const createApplication = (application: Application) => {
@@ -80,6 +84,7 @@ export default {
   getRequestById,
   getRequestsByClientId,
   getRequestsByServiceId,
+  deleteRequestById,
   createApplication,
   getApplicationByRequestId,
   createContractByApplicationId,

@@ -1,10 +1,15 @@
 import type { ICommonReduxState } from "@models/common";
 import { createSlice } from "@reduxjs/toolkit";
-import { getServiceTypes, getTripStatus } from "./commonThunk";
+import { getServiceTypes, getTripStatus, setAlertDialog } from "./commonThunk";
 
 const initialState: ICommonReduxState = {
   serviceTypes: [],
   tripStatus: [],
+  alertDialog: {
+    open: false,
+    type: "info",
+    message: "",
+  },
   loading: false,
 };
 
@@ -32,6 +37,9 @@ const commonSlice = createSlice({
     });
     builder.addCase(getTripStatus.rejected, (state, action) => {
       state.loading = false;
+    });
+    builder.addCase(setAlertDialog, (state, action) => {
+      state.alertDialog = action.payload;
     });
   },
 });

@@ -3,143 +3,149 @@ import useAuth from "@hooks/useAuth";
 import type { RequestContract } from "@models/contract";
 import { getServiceTypes } from "@redux/common/commonThunk";
 import {
-	createContractByApplicationId,
-	declineApplication,
-	getApplicationsByRequestId,
-	getRequestsByClientId,
-	makeRequest,
+  createContractByApplicationId,
+  declineApplication,
+  getApplicationsByRequestId,
+  getRequestsByClientId,
+  makeRequest,
+  deleteRequestById,
 } from "@redux/contract/contractThunk";
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
 
 const useRequestService = () => {
-	const dispatch = useAppDispatch();
-	const serviceTypes = useAppSelector(
-		(state: IRootState) => state.common.serviceTypes,
-	);
-	const { loading, requestResultList, applicationList } = useAppSelector(
-		(state: IRootState) => state.contract,
-	);
-	const { currentUser } = useAuth();
+  const dispatch = useAppDispatch();
+  const serviceTypes = useAppSelector(
+    (state: IRootState) => state.common.serviceTypes,
+  );
+  const { loading, requestResultList, applicationList } = useAppSelector(
+    (state: IRootState) => state.contract,
+  );
+  const { currentUser } = useAuth();
 
-	const requestValidation = () => {
-		return Yup.object().shape({
-			origin: Yup.string().required("Origen del servicio requerido"),
-			destination: Yup.string().required("Destino del servicio requerido"),
-			typeService: Yup.string().required("Tipo de servicio requerido"),
-			startTime: Yup.string().required("Hora de inicio requerido"),
-			endTime: Yup.string().required("Hora de termino requerido"),
-			capacity: Yup.number()
-				.min(1, "Debe ser mínimo 1")
-				.required("Capaciadad requerida"),
-			amount: Yup.number()
-				.min(10, "El pago debe ser mínimo 10")
-				.required("Pago requerido"),
-		});
-	};
+  const requestValidation = () => {
+    return Yup.object().shape({
+      origin: Yup.string().required("Origen del servicio requerido"),
+      destination: Yup.string().required("Destino del servicio requerido"),
+      typeService: Yup.string().required("Tipo de servicio requerido"),
+      startTime: Yup.string().required("Hora de inicio requerido"),
+      endTime: Yup.string().required("Hora de termino requerido"),
+      capacity: Yup.number()
+        .min(1, "Debe ser mínimo 1")
+        .required("Capaciadad requerida"),
+      amount: Yup.number()
+        .min(10, "El pago debe ser mínimo 10")
+        .required("Pago requerido"),
+    });
+  };
 
-	const [requestState, setRequestState] = useState<RequestContract>({
-		origin: "",
-		destination: "",
-		typeService: 1,
-		startTime: "",
-		endTime: "",
-		capacity: 0,
-		amount: 0,
-		date: new Date().toISOString().split("T")[0],
-		subject: "",
-		description: "",
-	});
+  const [requestState, setRequestState] = useState<RequestContract>({
+    origin: "",
+    destination: "",
+    typeService: 1,
+    startTime: "",
+    endTime: "",
+    capacity: 0,
+    amount: 0,
+    date: new Date().toISOString().split("T")[0],
+    subject: "",
+    description: "",
+  });
 
-	const handleChange = (
-		e: React.ChangeEvent<
-			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-		>,
-	) => {
-		const { name, value } = e.target;
-		setRequestState((prevState) => ({
-			...prevState,
-			[name]: value,
-		}));
-	};
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setRequestState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
-	const handleSubmit = async (requestDate: Date) => {
-		setRequestState((prevState) => ({
-			...prevState,
-			date: requestDate.toISOString().split("T")[0],
-		}));
-		const { typeService, capacity, ...request } = requestState;
+  const handleSubmit = async (requestDate: Date) => {
+    setRequestState((prevState) => ({
+      ...prevState,
+      date: requestDate.toISOString().split("T")[0],
+    }));
+    const { typeService, capacity, ...request } = requestState;
 
-		const resultAction = await dispatch(
-			makeRequest({
-				clientId: currentUser?.id as number,
-				serviceId: typeService,
-				trip: request,
-			}),
-		);
+    const resultAction = await dispatch(
+      makeRequest({
+        clientId: currentUser?.id as number,
+        serviceId: typeService,
+        trip: request,
+      }),
+    );
 
-		if (makeRequest.fulfilled.match(resultAction)) {
-			// Resetear el formulario
-			setRequestState({
-				origin: "",
-				destination: "",
-				typeService: 1,
-				startTime: "",
-				endTime: "",
-				capacity: 0,
-				amount: 0,
-				date: new Date().toISOString().split("T")[0],
-				subject: "",
-				description: "",
-			});
-		}
-	};
+    if (makeRequest.fulfilled.match(resultAction)) {
+      // Resetear el formulario
+      setRequestState({
+        origin: "",
+        destination: "",
+        typeService: 1,
+        startTime: "",
+        endTime: "",
+        capacity: 0,
+        amount: 0,
+        date: new Date().toISOString().split("T")[0],
+        subject: "",
+        description: "",
+      });
+    }
+  };
 
-	useEffect(() => {
-		if (serviceTypes.length === 0) dispatch(getServiceTypes());
-	}, []);
+  useEffect(() => {
+    if (serviceTypes.length === 0) dispatch(getServiceTypes());
+  }, []);
 
-	useEffect(() => {
-		dispatch(getRequestsByClientId(currentUser?.id as number));
-	}, []);
+  useEffect(() => {
+    dispatch(getRequestsByClientId(currentUser?.id as number));
+  }, []);
 
-	const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(0);
 
-	const handleOffers = (id: number) => {
-		dispatch(getApplicationsByRequestId(id)).then((res) => {
-			if (getApplicationsByRequestId.fulfilled.match(res)) {
-				setTabIndex(2);
-			}
-		});
-	};
+  const handleOffers = (id: number) => {
+    dispatch(getApplicationsByRequestId(id)).then((res) => {
+      if (getApplicationsByRequestId.fulfilled.match(res)) {
+        setTabIndex(2);
+      }
+    });
+  };
 
-	const acceptContract = (id: number) => {
-		dispatch(createContractByApplicationId(id)).then((res) => {
-			if (createContractByApplicationId.fulfilled.match(res)) {
-				setTabIndex(0);
-			}
-		});
-	};
+  const removeOffer = (id: number) => {
+    dispatch(deleteRequestById(id));
+  };
 
-	const declineOffer = (id: number) => {
-		dispatch(declineApplication(id));
-	};
+  const acceptContract = (id: number) => {
+    dispatch(createContractByApplicationId(id)).then((res) => {
+      if (createContractByApplicationId.fulfilled.match(res)) {
+        setTabIndex(0);
+      }
+    });
+  };
 
-	return {
-		requestState,
-		handleChange,
-		handleSubmit,
-		requestValidation,
-		loading,
-		serviceTypes,
-		requestResultList,
-		tabIndex,
-		setTabIndex,
-		handleOffers,
-		applicationList,
-		acceptContract,
-		declineOffer,
-	};
+  const declineOffer = (id: number) => {
+    dispatch(declineApplication(id));
+  };
+
+  return {
+    requestState,
+    handleChange,
+    handleSubmit,
+    requestValidation,
+    loading,
+    serviceTypes,
+    requestResultList,
+    tabIndex,
+    setTabIndex,
+    handleOffers,
+    removeOffer,
+    applicationList,
+    acceptContract,
+    declineOffer,
+  };
 };
 
 export default useRequestService;

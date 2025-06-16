@@ -1,5 +1,6 @@
 import store from "@core/store";
 import type { CreateUser, LoginState, User } from "@models/user";
+import { setAlertDialog } from "@redux/common/commonThunk";
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import userServices from "@services/userService";
 import type { AxiosError } from "axios";
@@ -9,7 +10,7 @@ export const setUserType = createAction<string>("SET_USER_TYPE");
 
 export const signin = createAsyncThunk(
   "SIGNIN",
-  async (payload: LoginState, { rejectWithValue }) => {
+  async (payload: LoginState, { rejectWithValue, dispatch }) => {
     try {
       const response = (await userServices.signIn(
         payload.email,
@@ -25,7 +26,13 @@ export const signin = createAsyncThunk(
     } catch (error) {
       const err = error as AxiosError;
       if (err.status === 403) {
-        alert("Usuario o contraseña incorrectos");
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "Usuario o contraseña incorrectos",
+            type: "error",
+          }),
+        );
       }
       return rejectWithValue({
         status: err.response?.status,

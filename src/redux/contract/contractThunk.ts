@@ -1,5 +1,6 @@
 import type { IRootState } from "@core/store";
 import type { Application, Trip } from "@models/contract";
+import { setAlertDialog } from "@redux/common/commonThunk";
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import contractsService from "@services/contractsService";
 import type { AxiosError } from "axios";
@@ -18,13 +19,19 @@ export const makeRequest = createAsyncThunk(
       serviceId: number;
       trip: Trip;
     },
-    { rejectWithValue, dispatch, getState }
+    { rejectWithValue, dispatch, getState },
   ) => {
     try {
       const response = await contractsService.makeRequest(request);
 
       if (response) {
-        alert("Solicitud realizada con exito!");
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "Solicitud realizada!",
+            type: "success",
+          }),
+        );
         const state = getState() as IRootState;
         const clientId = state.user.user?.id;
         await dispatch(getRequestsByClientId(clientId as number));
@@ -32,13 +39,19 @@ export const makeRequest = createAsyncThunk(
       }
     } catch (error) {
       const err = error as AxiosError;
-      alert("Error al realizar la solicitud");
+      dispatch(
+        setAlertDialog({
+          open: true,
+          message: "Error al realizar la solicitud",
+          type: "error",
+        }),
+      );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const getRequestById = createAsyncThunk(
@@ -57,7 +70,7 @@ export const getRequestById = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const getRequestsByClientId = createAsyncThunk(
@@ -76,7 +89,7 @@ export const getRequestsByClientId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const getRequestsByServiceId = createAsyncThunk(
@@ -95,35 +108,82 @@ export const getRequestsByServiceId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  }
+  },
+);
+
+export const deleteRequestById = createAsyncThunk(
+  "DELETE_REQUEST_BY_ID",
+  async (id: number, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const response = await contractsService.deleteRequestById(id);
+      if (response) {
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "Solicitud eliminada con exito!",
+            type: "success",
+          }),
+        );
+        const state = getState() as IRootState;
+        const clientId = state.user.user?.id;
+        await dispatch(getRequestsByClientId(clientId as number));
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      dispatch(
+        setAlertDialog({
+          open: true,
+          message: "Error al eliminar la solicitud",
+          type: "error",
+        }),
+      );
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  },
 );
 
 // Applications
 
 export const createApplication = createAsyncThunk(
   "CREATE_APPLICATION",
-  async (application: Application, { rejectWithValue }) => {
+  async (application: Application, { rejectWithValue, dispatch }) => {
     try {
       const response = await contractsService.createApplication(application);
 
       if (response) {
-        alert("Oferta realizada con exito!");
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "Oferta realizada con exito!",
+            type: "success",
+          }),
+        );
         return response;
       }
     } catch (error) {
       const err = error as AxiosError;
-      alert("Error al realizar la oferta");
+      dispatch(
+        setAlertDialog({
+          open: true,
+          message: "Error al realizar la oferta",
+          type: "error",
+        }),
+      );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const getApplicationsByRequestId = createAsyncThunk(
   "GET_APPLICATION_BY_REQUEST_ID",
-  async (id: number, { rejectWithValue }) => {
+  async (id: number, { rejectWithValue, dispatch }) => {
     try {
       const response = await contractsService.getApplicationByRequestId(id);
 
@@ -133,14 +193,20 @@ export const getApplicationsByRequestId = createAsyncThunk(
     } catch (error) {
       const err = error as AxiosError;
       if (err.status === 404) {
-        alert("No se encontraron ofertas para la solicitud");
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "No se encontraron ofertas para la solicitud",
+            type: "warning",
+          }),
+        );
       }
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const createContractByApplicationId = createAsyncThunk(
@@ -150,7 +216,13 @@ export const createContractByApplicationId = createAsyncThunk(
       const response = await contractsService.createContractByApplicationId(id);
 
       if (response) {
-        alert("Contrato aceptado con exito!");
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "Contrato aceptado con exito!",
+            type: "success",
+          }),
+        );
         const state = getState() as IRootState;
         const clientId = state.user.user?.id;
         dispatch(clearApplications());
@@ -159,33 +231,51 @@ export const createContractByApplicationId = createAsyncThunk(
       }
     } catch (error) {
       const err = error as AxiosError;
-      alert("Error al aceptar la oferta");
+      dispatch(
+        setAlertDialog({
+          open: true,
+          message: "Error al aceptar la oferta",
+          type: "error",
+        }),
+      );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const declineApplication = createAsyncThunk(
   "DECLINE_APPLICATION",
-  async (id: number, { rejectWithValue }) => {
+  async (id: number, { rejectWithValue, dispatch }) => {
     try {
       const response = await contractsService.declineApplication(id);
       if (response) {
-        alert("Oferta rechazada con exito!");
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "Oferta rechazada con exito!",
+            type: "success",
+          }),
+        );
         return response;
       }
     } catch (error) {
       const err = error as AxiosError;
-      alert("Error al rechazar la oferta");
+      dispatch(
+        setAlertDialog({
+          open: true,
+          message: "Error al rechazar la oferta",
+          type: "error",
+        }),
+      );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 // Trips
@@ -211,7 +301,7 @@ export const getTripsByDriverId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const getHistoryTripsByDriverId = createAsyncThunk(
@@ -220,12 +310,12 @@ export const getHistoryTripsByDriverId = createAsyncThunk(
     try {
       const state = getState() as IRootState;
       const completedId = state.common.tripStatus.find(
-        (status) => status.status === "COMPLETED"
+        (status) => status.status === "COMPLETED",
       )?.id as number;
 
       const response = await contractsService.getTripsByDriverIdAndStatusId(
         driverId,
-        completedId
+        completedId,
       );
 
       if (response) {
@@ -238,7 +328,7 @@ export const getHistoryTripsByDriverId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const getTripsByClientId = createAsyncThunk(
@@ -262,7 +352,7 @@ export const getTripsByClientId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const getHistoryTripsByClientId = createAsyncThunk(
@@ -271,12 +361,12 @@ export const getHistoryTripsByClientId = createAsyncThunk(
     try {
       const state = getState() as IRootState;
       const completedId = state.common.tripStatus.find(
-        (status) => status.status === "COMPLETED"
+        (status) => status.status === "COMPLETED",
       )?.id as number;
 
       const response = await contractsService.getTripsByClientIdAndStatusId(
         clientId,
-        completedId
+        completedId,
       );
 
       if (response) {
@@ -289,7 +379,7 @@ export const getHistoryTripsByClientId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const startTripById = createAsyncThunk(
@@ -298,7 +388,13 @@ export const startTripById = createAsyncThunk(
     try {
       const response = await contractsService.startTripById(id);
       if (response) {
-        alert("Contrato iniciado con exito!");
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "Contrato iniciado con éxito!",
+            type: "success",
+          }),
+        );
         const state = getState() as IRootState;
         const driverId = state.user.user?.id;
         await dispatch(getTripsByDriverId(driverId as number));
@@ -306,33 +402,51 @@ export const startTripById = createAsyncThunk(
       }
     } catch (error) {
       const err = error as AxiosError;
-      alert("Error al iniciar el contrato");
+      dispatch(
+        setAlertDialog({
+          open: true,
+          message: "Error al iniciar el contrato",
+          type: "error",
+        }),
+      );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const deleteTripById = createAsyncThunk(
   "DELETE_TRIP_BY_ID",
-  async (id: number, { rejectWithValue }) => {
+  async (id: number, { rejectWithValue, dispatch }) => {
     try {
       const response = await contractsService.deleteTripById(id);
       if (response) {
-        alert("Contrato eliminado con exito!");
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "Contrato eliminado con exito!",
+            type: "success",
+          }),
+        );
         return response;
       }
     } catch (error) {
       const err = error as AxiosError;
-      alert("Error al eliminar el contrato");
+      dispatch(
+        setAlertDialog({
+          open: true,
+          message: "Error al eliminar el contrato",
+          type: "error",
+        }),
+      );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const finishTripByClient = createAsyncThunk(
@@ -341,27 +455,39 @@ export const finishTripByClient = createAsyncThunk(
     try {
       const response = await contractsService.finishTripByClient(id);
       if (response) {
-        alert("Contrato finalizado con exito!");
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "Contrato finalizado con éxito!",
+            type: "success",
+          }),
+        );
         const state = getState() as IRootState;
         const clientId = state.user.user?.id;
-        
+
         // Wait for both dispatch operations to complete before returning
         await Promise.all([
           dispatch(getTripsByClientId(clientId as number)).unwrap(),
-          dispatch(getHistoryTripsByClientId(clientId as number)).unwrap()
+          dispatch(getHistoryTripsByClientId(clientId as number)).unwrap(),
         ]);
 
         return response;
       }
     } catch (error) {
       const err = error as AxiosError;
-      alert("Error al finalizar el contrato");
+      dispatch(
+        setAlertDialog({
+          open: true,
+          message: "Error al finalizar el contrato",
+          type: "error",
+        }),
+      );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const finishTripByDriver = createAsyncThunk(
@@ -370,7 +496,13 @@ export const finishTripByDriver = createAsyncThunk(
     try {
       const response = await contractsService.finishTripByDriver(id);
       if (response) {
-        alert("Contrato marcado como finalizado con exito!");
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "Contrato marcado como finalizado con éxito!",
+            type: "success",
+          }),
+        );
         const state = getState() as IRootState;
         const driverId = state.user.user?.id;
         await dispatch(getTripsByDriverId(driverId as number));
@@ -378,11 +510,17 @@ export const finishTripByDriver = createAsyncThunk(
       }
     } catch (error) {
       const err = error as AxiosError;
-      alert("Error al finalizar el contrato");
+      dispatch(
+        setAlertDialog({
+          open: true,
+          message: "Error al finalizar el contrato",
+          type: "error",
+        }),
+      );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
