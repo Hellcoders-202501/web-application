@@ -21,10 +21,7 @@ axios.interceptors.response.use(
           console.warn("No autorizado.");
           break;
         case 403:
-          // console.error("Acceso denegado.");
-          console.warn("Sesión inválida. Redirigiendo al login...");
-          localStorage.clear(); // o removeToken()
-          window.location.href = "/login";
+          console.error("Acceso denegado.");
           break;
         case 404:
           // console.error("No encontrado.");

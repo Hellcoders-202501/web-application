@@ -19,10 +19,14 @@ export const signin = createAsyncThunk(
       if (response?.token) {
         store.dispatch(setToken(response.token));
 
+        window.location.replace("/");
         return response.token;
       }
     } catch (error) {
       const err = error as AxiosError;
+      if (err.status === 403) {
+        alert("Usuario o contraseña incorrectos");
+      }
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,

@@ -86,16 +86,20 @@ const AuthProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
       signin({
         ...loginForm,
       }),
-    ).then((e) => {
-      if (e.meta.requestStatus === "fulfilled") {
-        router.replace("/");
-      }
-    });
+    );
   };
 
   const publicRoutes = ["/login", "/signup", "/forgot-password"];
   const pathname = usePathname();
   const isPublicRoute = publicRoutes.includes(pathname);
+
+  useEffect(() => {
+    const sessionToken = token || getLocalToken();
+
+    if (sessionToken && isPublicRoute) {
+      router.replace("/");
+    }
+  }, [pathname]);
 
   const contextValidator = () => {
     if (token) {
