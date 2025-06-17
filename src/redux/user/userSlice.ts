@@ -1,7 +1,17 @@
-import type { IUserReduxState } from "@models/user";
+import type {
+  Experience,
+  CreateVehicle,
+  IUserReduxState,
+  User,
+} from "@models/user";
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  addExperience,
+  addVehicle,
   getCurrentUserById,
+  getExperiencesByDriverId,
+  getMostRankedDrivers,
+  getVehiclesByDriverId,
   setToken,
   setUserType,
   signin,
@@ -14,6 +24,9 @@ const initialState: IUserReduxState = {
   user: undefined,
   token: undefined,
   userType: null,
+  experiences: [],
+  vehicles: [],
+  rankedDrivers: [],
   loading: false,
 };
 
@@ -65,6 +78,73 @@ const userSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(updateUser.rejected, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(getExperiencesByDriverId.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(getExperiencesByDriverId.fulfilled, (state, action) => {
+      state.experiences = action.payload as Experience[];
+      state.loading = false;
+    });
+    builder.addCase(getExperiencesByDriverId.rejected, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(getVehiclesByDriverId.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(getVehiclesByDriverId.fulfilled, (state, action) => {
+      state.vehicles = action.payload as CreateVehicle[];
+      state.loading = false;
+    });
+    builder.addCase(getVehiclesByDriverId.rejected, (state, action) => {
+      state.loading = false;
+    });
+    /* builder.addCase(getCommentsByDriverId.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(getCommentsByDriverId.fulfilled, (state, action) => {
+      state.comments = action.payload as CreateComment[];
+      state.loading = false;
+    });
+    builder.addCase(getCommentsByDriverId.rejected, (state, action) => {
+      state.loading = false;
+    }); */
+    builder.addCase(addVehicle.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(addVehicle.fulfilled, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(addVehicle.rejected, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(addExperience.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(addExperience.fulfilled, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(addExperience.rejected, (state, action) => {
+      state.loading = false;
+    });
+    /* builder.addCase(addComment.rejected, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(addComment.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(addComment.fulfilled, (state, action) => {
+      state.loading = false;
+    }); */
+    builder.addCase(getMostRankedDrivers.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(getMostRankedDrivers.fulfilled, (state, action) => {
+      state.rankedDrivers = action.payload as User[];
+      state.loading = false;
+    });
+    builder.addCase(getMostRankedDrivers.rejected, (state, action) => {
       state.loading = false;
     });
   },

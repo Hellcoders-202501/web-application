@@ -1,9 +1,14 @@
 "use client";
-import { useAppDispatch } from "@core/store";
+import { IRootState, useAppDispatch, useAppSelector } from "@core/store";
 import useAuth from "@hooks/useAuth";
-import type { User } from "@models/user";
-import { updateUser } from "@redux/user/userThunk";
-import { useState } from "react";
+import type { CreateExperience, User } from "@models/user";
+import {
+  getExperiencesByDriverId,
+  getVehiclesByDriverId,
+  updateUser,
+  addExperience,
+} from "@redux/user/userThunk";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import "yup-phone-lite";
 
@@ -13,6 +18,9 @@ const useProfile = () => {
 
   const [editable, setEditable] = useState(false);
   const [user, setUser] = useState<User>(currentUser);
+  const { experiences, vehicles, loading } = useAppSelector(
+    (state: IRootState) => state.user,
+  );
 
   const region = "PE";
 
@@ -46,6 +54,17 @@ const useProfile = () => {
       .required("El campo es requerido."),
   });
 
+  const createExperienceValidation = Yup.object().shape({
+    job: Yup.string()
+      .required("Trabajo requerido.")
+      .min(3, "El trabajo debe tener al menos 3 caracteres.")
+      .max(50, "El trabajo no puede tener más de 50 caracteres."),
+    duration: Yup.number()
+      .required("Tiempo requerido.")
+      .min(1, "El tiempo debe ser mayor o igual a 1.")
+      .max(100, "El tiempo no puede ser mayor a 100."),
+  });
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUser((prevState) => ({
@@ -59,14 +78,44 @@ const useProfile = () => {
     dispatch(updateUser({ userInformation: user, type: userType }));
   };
 
+  useEffect(() => {
+    dispatch(getExperiencesByDriverId(currentUser.id));
+    dispatch(getVehiclesByDriverId(currentUser.id));
+  }, []);
+
+  const [experience, setExperience] = useState<CreateExperience>({
+    id: currentUser.id,
+    job: "",
+    duration: 0,
+  });
+
+  const handleSubmitExperience = () => {
+    dispatch(addExperience(experience));
+  };
+
+  const handleChangeExperience = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setExperience((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   return {
     editable,
     setEditable,
     user,
     setUser,
+    loading,
     handleChange,
     handleSubmit,
     updateInformationValidation,
+    experiences,
+    vehicles,
+    handleSubmitExperience,
+    experience,
+    handleChangeExperience,
+    createExperienceValidation,
   };
 };
 

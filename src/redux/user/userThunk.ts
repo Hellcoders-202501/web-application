@@ -1,5 +1,12 @@
-import store from "@core/store";
-import type { CreateUser, LoginState, UpdateUser, User } from "@models/user";
+import store, { type IRootState } from "@core/store";
+import type {
+  CreateExperience,
+  CreateUser,
+  CreateVehicle,
+  LoginState,
+  UpdateUser,
+  User,
+} from "@models/user";
 import { setAlertDialog } from "@redux/common/commonThunk";
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import userServices from "@services/userService";
@@ -191,6 +198,172 @@ export const updateUser = createAsyncThunk(
           type: "error",
         }),
       );
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  },
+);
+
+export const getExperiencesByDriverId = createAsyncThunk(
+  "GET_EXPERIENCES_BY_DRIVER_ID",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await userServices.getExperiencesByDriverId(id);
+      if (response) {
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  },
+);
+
+export const getVehiclesByDriverId = createAsyncThunk(
+  "GET_VEHICLES_BY_DRIVER_ID",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await userServices.getVehiclesByDriverId(id);
+      if (response) {
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  },
+);
+
+export const getCommentsByDriverId = createAsyncThunk(
+  "GET_COMMENTS_BY_DRIVER_ID",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await userServices.getCommentsByDriverId(id);
+      if (response) {
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  },
+);
+
+export const addVehicle = createAsyncThunk(
+  "ADD_VEHICLE",
+  async (
+    vehicleInformation: CreateVehicle,
+    { rejectWithValue, getState, dispatch },
+  ) => {
+    try {
+      const response = await userServices.addVehicle(vehicleInformation);
+      if (response) {
+        const state = getState() as IRootState;
+        const driverId = state.user.user?.id;
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "Vehículo añadido correctamente",
+            type: "success",
+          }),
+        );
+        await dispatch(getVehiclesByDriverId(driverId as number));
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      dispatch(
+        setAlertDialog({
+          open: true,
+          message: "Error al añadir vehículo",
+          type: "error",
+        }),
+      );
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  },
+);
+
+export const addExperience = createAsyncThunk(
+  "ADD_EXPERIENCE",
+  async (
+    experienceInformation: CreateExperience,
+    { rejectWithValue, getState, dispatch },
+  ) => {
+    try {
+      const response = await userServices.addExperience(experienceInformation);
+      if (response) {
+        const state = getState() as IRootState;
+        const driverId = state.user.user?.id;
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "Experiencia añadida correctamente",
+            type: "success",
+          }),
+        );
+        await dispatch(getExperiencesByDriverId(driverId as number));
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      dispatch(
+        setAlertDialog({
+          open: true,
+          message: "Error al añadir experiencia",
+          type: "error",
+        }),
+      );
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  },
+);
+
+// export const addComment = createAsyncThunk(
+//   "ADD_COMMENT",
+//   async (commentInformation: CreateComment, { rejectWithValue }) => {
+//     try {
+//       const response = await userServices.addComment(commentInformation);
+//       if (response) {
+//         return response;
+//       }
+//     } catch (error) {
+//       const err = error as AxiosError;
+//       return rejectWithValue({
+//         status: err.response?.status,
+//         message: err.response?.data,
+//       });
+//     }
+//   },
+// );
+
+export const getMostRankedDrivers = createAsyncThunk(
+  "GET_MOST_RANKED_DRIVERS",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await userServices.getMostRankedDrivers();
+      if (response) {
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,

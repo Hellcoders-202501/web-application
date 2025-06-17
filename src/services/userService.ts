@@ -1,5 +1,10 @@
 import { requests } from "@core/axiosAgent";
-import type { CreateUser, UpdateUser } from "@models/user";
+import type {
+  CreateExperience,
+  CreateUser,
+  CreateVehicle,
+  UpdateUser,
+} from "@models/user";
 
 const signIn = (email: string, password: string) => {
   return requests.post("/auth", { email, password });
@@ -29,6 +34,34 @@ const updateClient = (userInformation: UpdateUser) => {
   return requests.put("/clients", userInformation);
 };
 
+const getExperiencesByDriverId = (driverId: number) => {
+  return requests.get(`/drivers/${driverId}/experience`);
+};
+
+const getVehiclesByDriverId = (driverId: number) => {
+  return requests.get(`/drivers/${driverId}/vehicle`);
+};
+
+const getCommentsByDriverId = (driverId: number) => {
+  return requests.get(`/drivers/${driverId}/comment`);
+};
+
+const addVehicle = (vehicleInformation: CreateVehicle) => {
+  return requests.post("/drivers/vehicle", vehicleInformation);
+};
+
+const addExperience = (experienceInformation: CreateExperience) => {
+  return requests.post("/drivers/experience", experienceInformation);
+};
+
+// const addComment = (commentInformation: CreateComment) => {
+//   return requests.post("/drivers/comment", commentInformation);
+// };
+
+const getMostRankedDrivers = () => {
+  return requests.get("/drivers/most-ranked");
+};
+
 export default {
   signIn,
   registerClient,
@@ -37,4 +70,11 @@ export default {
   getDriverById,
   updateClient,
   updateDriver,
+  getExperiencesByDriverId,
+  getVehiclesByDriverId,
+  getCommentsByDriverId,
+  addVehicle,
+  addExperience,
+  // addComment,
+  getMostRankedDrivers,
 };

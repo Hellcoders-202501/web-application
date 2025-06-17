@@ -2,6 +2,7 @@
 import UserProfile from "@components/molecules/UserProfile";
 import ProfileTabs from "@components/organisms/ProfileTabs";
 import useProfile from "./hooks/useProfile";
+import { Experience } from "@models/user";
 
 const ProfileView = () => {
   const {
@@ -9,9 +10,16 @@ const ProfileView = () => {
     setEditable,
     user,
     setUser,
+    loading,
     handleChange,
     handleSubmit,
     updateInformationValidation,
+    experiences,
+    vehicles,
+    handleSubmitExperience,
+    experience,
+    handleChangeExperience,
+    createExperienceValidation,
   } = useProfile();
 
   return (
@@ -33,8 +41,15 @@ const ProfileView = () => {
         editable={editable}
         user={user}
         setUser={handleChange}
+        loading={loading}
         handleSubmit={handleSubmit}
         updateInformationValidation={updateInformationValidation}
+        experiences={experiences as Experience[]}
+        vehicles={vehicles}
+        addExperience={handleSubmitExperience}
+        experience={experience}
+        handleChangeExperience={handleChangeExperience}
+        createExperienceValidation={createExperienceValidation}
       />
     </div>
   );
