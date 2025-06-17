@@ -35,11 +35,11 @@ const updateClient = (userInformation: UpdateUser) => {
 };
 
 const getExperiencesByDriverId = (driverId: number) => {
-  return requests.get(`/drivers/${driverId}/experience`);
+  return requests.get(`/drivers/${driverId}/experience/`);
 };
 
 const getVehiclesByDriverId = (driverId: number) => {
-  return requests.get(`/drivers/${driverId}/vehicle`);
+  return requests.get(`/drivers/${driverId}/vehicle/`);
 };
 
 const getCommentsByDriverId = (driverId: number) => {
