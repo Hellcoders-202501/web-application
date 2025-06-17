@@ -22,6 +22,7 @@ axios.interceptors.response.use(
           break;
         case 403:
           console.error("Acceso denegado.");
+          localStorage.clear();
           break;
         case 404:
           // console.error("No encontrado.");

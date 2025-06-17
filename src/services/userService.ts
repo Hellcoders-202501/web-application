@@ -1,5 +1,5 @@
 import { requests } from "@core/axiosAgent";
-import type { CreateUser } from "@models/user";
+import type { CreateUser, UpdateUser } from "@models/user";
 
 const signIn = (email: string, password: string) => {
   return requests.post("/auth", { email, password });
@@ -21,10 +21,20 @@ const getDriverById = (id: number) => {
   return requests.get(`/drivers/${id}`);
 };
 
+const updateDriver = (userInformation: UpdateUser) => {
+  return requests.put("/drivers", userInformation);
+};
+
+const updateClient = (userInformation: UpdateUser) => {
+  return requests.put("/clients", userInformation);
+};
+
 export default {
   signIn,
   registerClient,
   registerDriver,
   getClientById,
   getDriverById,
+  updateClient,
+  updateDriver,
 };

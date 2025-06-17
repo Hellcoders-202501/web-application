@@ -1,5 +1,5 @@
 import store from "@core/store";
-import type { CreateUser, LoginState, User } from "@models/user";
+import type { CreateUser, LoginState, UpdateUser, User } from "@models/user";
 import { setAlertDialog } from "@redux/common/commonThunk";
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import userServices from "@services/userService";
@@ -134,6 +134,63 @@ export const getDriverById = createAsyncThunk(
       }
     } catch (error) {
       const err = error as AxiosError;
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  },
+);
+
+export const updateUser = createAsyncThunk(
+  "UPDATE_USER",
+  async (
+    payload: {
+      userInformation: UpdateUser;
+      type: string;
+    },
+    { rejectWithValue, dispatch },
+  ) => {
+    try {
+      if (payload.type === "CLIENT") {
+        const response = (await userServices.updateClient(
+          payload.userInformation,
+        )) as User;
+        if (response) {
+          dispatch(
+            setAlertDialog({
+              open: true,
+              message: "Datos actualizados",
+              type: "success",
+            }),
+          );
+          return response;
+        }
+      }
+      if (payload.type === "DRIVER") {
+        const response = (await userServices.updateDriver(
+          payload.userInformation,
+        )) as User;
+        if (response) {
+          dispatch(
+            setAlertDialog({
+              open: true,
+              message: "Datos actualizados",
+              type: "success",
+            }),
+          );
+          return response;
+        }
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      dispatch(
+        setAlertDialog({
+          open: true,
+          message: "Error al actualizar datos",
+          type: "error",
+        }),
+      );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,

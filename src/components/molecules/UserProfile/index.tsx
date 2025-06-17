@@ -28,7 +28,9 @@ const UserProfile = ({
         disabled={!editable}
         value={user.description}
         placeholder={
-          user.description === "" ? "Sin descripción" : user.description
+          user.description === "" || user.description === null
+            ? "Sin descripción"
+            : user.description
         }
         rows={5}
         cols={50}

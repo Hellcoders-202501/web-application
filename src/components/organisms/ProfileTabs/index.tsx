@@ -5,17 +5,21 @@ import Vehicle from "@components/molecules/Vehicle";
 import Ratings from "@components/molecules/Ratings";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import type { User } from "@models/user";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 import useAuth from "@hooks/useAuth";
 
 const ProfileTabs = ({
   editable = false,
   user,
   setUser,
+  handleSubmit,
+  updateInformationValidation,
 }: {
   editable: boolean;
   user: User;
   setUser: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: VoidFunction;
+  updateInformationValidation: any;
 }) => {
   const { userType } = useAuth();
 
@@ -41,6 +45,8 @@ const ProfileTabs = ({
             editable={editable}
             information={user}
             setInformation={setUser}
+            handleSubmit={handleSubmit}
+            updateInformationValidation={updateInformationValidation}
           />
         );
       case "experience":

@@ -30,6 +30,15 @@ export interface CreateUser {
   password: string;
 }
 
+export interface UpdateUser {
+  id: number;
+  name: string;
+  firstLastName: string;
+  secondLastName: string;
+  phone: string;
+  description: string;
+}
+
 export interface User {
   id: number;
   name: string;
