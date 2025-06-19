@@ -11,12 +11,14 @@ const ExperienceCard = ({ experience }: { experience: ExperienceType }) => {
   return (
     <div className="flex flex-col gap-5 items-end max-w-xl w-full">
       <div className="flex gap-10 justify-between items-end w-full">
-        <label htmlFor="">Trabajo</label>
-        <p>{experience.job}</p>
+        <p className="font-extrabold">Trabajo</p>
+        <p className="text-sm border-b w-8/12 text-center">{experience.job}</p>
       </div>
       <div className="flex gap-10 justify-between items-end w-full">
-        <label htmlFor="">Tiempo</label>
-        <p>{experience.duration}</p>
+        <p className="font-extrabold">Tiempo</p>
+        <p className="text-sm border-b w-8/12 text-center">
+          {experience.duration}
+        </p>
       </div>
     </div>
   );
@@ -47,6 +49,7 @@ const Experience = ({
       {!showAddExperience && (
         <Button
           variant="accept"
+          type="button"
           className="w-fit self-end"
           onClick={() => setShowAddExperience(true)}
         >
@@ -66,7 +69,9 @@ const Experience = ({
           <Form className="flex flex-col gap-5 items-end max-w-xl w-full">
             <div className="flex flex-col w-full">
               <div className="flex gap-10 justify-between items-end w-full">
-                <label htmlFor="job">Trabajo</label>
+                <label htmlFor="job" className="font-bold">
+                  Trabajo
+                </label>
                 <Input
                   name="job"
                   id="job"
@@ -76,7 +81,6 @@ const Experience = ({
                   onChange={handleChangeExperience}
                 />
               </div>
-
               <ErrorMessage
                 component="div"
                 className="text-red-500 text-sm pl-2 mt-2 w-fit self-end"
@@ -85,7 +89,9 @@ const Experience = ({
             </div>
             <div className="flex flex-col w-full">
               <div className="flex gap-10 justify-between items-end w-full">
-                <label htmlFor="duration">Tiempo</label>
+                <label htmlFor="duration" className="font-bold">
+                  Tiempo
+                </label>
                 <Input
                   name="duration"
                   id="duration"
@@ -101,14 +107,27 @@ const Experience = ({
                 name="duration"
               />
             </div>
-            <Button
-              variant="accept"
-              className="w-fit self-end"
-              disabled={loading}
-              loading={loading}
-            >
-              Crear
-            </Button>
+            <div className="flex justify-end gap-10 w-full">
+              <Button
+                variant="denied"
+                className="w-fit self-end"
+                type="button"
+                onClick={() => setShowAddExperience(false)}
+                disabled={loading}
+                loading={loading}
+              >
+                Cancelar
+              </Button>
+              <Button
+                variant="accept"
+                className="w-fit self-end"
+                type="submit"
+                disabled={loading}
+                loading={loading}
+              >
+                Crear
+              </Button>
+            </div>
           </Form>
         </Formik>
       )}

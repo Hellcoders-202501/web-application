@@ -7,10 +7,13 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import type {
   User,
   Experience as ExperienceType,
+  Vehicle as VehicleType,
   CreateExperience,
+  CreateVehicle,
 } from "@models/user";
 import { Fragment } from "react";
 import useAuth from "@hooks/useAuth";
+import { ServiceType } from "@models/common";
 
 const ProfileTabs = ({
   editable = false,
@@ -20,11 +23,16 @@ const ProfileTabs = ({
   handleSubmit,
   updateInformationValidation,
   experiences,
-  vehicles,
   addExperience,
   experience,
   handleChangeExperience,
   createExperienceValidation,
+  serviceTypes,
+  vehicles,
+  addVehicle,
+  vehicle,
+  handleChangeVehicle,
+  createVehicleValidation,
 }: {
   editable: boolean;
   user: User;
@@ -33,11 +41,18 @@ const ProfileTabs = ({
   handleSubmit: VoidFunction;
   updateInformationValidation: any;
   experiences: ExperienceType[];
-  vehicles: any;
   addExperience: VoidFunction;
   experience: CreateExperience;
   handleChangeExperience: (e: React.ChangeEvent<HTMLInputElement>) => void;
   createExperienceValidation: any;
+  serviceTypes: ServiceType[];
+  vehicles: VehicleType[];
+  addVehicle: VoidFunction;
+  vehicle: CreateVehicle;
+  handleChangeVehicle: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => void;
+  createVehicleValidation: any;
 }) => {
   const { userType } = useAuth();
 
@@ -79,7 +94,17 @@ const ProfileTabs = ({
           />
         );
       case "vehicle":
-        return <Vehicle vehicles={vehicles} />;
+        return (
+          <Vehicle
+            serviceTypes={serviceTypes}
+            vehicles={vehicles}
+            addVehicle={addVehicle}
+            vehicle={vehicle}
+            handleChangeVehicle={handleChangeVehicle}
+            createVehicleValidation={createVehicleValidation}
+            loading={loading}
+          />
+        );
       case "ratings":
         return <Ratings />;
       default:

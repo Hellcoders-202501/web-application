@@ -3,6 +3,7 @@ import type {
   CreateVehicle,
   IUserReduxState,
   User,
+  Vehicle,
 } from "@models/user";
 import { createSlice } from "@reduxjs/toolkit";
 import {
@@ -94,7 +95,7 @@ const userSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(getVehiclesByDriverId.fulfilled, (state, action) => {
-      state.vehicles = action.payload as CreateVehicle[];
+      state.vehicles = action.payload as Vehicle[];
       state.loading = false;
     });
     builder.addCase(getVehiclesByDriverId.rejected, (state, action) => {

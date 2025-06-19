@@ -2,7 +2,7 @@
 import UserProfile from "@components/molecules/UserProfile";
 import ProfileTabs from "@components/organisms/ProfileTabs";
 import useProfile from "./hooks/useProfile";
-import { Experience } from "@models/user";
+import { Experience, Vehicle } from "@models/user";
 
 const ProfileView = () => {
   const {
@@ -15,11 +15,16 @@ const ProfileView = () => {
     handleSubmit,
     updateInformationValidation,
     experiences,
-    vehicles,
     handleSubmitExperience,
     experience,
     handleChangeExperience,
     createExperienceValidation,
+    serviceTypes,
+    vehicles,
+    handleSubmitVehicle,
+    vehicle,
+    handleChangeVehicle,
+    createVehicleValidation,
   } = useProfile();
 
   return (
@@ -45,11 +50,16 @@ const ProfileView = () => {
         handleSubmit={handleSubmit}
         updateInformationValidation={updateInformationValidation}
         experiences={experiences as Experience[]}
-        vehicles={vehicles}
         addExperience={handleSubmitExperience}
         experience={experience}
         handleChangeExperience={handleChangeExperience}
         createExperienceValidation={createExperienceValidation}
+        serviceTypes={serviceTypes}
+        vehicles={vehicles as Vehicle[]}
+        addVehicle={handleSubmitVehicle}
+        vehicle={vehicle}
+        handleChangeVehicle={handleChangeVehicle}
+        createVehicleValidation={createVehicleValidation}
       />
     </div>
   );

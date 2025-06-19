@@ -3,7 +3,7 @@ export interface IUserReduxState {
   token: string | undefined;
   userType: string | null;
   experiences: Experience[] | undefined;
-  vehicles: CreateVehicle[] | undefined;
+  vehicles: Vehicle[] | undefined;
   // comments: CreateComment[] | undefined;
   rankedDrivers: User[] | undefined;
   loading: boolean;
@@ -54,11 +54,14 @@ export interface User {
   description: string;
 }
 
-export interface CreateVehicle {
+export interface CreateVehicle extends Vehicle {
+  driverId: number;
+}
+
+export interface Vehicle {
   brand: string;
   imageUrl: string;
   serviceId: number;
-  driverId: number;
 }
 
 export interface CreateExperience extends Experience {

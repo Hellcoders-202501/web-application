@@ -1,12 +1,13 @@
 "use client";
 import { IRootState, useAppDispatch, useAppSelector } from "@core/store";
 import useAuth from "@hooks/useAuth";
-import type { CreateExperience, User } from "@models/user";
+import type { CreateExperience, CreateVehicle, User } from "@models/user";
 import {
   getExperiencesByDriverId,
   getVehiclesByDriverId,
   updateUser,
   addExperience,
+  addVehicle,
 } from "@redux/user/userThunk";
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
@@ -20,6 +21,9 @@ const useProfile = () => {
   const [user, setUser] = useState<User>(currentUser);
   const { experiences, vehicles, loading } = useAppSelector(
     (state: IRootState) => state.user,
+  );
+  const serviceTypes = useAppSelector(
+    (state: IRootState) => state.common.serviceTypes,
   );
 
   const region = "PE";
@@ -65,6 +69,17 @@ const useProfile = () => {
       .max(100, "El tiempo no puede ser mayor a 100."),
   });
 
+  const createVehicleValidation = Yup.object().shape({
+    brand: Yup.string()
+      .required("Marca requerida.")
+      .min(3, "La marca debe tener al menos 3 caracteres.")
+      .max(50, "La marca no puede tener más de 50 caracteres."),
+    // imageUrl: Yup.string()
+    //   .required("Imagen requerida.")
+    //   .url("Formato inválido."),
+    serviceId: Yup.number().required("Servicio requerido."),
+  });
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUser((prevState) => ({
@@ -89,13 +104,34 @@ const useProfile = () => {
     duration: 0,
   });
 
+  const [vehicle, setVehicle] = useState<CreateVehicle>({
+    brand: "",
+    imageUrl: "",
+    serviceId: 0,
+    driverId: currentUser.id,
+  });
+
   const handleSubmitExperience = () => {
     dispatch(addExperience(experience));
+  };
+
+  const handleSubmitVehicle = () => {
+    dispatch(addVehicle(vehicle));
   };
 
   const handleChangeExperience = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setExperience((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleChangeVehicle = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = e.target;
+    setVehicle((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -111,11 +147,16 @@ const useProfile = () => {
     handleSubmit,
     updateInformationValidation,
     experiences,
-    vehicles,
     handleSubmitExperience,
     experience,
     handleChangeExperience,
     createExperienceValidation,
+    serviceTypes,
+    vehicles,
+    handleSubmitVehicle,
+    vehicle,
+    handleChangeVehicle,
+    createVehicleValidation,
   };
 };
 
