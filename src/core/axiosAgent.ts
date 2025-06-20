@@ -23,7 +23,6 @@ axios.interceptors.response.use(
         case 403:
           console.error("Acceso denegado.");
           localStorage.clear();
-          window.location.href = "/login";
           break;
         case 404:
           // console.error("No encontrado.");

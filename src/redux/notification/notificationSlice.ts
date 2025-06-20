@@ -1,4 +1,4 @@
-import type { INotificationReduxState } from "@models/notification";
+import type { INotification, INotificationReduxState } from "@models/notification";
 import { createSlice } from "@reduxjs/toolkit";
 import {
   getNotificationsByUserId,
@@ -6,6 +6,7 @@ import {
 } from "./notificationThunk";
 
 const initialState: INotificationReduxState = {
+  notifications: [],
   loading: false,
 };
 
@@ -18,6 +19,7 @@ const notificationSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(getNotificationsByUserId.fulfilled, (state, action) => {
+      state.notifications = action.payload as INotification[];
       state.loading = false;
     });
     builder.addCase(getNotificationsByUserId.rejected, (state, action) => {

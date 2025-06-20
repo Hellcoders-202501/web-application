@@ -52,6 +52,7 @@ export interface User {
   username: string;
   email: string;
   description: string;
+  userId: number;
 }
 
 export interface CreateVehicle extends Vehicle {
