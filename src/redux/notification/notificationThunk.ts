@@ -1,3 +1,4 @@
+import { IRootState } from "@core/store";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import notificationService from "@services/notificationService";
 import type { AxiosError } from "axios";
@@ -23,11 +24,14 @@ export const getNotificationsByUserId = createAsyncThunk(
 
 export const readNotifications = createAsyncThunk(
   "READ_NOTIFICATIONS",
-  async (id: number, { rejectWithValue }) => {
+  async (id: number, { rejectWithValue, getState, dispatch }) => {
     try {
       const response = await notificationService.readNotifications(id);
 
       if (response) {
+        const state = getState() as IRootState;
+        const userId = state.user.user?.userId;
+        dispatch(getNotificationsByUserId(userId as number));
         return response;
       }
     } catch (error) {
