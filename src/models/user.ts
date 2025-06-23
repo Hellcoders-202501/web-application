@@ -4,8 +4,9 @@ export interface IUserReduxState {
   userType: string | null;
   experiences: Experience[] | undefined;
   vehicles: Vehicle[] | undefined;
-  // comments: CreateComment[] | undefined;
+  // comments: Comment[] | undefined;
   rankedDrivers: User[] | undefined;
+  driver: User | undefined;
   loading: boolean;
 }
 

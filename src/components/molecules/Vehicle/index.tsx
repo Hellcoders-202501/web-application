@@ -36,6 +36,7 @@ const VehicleCard = ({ vehicle }: { vehicle: VehicleType }) => {
 };
 
 const Vehicle = ({
+  isDriverView = false,
   serviceTypes,
   vehicles,
   addVehicle,
@@ -44,14 +45,15 @@ const Vehicle = ({
   createVehicleValidation,
   loading,
 }: {
+  isDriverView?: boolean;
   serviceTypes: ServiceType[];
   vehicles: VehicleType[];
-  addVehicle: VoidFunction;
-  vehicle: CreateVehicle;
-  handleChangeVehicle: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  addVehicle?: VoidFunction;
+  vehicle?: CreateVehicle;
+  handleChangeVehicle?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
-  createVehicleValidation: any;
+  createVehicleValidation?: any;
   loading: boolean;
 }) => {
   const [showAddVehicle, setShowAddVehicle] = useState(false);
@@ -63,7 +65,7 @@ const Vehicle = ({
           <VehicleCard key={i} vehicle={vehicle} />
         ))}
       </div>
-      {!showAddVehicle && (
+      {!showAddVehicle && !isDriverView && (
         <Button
           variant="accept"
           type="button"
@@ -77,9 +79,9 @@ const Vehicle = ({
         <Formik
           enableReinitialize
           validationSchema={createVehicleValidation}
-          initialValues={vehicle}
+          initialValues={vehicle ?? {}}
           onSubmit={() => {
-            addVehicle();
+            if (addVehicle) addVehicle();
             setShowAddVehicle(false);
           }}
         >
@@ -92,7 +94,7 @@ const Vehicle = ({
                   id="brand"
                   className="w-8/12 text-center"
                   disabled={loading}
-                  value={vehicle.brand}
+                  value={vehicle?.brand}
                   onChange={handleChangeVehicle}
                 />
               </div>

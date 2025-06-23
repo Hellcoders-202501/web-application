@@ -7,8 +7,10 @@ import {
 } from "@headlessui/react";
 import type { ApplicationInformation, RequestResult } from "@models/contract";
 import { PayPalButtons } from "@paypal/react-paypal-js";
+import Link from "next/link";
 import { type FC, useEffect, useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
 
 export type ContractVariant = "offer" | "pending" | "history" | "request";
 
@@ -79,7 +81,12 @@ const ContractCard: FC<Props> = ({
   if (variant === "offer")
     return (
       <div className="card px-10 py-8 min-h-[250px] max-w-[405px]">
-        <p className="text-xl font-semibold">Información</p>
+        <div className="flex justify-between items-center">
+          <p className="text-xl font-semibold">Información</p>
+          <Link href={`/driver/${application?.driver.id}`}>
+            <FaEye size={20} />
+          </Link>
+        </div>
         <div
           className="flex justify-between font-semibold text-lg border-t mt-4
           			pt-2"

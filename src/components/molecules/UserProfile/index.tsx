@@ -4,20 +4,32 @@ import { User } from "@models/user";
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
+import { IoArrowBackCircle } from "react-icons/io5";
+import Link from "next/link";
 
 const UserProfile = ({
+  isDriverView = false,
   editable = false,
   setEditable,
   user,
   setDescription,
 }: {
+  isDriverView?: boolean;
   editable: boolean;
   setEditable?: VoidFunction;
   user: User;
-  setDescription: (description: string) => void;
+  setDescription?: (description: string) => void;
 }) => {
   return (
-    <div className="flex flex-col gap-5 items-center w-10/12 mx-auto lg:max-w-xl lg:w-full">
+    <div
+      className="flex flex-col gap-5 items-center w-10/12 mx-auto lg:max-w-xl lg:w-full
+      relative"
+    >
+      {isDriverView && (
+        <Link href="/requests" className="absolute top-0 md:left-10 left-0">
+          <IoArrowBackCircle size={48} />
+        </Link>
+      )}
       <FaRegUserCircle size={120} />
       <p className="font-bold text-4xl">
         {user?.name} {user?.firstLastName}
@@ -26,15 +38,15 @@ const UserProfile = ({
         className="text-justify block w-11/12 lg:w-full"
         variant={editable ? "primary" : "disabled"}
         disabled={!editable}
-        value={user.description}
+        value={user?.description}
         placeholder={
-          user.description === "" || user.description === null
+          user?.description === "" || user?.description === null
             ? "Sin descripción"
-            : user.description
+            : user?.description
         }
         rows={5}
         cols={50}
-        onChange={(e) => setDescription(e.target.value)}
+        onChange={(e) => setDescription?.(e.target.value)}
       />
       <div className="flex gap-4 items-center">
         {Array(5)
@@ -43,10 +55,12 @@ const UserProfile = ({
             <FaStar key={i} size={20} />
           ))}
       </div>
-      <Button className="flex gap-2 items-center" onClick={setEditable}>
-        <p>{editable ? "Guardar" : "Editar perfil"}</p>
-        {!editable && <MdEdit />}
-      </Button>
+      {!isDriverView && (
+        <Button className="flex gap-2 items-center" onClick={setEditable}>
+          <p>{editable ? "Guardar" : "Editar perfil"}</p>
+          {!editable && <MdEdit />}
+        </Button>
+      )}
     </div>
   );
 };

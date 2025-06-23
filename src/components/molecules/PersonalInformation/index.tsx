@@ -10,24 +10,24 @@ const PersonalInformation = ({
 }: {
   editable: boolean;
   information: User;
-  setInformation: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleSubmit: VoidFunction;
-  updateInformationValidation: any;
+  setInformation?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit?: VoidFunction;
+  updateInformationValidation?: any;
 }) => {
   return (
     <div className="w-full lg:mx-10">
-      <Formik initialValues={information} onSubmit={handleSubmit}>
+      <Formik initialValues={information} onSubmit={handleSubmit ?? (() => {})}>
         <Form className="flex flex-col gap-10">
           <div className="flex gap-10 justify-between items-end">
-            <label htmlFor="">Nombre</label>
+            <label htmlFor="name">Nombre</label>
             <Input
               name="name"
               id="name"
               variant={editable ? "primary" : "disabled"}
               disabled={!editable}
               className="w-8/12 text-center"
-              value={information.name}
-              onChange={(e) => setInformation(e)}
+              value={information?.name}
+              onChange={(e) => setInformation?.(e)}
             />
             <ErrorMessage
               component="div"
@@ -36,15 +36,15 @@ const PersonalInformation = ({
             />
           </div>
           <div className="flex gap-10 justify-between items-end">
-            <label htmlFor="">Apellido paterno</label>
+            <label htmlFor="firstLastName">Apellido paterno</label>
             <Input
               name="firstLastName"
               id="firstLastName"
               variant={editable ? "primary" : "disabled"}
               disabled={!editable}
               className="w-8/12 text-center"
-              value={information.firstLastName}
-              onChange={(e) => setInformation(e)}
+              value={information?.firstLastName}
+              onChange={(e) => setInformation?.(e)}
             />
             <ErrorMessage
               component="div"
@@ -53,15 +53,15 @@ const PersonalInformation = ({
             />
           </div>
           <div className="flex gap-10 justify-between items-end">
-            <label htmlFor="">Apellido materno</label>
+            <label htmlFor="secondLastName">Apellido materno</label>
             <Input
               name="secondLastName"
               id="secondLastName"
               variant={editable ? "primary" : "disabled"}
               disabled={!editable}
               className="w-8/12 text-center"
-              value={information.secondLastName}
-              onChange={(e) => setInformation(e)}
+              value={information?.secondLastName}
+              onChange={(e) => setInformation?.(e)}
             />
             <ErrorMessage
               component="div"
@@ -77,9 +77,9 @@ const PersonalInformation = ({
               variant={editable ? "primary" : "disabled"}
               disabled={!editable}
               className="w-8/12 text-center"
-              value={information.phone}
+              value={information?.phone}
               type="number"
-              onChange={(e) => setInformation(e)}
+              onChange={(e) => setInformation?.(e)}
             />
             <ErrorMessage
               component="div"

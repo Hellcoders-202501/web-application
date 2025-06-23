@@ -16,6 +16,7 @@ import useAuth from "@hooks/useAuth";
 import { ServiceType } from "@models/common";
 
 const ProfileTabs = ({
+  isDriverView = false,
   editable = false,
   user,
   setUser,
@@ -34,25 +35,26 @@ const ProfileTabs = ({
   handleChangeVehicle,
   createVehicleValidation,
 }: {
+  isDriverView?: boolean;
   editable: boolean;
   user: User;
-  setUser: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setUser?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   loading: boolean;
-  handleSubmit: VoidFunction;
-  updateInformationValidation: any;
+  handleSubmit?: VoidFunction;
+  updateInformationValidation?: any;
   experiences: ExperienceType[];
-  addExperience: VoidFunction;
-  experience: CreateExperience;
-  handleChangeExperience: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  createExperienceValidation: any;
+  addExperience?: VoidFunction;
+  experience?: CreateExperience;
+  handleChangeExperience?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  createExperienceValidation?: any;
   serviceTypes: ServiceType[];
   vehicles: VehicleType[];
-  addVehicle: VoidFunction;
-  vehicle: CreateVehicle;
-  handleChangeVehicle: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  addVehicle?: VoidFunction;
+  vehicle?: CreateVehicle;
+  handleChangeVehicle?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
-  createVehicleValidation: any;
+  createVehicleValidation?: any;
 }) => {
   const { userType } = useAuth();
 
@@ -61,7 +63,7 @@ const ProfileTabs = ({
       label: "Información personal",
       value: "personal",
     },
-    ...(userType === "DRIVER"
+    ...(userType === "DRIVER" || isDriverView
       ? [
           { label: "Experiencia", value: "experience" },
           { label: "Vehículos", value: "vehicle" },
@@ -85,6 +87,7 @@ const ProfileTabs = ({
       case "experience":
         return (
           <Experience
+            isDriverView
             experiences={experiences}
             addExperience={addExperience}
             experience={experience}
@@ -96,6 +99,7 @@ const ProfileTabs = ({
       case "vehicle":
         return (
           <Vehicle
+            isDriverView
             serviceTypes={serviceTypes}
             vehicles={vehicles}
             addVehicle={addVehicle}
@@ -119,10 +123,14 @@ const ProfileTabs = ({
           <Tab key={field.value} as={Fragment}>
             {({ hover, selected }) => (
               <div
-                className={`flex justify-center outline-0 ${userType === "DRIVER" ? "w-1/4" : "w-full"}`}
+                className={`flex justify-center outline-0 ${
+                  userType === "DRIVER" ? "w-1/4" : "w-full"
+                }`}
               >
                 <button
-                  className={`${(hover || selected) && "border-b-4 border-accept"}`}
+                  className={`${
+                    (hover || selected) && "border-b-4 border-accept"
+                  }`}
                   type="button"
                 >
                   {field.label}

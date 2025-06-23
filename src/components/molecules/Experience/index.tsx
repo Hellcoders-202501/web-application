@@ -25,6 +25,7 @@ const ExperienceCard = ({ experience }: { experience: ExperienceType }) => {
 };
 
 const Experience = ({
+  isDriverView = false,
   experiences,
   addExperience,
   experience,
@@ -32,11 +33,12 @@ const Experience = ({
   createExperienceValidation,
   loading,
 }: {
+  isDriverView?: boolean;
   experiences: ExperienceType[];
-  addExperience: VoidFunction;
-  experience: CreateExperience;
-  handleChangeExperience: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  createExperienceValidation: any;
+  addExperience?: VoidFunction;
+  experience?: CreateExperience;
+  handleChangeExperience?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  createExperienceValidation?: any;
   loading: boolean;
 }) => {
   const [showAddExperience, setShowAddExperience] = useState(false);
@@ -46,7 +48,7 @@ const Experience = ({
       {experiences.map((experience, id) => (
         <ExperienceCard key={id} experience={experience} />
       ))}
-      {!showAddExperience && (
+      {!showAddExperience && !isDriverView && (
         <Button
           variant="accept"
           type="button"
@@ -60,9 +62,11 @@ const Experience = ({
         <Formik
           enableReinitialize
           validationSchema={createExperienceValidation}
-          initialValues={experience}
+          initialValues={experience ?? {}}
           onSubmit={() => {
-            addExperience();
+            if (addExperience) {
+              addExperience();
+            }
             setShowAddExperience(false);
           }}
         >
@@ -77,7 +81,7 @@ const Experience = ({
                   id="job"
                   className="w-8/12 text-center"
                   disabled={loading}
-                  value={experience.job}
+                  value={experience?.job}
                   onChange={handleChangeExperience}
                 />
               </div>
@@ -97,7 +101,7 @@ const Experience = ({
                   id="duration"
                   className="w-8/12 text-center"
                   disabled={loading}
-                  value={experience.duration}
+                  value={experience?.duration}
                   onChange={handleChangeExperience}
                 />
               </div>

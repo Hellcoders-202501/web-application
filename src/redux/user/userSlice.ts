@@ -10,6 +10,7 @@ import {
   addExperience,
   addVehicle,
   getCurrentUserById,
+  getDriverById,
   getExperiencesByDriverId,
   getMostRankedDrivers,
   getVehiclesByDriverId,
@@ -28,6 +29,7 @@ const initialState: IUserReduxState = {
   experiences: [],
   vehicles: [],
   rankedDrivers: [],
+  driver: undefined,
   loading: false,
 };
 
@@ -79,6 +81,16 @@ const userSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(updateUser.rejected, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(getDriverById.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(getDriverById.fulfilled, (state, action) => {
+      state.driver = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(getDriverById.rejected, (state, action) => {
       state.loading = false;
     });
     builder.addCase(getExperiencesByDriverId.pending, (state, action) => {
