@@ -95,7 +95,7 @@ const ContractCard: FC<Props> = ({
           </div>
           <div
             className="flex justify-between font-semibold text-lg border-t mt-4
-          			pt-2"
+          	pt-2"
           >
             <p>Datos del Conductor</p>
             <p>Pago</p>
@@ -159,7 +159,7 @@ const ContractCard: FC<Props> = ({
                           {
                             amount: {
                               currency_code: "USD",
-                              value: "100.00",
+                              value: "10.00",
                             },
                           },
                         ],
@@ -167,8 +167,10 @@ const ContractCard: FC<Props> = ({
                       });
                     }}
                     onApprove={async (data, actions) => {
-                      const details = await actions.order?.capture();
-                      console.log("Transaction completed by ", details);
+                      // const details = await actions.order?.capture();
+                      // console.log("Transaction completed by ", details);
+                      acceptContract?.(application?.id as number);
+                      setShowPaypal(false);
                     }}
                     onError={(err) => {
                       console.error("Error al procesar el pago", err);

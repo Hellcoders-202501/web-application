@@ -20,7 +20,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Provider store={store}>
-        <PayPalScriptProvider options={{ clientId: "test" }}>
+        <PayPalScriptProvider
+          options={{
+            clientId: `${process.env.NEXT_PUBLIC_PAYPAL_KEY}`,
+            currency: "USD",
+            intent: "capture",
+          }}
+        >
           <body className={`${inter.className} antialiased`}>
             <AlertDialog />
             <AuthProvider>{children}</AuthProvider>
