@@ -4,22 +4,45 @@ import type {
   CreateExperience,
   Experience as ExperienceType,
 } from "@models/user";
+import { MdDelete } from "react-icons/md";
 import { ErrorMessage, Form, Formik } from "formik";
 import { useState } from "react";
 
-const ExperienceCard = ({ experience }: { experience: ExperienceType }) => {
+const ExperienceCard = ({
+  experience,
+  handleDelete,
+  showActions,
+}: {
+  experience: ExperienceType;
+  handleDelete: (id: number) => void;
+  showActions: boolean;
+}) => {
   return (
-    <div className="flex flex-col gap-5 items-end max-w-xl w-full">
-      <div className="flex gap-10 justify-between items-end w-full">
-        <p className="font-extrabold">Trabajo</p>
-        <p className="text-sm border-b w-8/12 text-center">{experience.job}</p>
+    <div className="max-w-xl w-full flex justify-between">
+      <div
+        className={`flex flex-col gap-5 items-center ${
+          showActions ? "w-10/12" : "w-full"
+        }`}
+      >
+        <div className="flex gap-10 justify-between items-end w-full">
+          <p className="font-extrabold">Trabajo</p>
+          <p className="text-sm border-b w-8/12 text-center">
+            {experience.job}
+          </p>
+        </div>
+        <div className="flex gap-10 justify-between items-end w-full">
+          <p className="font-extrabold">Tiempo</p>
+          <p className="text-sm border-b w-8/12 text-center">
+            {experience.duration}
+          </p>
+        </div>
       </div>
-      <div className="flex gap-10 justify-between items-end w-full">
-        <p className="font-extrabold">Tiempo</p>
-        <p className="text-sm border-b w-8/12 text-center">
-          {experience.duration}
-        </p>
-      </div>
+
+      {showActions && (
+        <button type="button" className="cursor-pointer">
+          <MdDelete size={24} color="#CC0000" />
+        </button>
+      )}
     </div>
   );
 };
@@ -31,6 +54,7 @@ const Experience = ({
   experience,
   handleChangeExperience,
   createExperienceValidation,
+  handleRemoveExperience,
   loading,
 }: {
   isDriverView?: boolean;
@@ -39,15 +63,23 @@ const Experience = ({
   experience?: CreateExperience;
   handleChangeExperience?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   createExperienceValidation?: any;
+  handleRemoveExperience?: (id: number) => void;
   loading: boolean;
 }) => {
   const [showAddExperience, setShowAddExperience] = useState(false);
 
   return (
     <div className="w-full lg:mx-10 flex flex-col gap-10">
-      {experiences.map((experience, id) => (
-        <ExperienceCard key={id} experience={experience} />
-      ))}
+      <div className="overflow-auto max-h-[500px] px-10">
+        {experiences.map((experience, id) => (
+          <ExperienceCard
+            key={id}
+            experience={experience}
+            handleDelete={handleRemoveExperience as (id: number) => {}}
+            showActions={!isDriverView}
+          />
+        ))}
+      </div>
       {!showAddExperience && !isDriverView && (
         <Button
           variant="accept"

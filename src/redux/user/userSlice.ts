@@ -9,6 +9,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   addExperience,
   addVehicle,
+  deleteExperienceById,
+  deleteVehicleById,
   getCurrentUserById,
   getDriverById,
   getExperiencesByDriverId,
@@ -150,6 +152,24 @@ const userSlice = createSlice({
     builder.addCase(addComment.fulfilled, (state, action) => {
       state.loading = false;
     }); */
+    builder.addCase(deleteVehicleById.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteVehicleById.fulfilled, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(deleteVehicleById.rejected, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(deleteExperienceById.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteExperienceById.fulfilled, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(deleteExperienceById.rejected, (state) => {
+      state.loading = false;
+    });
     builder.addCase(getMostRankedDrivers.pending, (state, action) => {
       state.loading = true;
     });

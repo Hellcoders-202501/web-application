@@ -28,12 +28,14 @@ const ProfileTabs = ({
   experience,
   handleChangeExperience,
   createExperienceValidation,
+  handleRemoveExperience,
   serviceTypes,
   vehicles,
   addVehicle,
   vehicle,
   handleChangeVehicle,
   createVehicleValidation,
+  handleRemoveVehicle,
 }: {
   isDriverView?: boolean;
   editable: boolean;
@@ -47,6 +49,7 @@ const ProfileTabs = ({
   experience?: CreateExperience;
   handleChangeExperience?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   createExperienceValidation?: any;
+  handleRemoveExperience?: (id: number) => void;
   serviceTypes: ServiceType[];
   vehicles: VehicleType[];
   addVehicle?: VoidFunction;
@@ -55,6 +58,7 @@ const ProfileTabs = ({
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
   createVehicleValidation?: any;
+  handleRemoveVehicle?: (id: number) => void;
 }) => {
   const { userType } = useAuth();
 
@@ -87,25 +91,27 @@ const ProfileTabs = ({
       case "experience":
         return (
           <Experience
-            isDriverView
+            isDriverView={userType === "CLIENT"}
             experiences={experiences}
             addExperience={addExperience}
             experience={experience}
             handleChangeExperience={handleChangeExperience}
             createExperienceValidation={createExperienceValidation}
+            handleRemoveExperience={handleRemoveExperience}
             loading={loading}
           />
         );
       case "vehicle":
         return (
           <Vehicle
-            isDriverView
+            isDriverView={userType === "CLIENT"}
             serviceTypes={serviceTypes}
             vehicles={vehicles}
             addVehicle={addVehicle}
             vehicle={vehicle}
             handleChangeVehicle={handleChangeVehicle}
             createVehicleValidation={createVehicleValidation}
+            handleRemoveVehicle={handleRemoveVehicle}
             loading={loading}
           />
         );

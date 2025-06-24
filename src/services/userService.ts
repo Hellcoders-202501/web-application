@@ -58,6 +58,14 @@ const addExperience = (experienceInformation: CreateExperience) => {
 //   return requests.post("/drivers/comment", commentInformation);
 // };
 
+const deleteVehicleById = (id: number) => {
+  return requests.delete(`/drivers/vehicle/${id}`);
+};
+
+const deleteExperienceById = (id: number) => {
+  return requests.delete(`/drivers/experience/${id}`);
+};
+
 const getMostRankedDrivers = () => {
   return requests.get("/drivers/most-ranked");
 };
@@ -76,5 +84,7 @@ export default {
   addVehicle,
   addExperience,
   // addComment,
+  deleteVehicleById,
+  deleteExperienceById,
   getMostRankedDrivers,
 };

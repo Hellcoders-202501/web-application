@@ -8,6 +8,8 @@ import {
   updateUser,
   addExperience,
   addVehicle,
+  deleteExperienceById,
+  deleteVehicleById,
 } from "@redux/user/userThunk";
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
@@ -20,10 +22,10 @@ const useProfile = () => {
   const [editable, setEditable] = useState(false);
   const [user, setUser] = useState<User>(currentUser);
   const { experiences, vehicles, loading } = useAppSelector(
-    (state: IRootState) => state.user,
+    (state: IRootState) => state.user
   );
   const serviceTypes = useAppSelector(
-    (state: IRootState) => state.common.serviceTypes,
+    (state: IRootState) => state.common.serviceTypes
   );
 
   const region = "PE";
@@ -33,7 +35,7 @@ const useProfile = () => {
       .required("Nombre requerido.")
       .matches(
         /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-        "El nombre de usuario debe tener letras, números, espacios y caracteres especiales.",
+        "El nombre de usuario debe tener letras, números, espacios y caracteres especiales."
       )
       .min(3, "El nombre de usuario debe tener al menos 3 caracteres.")
       .max(50, "El nombre de usuario no puede tener más de 50 caracteres."),
@@ -41,7 +43,7 @@ const useProfile = () => {
       .required("Apellido paterno requerido.")
       .matches(
         /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-        "El nombre debe tener letras, números, espacios y caracteres especiales.",
+        "El nombre debe tener letras, números, espacios y caracteres especiales."
       )
       .min(3, "El nombre debe tener al menos 3 caracteres.")
       .max(50, "El nombre no puede tener más de 50 caracteres."),
@@ -49,7 +51,7 @@ const useProfile = () => {
       .required("Apellido materno requerido.")
       .matches(
         /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-        "El apellido debe tener letras, números, espacios y caracteres especiales.",
+        "El apellido debe tener letras, números, espacios y caracteres especiales."
       )
       .min(3, "El apellido debe tener al menos 3 caracteres.")
       .max(50, "El apellido no puede tener más de 50 caracteres."),
@@ -128,13 +130,21 @@ const useProfile = () => {
   };
 
   const handleChangeVehicle = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setVehicle((prevState) => ({
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const handleRemoveExperience = (id: number) => {
+    dispatch(deleteExperienceById(id));
+  };
+
+  const handleRemoveVehicle = (id: number) => {
+    dispatch(deleteVehicleById(id));
   };
 
   return {
@@ -151,12 +161,14 @@ const useProfile = () => {
     experience,
     handleChangeExperience,
     createExperienceValidation,
+    handleRemoveExperience,
     serviceTypes,
     vehicles,
     handleSubmitVehicle,
     vehicle,
     handleChangeVehicle,
     createVehicleValidation,
+    handleRemoveVehicle,
   };
 };
 

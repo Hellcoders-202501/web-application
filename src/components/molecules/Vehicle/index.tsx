@@ -8,28 +8,49 @@ import { ErrorMessage, Form, Formik } from "formik";
 import { ServiceType } from "@models/common";
 import { FaCar } from "react-icons/fa";
 import type { Vehicle as VehicleType } from "@models/user";
+import { MdDelete } from "react-icons/md";
 
-const VehicleCard = ({ vehicle }: { vehicle: VehicleType }) => {
+const VehicleCard = ({
+  vehicle,
+  handleDelete,
+  showActions,
+}: {
+  vehicle: VehicleType;
+  handleDelete: (id: number) => void;
+  showActions: boolean;
+}) => {
   return (
-    <div className="flex gap-5 items-center max-w-xl w-full">
-      <div className="flex gap-10 justify-between items-end">
-        <p className="font-extrabold">Marca</p>
-        <p className="text-sm border-b">{vehicle.brand}</p>
-      </div>
-      {/* <div className="flex gap-10 justify-between items-end w-full">
+    <div className="max-w-xl w-full flex justify-between">
+      <div
+        className={`flex gap-5 items-center ${
+          showActions ? "w-10/12" : "w-full"
+        }`}
+      >
+        <div className="flex gap-10 justify-between items-end">
+          <p className="font-extrabold">Marca</p>
+          <p className="text-sm border-b">{vehicle.brand}</p>
+        </div>
+        {/* <div className="flex gap-10 justify-between items-end w-full">
         <label htmlFor="service">Tipo de servicio</label>
         <p>{vehicle.serviceId}</p>
       </div> */}
-      {vehicle.imageUrl ? (
-        <Image
-          className="mx-auto rounded-lg border border-black/50"
-          src={vehicle.imageUrl}
-          alt="Vehicle"
-          width={300}
-          height={150}
-        />
-      ) : (
-        <FaCar size={52} color="black" className="mx-auto" />
+        {vehicle.imageUrl ? (
+          <Image
+            className="mx-auto rounded-lg border border-black/50"
+            src={vehicle.imageUrl}
+            alt="Vehicle"
+            width={300}
+            height={150}
+          />
+        ) : (
+          <FaCar size={52} color="black" className="mx-auto" />
+        )}
+      </div>
+
+      {showActions && (
+        <button type="button" className="cursor-pointer">
+          <MdDelete size={24} color="#CC0000" />
+        </button>
       )}
     </div>
   );
@@ -43,6 +64,7 @@ const Vehicle = ({
   vehicle,
   handleChangeVehicle,
   createVehicleValidation,
+  handleRemoveVehicle,
   loading,
 }: {
   isDriverView?: boolean;
@@ -54,15 +76,21 @@ const Vehicle = ({
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
   createVehicleValidation?: any;
+  handleRemoveVehicle?: (id: number) => void;
   loading: boolean;
 }) => {
   const [showAddVehicle, setShowAddVehicle] = useState(false);
 
   return (
     <div className="w-full flex flex-col gap-10">
-      <div className="overflow-scroll max-h-[500px] px-10">
+      <div className="overflow-auto max-h-[500px] px-10">
         {vehicles.map((vehicle, i) => (
-          <VehicleCard key={i} vehicle={vehicle} />
+          <VehicleCard
+            key={i}
+            vehicle={vehicle}
+            handleDelete={handleRemoveVehicle as (id: number) => {}}
+            showActions={!isDriverView}
+          />
         ))}
       </div>
       {!showAddVehicle && !isDriverView && (

@@ -19,12 +19,14 @@ const ProfileView = ({ userId }: { userId?: number }) => {
     experience,
     handleChangeExperience,
     createExperienceValidation,
+    handleRemoveExperience,
     serviceTypes,
     vehicles,
     handleSubmitVehicle,
     vehicle,
     handleChangeVehicle,
     createVehicleValidation,
+    handleRemoveVehicle,
   } = useProfile();
 
   return (
@@ -54,12 +56,14 @@ const ProfileView = ({ userId }: { userId?: number }) => {
         experience={experience}
         handleChangeExperience={handleChangeExperience}
         createExperienceValidation={createExperienceValidation}
+        handleRemoveExperience={handleRemoveExperience}
         serviceTypes={serviceTypes}
         vehicles={vehicles as Vehicle[]}
         addVehicle={handleSubmitVehicle}
         vehicle={vehicle}
         handleChangeVehicle={handleChangeVehicle}
         createVehicleValidation={createVehicleValidation}
+        handleRemoveVehicle={handleRemoveVehicle}
       />
     </div>
   );
