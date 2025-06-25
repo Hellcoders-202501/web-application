@@ -146,8 +146,7 @@ const ContractCard: FC<Props> = ({
                   Pagar el servicio
                 </DialogTitle>
                 <Description>
-                  Has marcado el servicio de transporte como finalizado. Por
-                  favor, realiza el pago.
+                  Para confirmar la solicitud, debes pagar el servicio.
                 </Description>
                 <div className="flex flex-col gap-5">
                   <PayPalButtons
