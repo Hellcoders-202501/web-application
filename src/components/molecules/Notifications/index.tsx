@@ -114,25 +114,25 @@ const NotificationCard = ({
   const defineText = () => {
     switch (type) {
       case "TRIP_STARTED":
-        return userType === "driver"
+        return userType === "DRIVER"
           ? "Has comenzado un viaje"
           : "El conductor ha comenzado un viaje";
       case "accepted":
-        return userType === "driver"
+        return userType === "DRIVER"
           ? "Your offer have been accepted"
           : "You have accepted the offer from Oscar Canellas";
       case "declined":
-        return userType === "driver"
+        return userType === "DRIVER"
           ? "Your offer have been declined"
           : "You have declined the offer from Oscar Canellas";
       case "offer":
         return "You have a new offer from a driver";
       case "TRIP_FINISHED_BY_DRIVER":
-        return userType === "driver"
+        return userType === "DRIVER"
           ? "Has marcado el viaje como finalizado"
           : "El conductor ha marcado el viaje como finalizado";
       case "TRIP_FINISHED_BY_CLIENT":
-        return userType === "driver"
+        return userType === "DRIVER"
           ? "El cliente ha marcado el viaje como finalizado"
           : "Has marcado el viaje como finalizado";
       default:

@@ -56,11 +56,15 @@ export interface User {
   userId: number;
 }
 
-export interface CreateVehicle extends Vehicle {
+export interface CreateVehicle extends VehicleInfo {
   driverId: number;
 }
 
-export interface Vehicle {
+export interface Vehicle extends VehicleInfo {
+  id: number;
+}
+
+export interface VehicleInfo {
   brand: string;
   imageUrl: string;
   serviceId: number;
@@ -70,7 +74,11 @@ export interface CreateExperience extends Experience {
   id: number;
 }
 
-export interface Experience {
+export interface Experience extends ExperienceInfo {
+  id: number;
+}
+
+export interface ExperienceInfo {
   job: string;
   duration: number;
 }

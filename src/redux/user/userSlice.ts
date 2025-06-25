@@ -16,8 +16,10 @@ import {
   getExperiencesByDriverId,
   getMostRankedDrivers,
   getVehiclesByDriverId,
+  setExperiences,
   setToken,
   setUserType,
+  setVehicles,
   signin,
   signup,
   updateUser,
@@ -94,6 +96,12 @@ const userSlice = createSlice({
     });
     builder.addCase(getDriverById.rejected, (state, action) => {
       state.loading = false;
+    });
+    builder.addCase(setExperiences, (state, action) => {
+      state.experiences = action.payload;
+    });
+    builder.addCase(setVehicles, (state, action) => {
+      state.vehicles = action.payload;
     });
     builder.addCase(getExperiencesByDriverId.pending, (state, action) => {
       state.loading = true;

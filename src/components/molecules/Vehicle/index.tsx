@@ -9,6 +9,7 @@ import { ServiceType } from "@models/common";
 import { FaCar } from "react-icons/fa";
 import type { Vehicle as VehicleType } from "@models/user";
 import { MdDelete } from "react-icons/md";
+import ConfirmationDialog from "@components/organisms/ConfirmationDialog";
 
 const VehicleCard = ({
   vehicle,
@@ -19,6 +20,8 @@ const VehicleCard = ({
   handleDelete: (id: number) => void;
   showActions: boolean;
 }) => {
+  const [showDelete, setShowDelete] = useState(false);
+
   return (
     <div className="max-w-xl w-full flex justify-between">
       <div
@@ -48,10 +51,23 @@ const VehicleCard = ({
       </div>
 
       {showActions && (
-        <button type="button" className="cursor-pointer">
+        <button
+          type="button"
+          className="cursor-pointer"
+          onClick={() => setShowDelete(true)}
+        >
           <MdDelete size={24} color="#CC0000" />
         </button>
       )}
+      <ConfirmationDialog
+        show={showDelete}
+        onClose={() => setShowDelete(false)}
+        message="¿Estás seguro de que deseas eliminar este vehículo?"
+        onConfirm={() => {
+          handleDelete(vehicle.id);
+          setShowDelete(false);
+        }}
+      />
     </div>
   );
 };
@@ -73,7 +89,7 @@ const Vehicle = ({
   addVehicle?: VoidFunction;
   vehicle?: CreateVehicle;
   handleChangeVehicle?: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => void;
   createVehicleValidation?: any;
   handleRemoveVehicle?: (id: number) => void;

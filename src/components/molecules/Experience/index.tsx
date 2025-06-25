@@ -7,6 +7,7 @@ import type {
 import { MdDelete } from "react-icons/md";
 import { ErrorMessage, Form, Formik } from "formik";
 import { useState } from "react";
+import ConfirmationDialog from "@components/organisms/ConfirmationDialog";
 
 const ExperienceCard = ({
   experience,
@@ -17,6 +18,8 @@ const ExperienceCard = ({
   handleDelete: (id: number) => void;
   showActions: boolean;
 }) => {
+  const [showDelete, setShowDelete] = useState(false);
+
   return (
     <div className="max-w-xl w-full flex justify-between">
       <div
@@ -39,10 +42,23 @@ const ExperienceCard = ({
       </div>
 
       {showActions && (
-        <button type="button" className="cursor-pointer">
+        <button
+          type="button"
+          className="cursor-pointer"
+          onClick={() => setShowDelete(true)}
+        >
           <MdDelete size={24} color="#CC0000" />
         </button>
       )}
+      <ConfirmationDialog
+        show={showDelete}
+        onClose={() => setShowDelete(false)}
+        message="¿Estás seguro de que deseas eliminar este vehículo?"
+        onConfirm={() => {
+          handleDelete(experience.id);
+          setShowDelete(false);
+        }}
+      />
     </div>
   );
 };
