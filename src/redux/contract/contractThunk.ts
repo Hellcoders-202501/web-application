@@ -397,7 +397,12 @@ export const startTripById = createAsyncThunk(
         );
         const state = getState() as IRootState;
         const driverId = state.user.user?.id;
-        await dispatch(getTripsByDriverId(driverId as number));
+
+        await Promise.all([
+          dispatch(getTripsByClientId(driverId as number)).unwrap(),
+          dispatch(getHistoryTripsByClientId(driverId as number)).unwrap(),
+        ]);
+
         return response;
       }
     } catch (error) {
@@ -505,7 +510,12 @@ export const finishTripByDriver = createAsyncThunk(
         );
         const state = getState() as IRootState;
         const driverId = state.user.user?.id;
-        await dispatch(getTripsByDriverId(driverId as number));
+
+        await Promise.all([
+          dispatch(getTripsByClientId(driverId as number)).unwrap(),
+          dispatch(getHistoryTripsByClientId(driverId as number)).unwrap(),
+        ]);
+
         return response;
       }
     } catch (error) {

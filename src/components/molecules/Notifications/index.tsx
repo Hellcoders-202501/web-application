@@ -89,6 +89,17 @@ const NotificationCard = ({
             <FaFileContract color="gray" className="md:hidden" size={80} />
           </>
         );
+      case "TRIP_COMPLETED":
+        return (
+          <>
+            <FaFileContract
+              color="#38761D"
+              className="hidden md:block"
+              size={120}
+            />
+            <FaFileContract color="#38761D" className="md:hidden" size={80} />
+          </>
+        );
       default:
         return null;
     }
@@ -112,6 +123,8 @@ const NotificationCard = ({
         return "El viaje ha sido finalizado por el conductor";
       case "TRIP_FINISHED_BY_CLIENT":
         return "El viaje ha sido finalizado por el cliente";
+      case "TRIP_COMPLETED":
+        return "El viaje ha sido completado";
       default:
         return null;
     }
@@ -139,6 +152,10 @@ const NotificationCard = ({
         return userType === "DRIVER"
           ? "El cliente ha marcado el viaje como finalizado"
           : "Has marcado el viaje como finalizado";
+      case "TRIP_COMPLETED":
+        return userType === "DRIVER"
+          ? "El pago será procesado a su cuenta"
+          : "Se procesará el pago al conductor";
       default:
         return null;
     }
