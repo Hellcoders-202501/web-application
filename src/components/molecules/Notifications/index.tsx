@@ -6,13 +6,19 @@ import { TiDelete } from "react-icons/ti";
 import { RiInformation2Fill } from "react-icons/ri";
 import { IoCheckmarkDoneCircle } from "react-icons/io5";
 import { FaFileContract } from "react-icons/fa6";
+import { IoAlertCircle } from "react-icons/io5";
+import { FaCar } from "react-icons/fa";
 import useNotification from "@hooks/useNotifications";
 
 const NotificationCard = ({
   type,
   read,
   userType,
-}: { type: string; read: boolean; userType: string | null }) => {
+}: {
+  type: string;
+  read: boolean;
+  userType: string | null;
+}) => {
   const defineIcon = () => {
     switch (type) {
       case "TRIP_STARTED":
@@ -30,7 +36,9 @@ const NotificationCard = ({
             />
           </>
         );
-      case "accepted":
+      case "REQUEST_APPLIED":
+        return <IoAlertCircle color="orange" size={120} />;
+      case "REQUEST_DECLINED":
         return (
           <>
             <FaCheckCircle
@@ -48,19 +56,11 @@ const NotificationCard = ({
             <TiDelete color="red" className="md:hidden" size={100} />
           </>
         );
-      case "offer":
+      case "CONTRACT_CREATED":
         return (
           <>
-            <RiInformation2Fill
-              color="orange"
-              className="hidden md:block"
-              size={120}
-            />
-            <RiInformation2Fill
-              color="orange"
-              className="md:hidden"
-              size={80}
-            />
+            <FaCar color="#1c96c5" className="hidden md:block" size={120} />
+            <FaCar color="#1c96c5" className="md:hidden" size={80} />
           </>
         );
       case "TRIP_FINISHED_BY_DRIVER":
@@ -98,8 +98,14 @@ const NotificationCard = ({
     switch (type) {
       case "TRIP_STARTED":
         return "El viaje ha comenzado";
-      case "declined":
-        return "Offer declined";
+      case "REQUEST_APPLIED":
+        return userType === "DRIVER"
+          ? "Has realizado una solicitud"
+          : "Has recibido una solicitud";
+      case "CONTRACT_CREATED":
+        return userType === "DRIVER"
+          ? "El cliente ha aceptado tu solicitud"
+          : "Has aceptado una solicitud";
       case "offer":
         return "New offer";
       case "TRIP_FINISHED_BY_DRIVER":
@@ -117,16 +123,14 @@ const NotificationCard = ({
         return userType === "DRIVER"
           ? "Has comenzado un viaje"
           : "El conductor ha comenzado un viaje";
-      case "accepted":
+      case "REQUEST_APPLIED":
         return userType === "DRIVER"
-          ? "Your offer have been accepted"
-          : "You have accepted the offer from Oscar Canellas";
-      case "declined":
+          ? "Has realizado una solicitud, el cliente la verá pronto"
+          : "Has recibido nuevas solicitudes a tu oferta";
+      case "CONTRACT_CREATED":
         return userType === "DRIVER"
-          ? "Your offer have been declined"
-          : "You have declined the offer from Oscar Canellas";
-      case "offer":
-        return "You have a new offer from a driver";
+          ? "Tu solicitud ha sido aceptada, revisa el nuevo contrato pendiente"
+          : "Has aceptado tu solicitud, revisa el nuevo contrato pendiente";
       case "TRIP_FINISHED_BY_DRIVER":
         return userType === "DRIVER"
           ? "Has marcado el viaje como finalizado"
@@ -156,7 +160,7 @@ const NotificationCard = ({
 
 const Notifications = ({ userType }: { userType: string | null }) => {
   const {
-    notifications,
+    sortedNotifications,
     loading,
     totalUnreadNotifications,
     handleReadNotifications,
@@ -165,47 +169,53 @@ const Notifications = ({ userType }: { userType: string | null }) => {
   return (
     <div>
       <Popover>
-        <PopoverButton
-          className="focus:outline-none cursor-pointer relative"
-          onClick={handleReadNotifications}
-        >
-          <IoIosNotifications color="white" size={24} />
-          <p>
-            {totalUnreadNotifications > 0 && (
-              <span
-                className="bg-main rounded-full text-white absolute -top-4 left-2 px-1
+        {({ open }) => (
+          <>
+            <PopoverButton
+              className="focus:outline-none cursor-pointer relative"
+              onClick={() => {
+                if (open) handleReadNotifications();
+              }}
+            >
+              <IoIosNotifications color="white" size={24} />
+              <p>
+                {totalUnreadNotifications > 0 && (
+                  <span
+                    className="bg-main rounded-full text-white absolute -top-4 left-2 px-1
                 py-1 text-xs border-2 border-white/50"
-              >
-                {totalUnreadNotifications}
-              </span>
-            )}
-          </p>
-        </PopoverButton>
-        <PopoverPanel
-          transition
-          anchor="bottom start"
-          className="md:min-w-xl md:w-auto w-10/12 min-h-44 bg-white 
-					shadow-[0_0_10px_0_rgba(0,0,0,0.2)] rounded-md"
-        >
-          <div className="flex flex-col gap-5 p-5 max-h-[680px] overflow-y-auto">
-            {loading ? (
-              <div className="flex justify-center items-center">
-                <p>Cargando notificaciones...</p>
+                  >
+                    {totalUnreadNotifications}
+                  </span>
+                )}
+              </p>
+            </PopoverButton>
+            <PopoverPanel
+              transition
+              anchor="bottom start"
+              className="md:min-w-xl md:w-auto w-10/12 min-h-44 bg-white 
+					    shadow-[0_0_10px_0_rgba(0,0,0,0.2)] rounded-md"
+            >
+              <div className="flex flex-col gap-5 p-5 max-h-[680px] overflow-y-auto">
+                {loading ? (
+                  <div className="flex justify-center items-center">
+                    <p>Cargando notificaciones...</p>
+                  </div>
+                ) : (
+                  sortedNotifications.map((notification, index) => {
+                    return (
+                      <NotificationCard
+                        key={index}
+                        type={notification.type}
+                        read={notification.seen}
+                        userType={userType}
+                      />
+                    );
+                  })
+                )}
               </div>
-            ) : (
-              notifications.map((notification, index) => {
-                return (
-                  <NotificationCard
-                    key={index}
-                    type={notification.type}
-                    read={notification.seen}
-                    userType={userType}
-                  />
-                );
-              })
-            )}
-          </div>
-        </PopoverPanel>
+            </PopoverPanel>
+          </>
+        )}
       </Popover>
     </div>
   );
