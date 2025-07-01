@@ -1,15 +1,29 @@
 "use client";
 import { IRootState, useAppDispatch, useAppSelector } from "@core/store";
 import useAuth from "@hooks/useAuth";
-import type { CreateExperience, CreateVehicle, User } from "@models/user";
 import {
+  CreateBankAccount,
+  EditBankAccount,
+  type CreateExperience,
+  type CreateVehicle,
+  type User,
+} from "@models/user";
+import {
+  getBankAccountTypes,
+  getServiceTypes,
+} from "@redux/common/commonThunk";
+import {
+  addBankAccount,
+  addExperience,
+  addVehicle,
+  deleteBankAccountById,
+  deleteExperienceById,
+  deleteVehicleById,
+  editBankAccount,
+  getBankAccountByDriverId,
   getExperiencesByDriverId,
   getVehiclesByDriverId,
   updateUser,
-  addExperience,
-  addVehicle,
-  deleteExperienceById,
-  deleteVehicleById,
 } from "@redux/user/userThunk";
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
@@ -21,11 +35,14 @@ const useProfile = () => {
 
   const [editable, setEditable] = useState(false);
   const [user, setUser] = useState<User>(currentUser);
-  const { experiences, vehicles, loading } = useAppSelector(
-    (state: IRootState) => state.user
-  );
-  const serviceTypes = useAppSelector(
-    (state: IRootState) => state.common.serviceTypes
+  const {
+    experiences,
+    vehicles,
+    loading,
+    bankAccount: bankAccountData,
+  } = useAppSelector((state: IRootState) => state.user);
+  const { serviceTypes, bankAccountTypes } = useAppSelector(
+    (state: IRootState) => state.common
   );
 
   const region = "PE";
@@ -82,6 +99,15 @@ const useProfile = () => {
     serviceId: Yup.number().required("Servicio requerido."),
   });
 
+  const createBankAccountValidation = Yup.object().shape({
+    bankName: Yup.string().required("Nombre del banco requerida."),
+    accountNumber: Yup.string()
+      .length(16, "La cuenta bancaria debe tener 16 digitos")
+      .matches(/^\d+$/, "Solo se permiten números")
+      .required("Cuenta bancaria requerida."),
+    accountTypeId: Yup.number().required("Tip de cuenta bancaria requerido."),
+  });
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUser((prevState) => ({
@@ -98,7 +124,27 @@ const useProfile = () => {
   useEffect(() => {
     dispatch(getExperiencesByDriverId(currentUser.id));
     dispatch(getVehiclesByDriverId(currentUser.id));
+    dispatch(getBankAccountByDriverId(currentUser.id));
+    if (!serviceTypes) dispatch(getServiceTypes());
+    if (!bankAccountTypes) dispatch(getBankAccountTypes());
   }, []);
+
+  const defineAccountTypeId = (type: string) => {
+    serviceTypes.forEach((serviceType) => {
+      if (serviceType.name === type) return serviceType.id;
+    });
+    return 3;
+  };
+
+  useEffect(() => {
+    if (bankAccountData)
+      setBankAccount({
+        id: currentUser.id,
+        bankName: bankAccountData.bankName,
+        accountNumber: bankAccountData.number,
+        accountTypeId: defineAccountTypeId(bankAccountData.type),
+      });
+  }, [bankAccountData]);
 
   const [experience, setExperience] = useState<CreateExperience>({
     id: currentUser.id,
@@ -113,12 +159,23 @@ const useProfile = () => {
     driverId: currentUser.id,
   });
 
+  const [bankAccount, setBankAccount] = useState<CreateBankAccount | EditBankAccount>({
+    driverId: currentUser.id,
+    bankName: "",
+    accountNumber: "",
+    accountTypeId: 0,
+  });
+
   const handleSubmitExperience = () => {
     dispatch(addExperience(experience));
   };
 
   const handleSubmitVehicle = () => {
     dispatch(addVehicle(vehicle));
+  };
+
+  const handleSubmitBankAccount = () => {
+    dispatch(addBankAccount(bankAccount));
   };
 
   const handleChangeExperience = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,12 +196,30 @@ const useProfile = () => {
     }));
   };
 
+  const handleChangeBankAccount = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setBankAccount((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   const handleRemoveExperience = (id: number) => {
     dispatch(deleteExperienceById(id));
   };
 
   const handleRemoveVehicle = (id: number) => {
     dispatch(deleteVehicleById(id));
+  };
+
+  const handleRemoveBankAccount = (id: number) => {
+    dispatch(deleteBankAccountById(id));
+  };
+
+  const handleEditBankAccount = () => {
+    dispatch(editBankAccount(bankAccount as EditBankAccount));
   };
 
   return {
@@ -169,6 +244,14 @@ const useProfile = () => {
     handleChangeVehicle,
     createVehicleValidation,
     handleRemoveVehicle,
+    bankAccountTypes,
+    bankAccountData,
+    handleSubmitBankAccount,
+    bankAccount,
+    handleChangeBankAccount,
+    createBankAccountValidation,
+    handleRemoveBankAccount,
+    handleEditBankAccount,
   };
 };
 

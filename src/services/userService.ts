@@ -1,8 +1,10 @@
 import { requests } from "@core/axiosAgent";
 import type {
+  CreateBankAccount,
   CreateExperience,
   CreateUser,
   CreateVehicle,
+  EditBankAccount,
   UpdateUser,
 } from "@models/user";
 
@@ -66,6 +68,22 @@ const deleteExperienceById = (id: number) => {
   return requests.delete(`/drivers/experience/${id}`);
 };
 
+const getBankAccountByDriverId = (id: number) => {
+  return requests.get(`/bank-account/${id}`);
+};
+
+const addBankAccount = (bankAccountInformation: CreateBankAccount) => {
+  return requests.post(`/bank-account`, bankAccountInformation);
+};
+
+const editBankAccount = (bankAccountInformation: EditBankAccount) => {
+  return requests.put(`/bank-account`, bankAccountInformation);
+};
+
+const deleteBankAccountById = (id: number) => {
+  return requests.delete(`/bank-account/${id}`);
+};
+
 const getMostRankedDrivers = () => {
   return requests.get("/drivers/most-ranked");
 };
@@ -81,10 +99,14 @@ export default {
   getExperiencesByDriverId,
   getVehiclesByDriverId,
   getCommentsByDriverId,
+  getBankAccountByDriverId,
   addVehicle,
   addExperience,
   // addComment,
+  addBankAccount,
+  editBankAccount,
   deleteVehicleById,
   deleteExperienceById,
+  deleteBankAccountById,
   getMostRankedDrivers,
 };

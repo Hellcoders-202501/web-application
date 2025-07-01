@@ -5,6 +5,7 @@ export interface IUserReduxState {
   experiences: Experience[] | undefined;
   vehicles: Vehicle[] | undefined;
   // comments: Comment[] | undefined;
+  bankAccount: BankAccount | undefined;
   rankedDrivers: User[] | undefined;
   driver: User | undefined;
   loading: boolean;
@@ -81,4 +82,28 @@ export interface Experience extends ExperienceInfo {
 export interface ExperienceInfo {
   job: string;
   duration: number;
+}
+
+export interface EditBankAccount extends BankAccountInfo {
+  id: number;
+}
+
+export interface CreateBankAccount extends BankAccountInfo {
+  driverId: number;
+}
+
+export interface BankAccountInfo {
+  bankName: string;
+  accountNumber: string;
+  accountTypeId: number;
+}
+
+export interface BankAccount {
+  id: number;
+  bankName: string;
+  number: string;
+  type: string;
+  currency: string;
+  createdAt: string;
+  transactions: [];
 }

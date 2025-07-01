@@ -21,7 +21,7 @@ export const getServiceTypes = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const getTripStatus = createAsyncThunk(
@@ -40,5 +40,24 @@ export const getTripStatus = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
+);
+
+export const getBankAccountTypes = createAsyncThunk(
+  "GET_BANK_ACCOUNT_TYPES",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await commonService.getBankAccountTypes();
+
+      if (response) {
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  }
 );

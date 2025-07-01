@@ -10,10 +10,14 @@ import type {
   Vehicle as VehicleType,
   CreateExperience,
   CreateVehicle,
+  CreateBankAccount,
+  BankAccount as IBankAccount,
+  EditBankAccount,
 } from "@models/user";
 import { Fragment } from "react";
 import useAuth from "@hooks/useAuth";
-import { ServiceType } from "@models/common";
+import { BankAccountType, ServiceType } from "@models/common";
+import BankAccount from "@components/molecules/BankAccount";
 
 const ProfileTabs = ({
   isDriverView = false,
@@ -36,6 +40,14 @@ const ProfileTabs = ({
   handleChangeVehicle,
   createVehicleValidation,
   handleRemoveVehicle,
+  bankAccountTypes,
+  bankAccountData,
+  addBankAccount,
+  bankAccount,
+  handleChangeBankAccount,
+  createBankAccountValidation,
+  handleRemoveBankAccount,
+  handleEditBankAccount,
 }: {
   isDriverView?: boolean;
   editable: boolean;
@@ -59,6 +71,16 @@ const ProfileTabs = ({
   ) => void;
   createVehicleValidation?: any;
   handleRemoveVehicle?: (id: number) => void;
+  bankAccountTypes: BankAccountType[];
+  bankAccountData?: IBankAccount;
+  addBankAccount?: VoidFunction;
+  bankAccount?: CreateBankAccount | EditBankAccount;
+  handleChangeBankAccount?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
+  createBankAccountValidation?: any;
+  handleRemoveBankAccount?: (id: number) => void;
+  handleEditBankAccount?: VoidFunction;
 }) => {
   const { userType } = useAuth();
 
@@ -73,6 +95,9 @@ const ProfileTabs = ({
           { label: "Vehículos", value: "vehicle" },
           { label: "Calificación y comentarios", value: "ratings" },
         ]
+      : []),
+    ...(userType === "DRIVER" && !isDriverView
+      ? [{ label: "Cuenta bancaria", value: "bank_account" }]
       : []),
   ];
 
@@ -117,6 +142,20 @@ const ProfileTabs = ({
         );
       case "ratings":
         return <Ratings />;
+      case "bank_account":
+        return (
+          <BankAccount
+            bankAccountData={bankAccountData}
+            bankAccountTypes={bankAccountTypes}
+            bankAccount={bankAccount}
+            addBankAccount={addBankAccount}
+            handleChangeBankAccount={handleChangeBankAccount}
+            createBankAccountValidation={createBankAccountValidation}
+            handleRemoveBankAccount={handleRemoveBankAccount}
+            handleEditBankAccount={handleEditBankAccount}
+            loading={loading}
+          />
+        );
       default:
         return <p>Personal Information</p>;
     }

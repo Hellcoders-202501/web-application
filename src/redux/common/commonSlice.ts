@@ -1,10 +1,16 @@
 import type { ICommonReduxState } from "@models/common";
 import { createSlice } from "@reduxjs/toolkit";
-import { getServiceTypes, getTripStatus, setAlertDialog } from "./commonThunk";
+import {
+  getBankAccountTypes,
+  getServiceTypes,
+  getTripStatus,
+  setAlertDialog,
+} from "./commonThunk";
 
 const initialState: ICommonReduxState = {
   serviceTypes: [],
   tripStatus: [],
+  bankAccountTypes: [],
   alertDialog: {
     open: false,
     type: "info",
@@ -36,6 +42,16 @@ const commonSlice = createSlice({
       state.tripStatus = action.payload as [];
     });
     builder.addCase(getTripStatus.rejected, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(getBankAccountTypes.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(getBankAccountTypes.fulfilled, (state, action) => {
+      state.loading = false;
+      state.bankAccountTypes = action.payload as [];
+    });
+    builder.addCase(getBankAccountTypes.rejected, (state, action) => {
       state.loading = false;
     });
     builder.addCase(setAlertDialog, (state, action) => {

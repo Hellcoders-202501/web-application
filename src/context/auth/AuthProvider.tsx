@@ -4,7 +4,11 @@ import Loading from "@components/atoms/Loading";
 import { useAppDispatch } from "@core/store";
 import useAuth from "@hooks/useAuth";
 import type { LoginState } from "@models/user";
-import { getServiceTypes, getTripStatus } from "@redux/common/commonThunk";
+import {
+  getBankAccountTypes,
+  getServiceTypes,
+  getTripStatus,
+} from "@redux/common/commonThunk";
 import {
   getCurrentUserById,
   setToken,
@@ -72,10 +76,11 @@ const AuthProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
     if (isClient || isDriver) {
       dispatch(setUserType(isClient ? "CLIENT" : "DRIVER"));
       dispatch(
-        getCurrentUserById({ id, type: isClient ? "CLIENT" : "DRIVER" }),
+        getCurrentUserById({ id, type: isClient ? "CLIENT" : "DRIVER" })
       );
       dispatch(getServiceTypes());
       dispatch(getTripStatus());
+      dispatch(getBankAccountTypes());
     }
   }, [token]);
 
@@ -85,7 +90,7 @@ const AuthProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
     dispatch(
       signin({
         ...loginForm,
-      }),
+      })
     );
   };
 

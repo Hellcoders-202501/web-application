@@ -27,6 +27,14 @@ const ProfileView = ({ userId }: { userId?: number }) => {
     handleChangeVehicle,
     createVehicleValidation,
     handleRemoveVehicle,
+    bankAccountTypes,
+    bankAccountData,
+    handleSubmitBankAccount,
+    bankAccount,
+    handleChangeBankAccount,
+    createBankAccountValidation,
+    handleRemoveBankAccount,
+    handleEditBankAccount,
   } = useProfile();
 
   return (
@@ -64,6 +72,14 @@ const ProfileView = ({ userId }: { userId?: number }) => {
         handleChangeVehicle={handleChangeVehicle}
         createVehicleValidation={createVehicleValidation}
         handleRemoveVehicle={handleRemoveVehicle}
+        bankAccountTypes={bankAccountTypes}
+        bankAccountData={bankAccountData}
+        addBankAccount={handleSubmitBankAccount}
+        bankAccount={bankAccount}
+        handleChangeBankAccount={handleChangeBankAccount}
+        createBankAccountValidation={createBankAccountValidation}
+        handleRemoveBankAccount={handleRemoveBankAccount}
+        handleEditBankAccount={handleEditBankAccount}
       />
     </div>
   );
