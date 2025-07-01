@@ -71,7 +71,7 @@ const ProfileTabs = ({
   ) => void;
   createVehicleValidation?: any;
   handleRemoveVehicle?: (id: number) => void;
-  bankAccountTypes: BankAccountType[];
+  bankAccountTypes?: BankAccountType[];
   bankAccountData?: IBankAccount;
   addBankAccount?: VoidFunction;
   bankAccount?: CreateBankAccount | EditBankAccount;

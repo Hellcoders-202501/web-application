@@ -84,7 +84,7 @@ const BankAccount = ({
   loading,
 }: {
   bankAccountData?: IBankAccount;
-  bankAccountTypes: BankAccountType[];
+  bankAccountTypes?: BankAccountType[];
   addBankAccount?: VoidFunction;
   bankAccount?: CreateBankAccount | EditBankAccount;
   handleChangeBankAccount?: (
@@ -183,7 +183,7 @@ const BankAccount = ({
                   id="accountTypeId"
                   onChange={handleChangeBankAccount}
                 >
-                  {bankAccountTypes.map((accountType) => (
+                  {bankAccountTypes?.map((accountType) => (
                     <option key={accountType.id} value={accountType.id}>
                       {accountType.type}
                     </option>
