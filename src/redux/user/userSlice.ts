@@ -1,12 +1,12 @@
 import type {
-  Experience,
-  CreateVehicle,
-  IUserReduxState,
-  User,
-  Vehicle,
   BankAccount,
+  Experience,
+  IUserReduxState,
+  RankedDriver,
+  Vehicle,
 } from "@models/user";
 import { createSlice } from "@reduxjs/toolkit";
+import { saveLocalToken } from "@util/storageUtil";
 import {
   addBankAccount,
   addExperience,
@@ -29,7 +29,6 @@ import {
   signup,
   updateUser,
 } from "./userThunk";
-import { saveLocalToken } from "@util/storageUtil";
 
 const initialState: IUserReduxState = {
   user: undefined,
@@ -242,7 +241,7 @@ const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(getMostRankedDrivers.fulfilled, (state, action) => {
-        state.rankedDrivers = action.payload as User[];
+        state.rankedDrivers = action.payload as RankedDriver[];
         state.loading = false;
       })
       .addCase(getMostRankedDrivers.rejected, (state, action) => {

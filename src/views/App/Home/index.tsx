@@ -1,12 +1,14 @@
 "use client";
-import { FaRegUserCircle } from "react-icons/fa";
-import UserCard from "@components/organisms/UserCard";
 import TripCard from "@components/molecules/TripCard";
+import UserCard from "@components/organisms/UserCard";
+import { type IRootState, useAppSelector } from "@core/store";
 import Link from "next/link";
-import { IRootState, useAppSelector } from "@core/store";
+import { FaRegUserCircle } from "react-icons/fa";
+import useHome from "./hooks/useHome";
 
 const HomeView = () => {
   const user = useAppSelector((state: IRootState) => state.user.user);
+  const { rankedDrivers, historyTripList, userType } = useHome();
 
   return (
     <div className="flex flex-col justify-center max-w-5xl mx-auto w-10/12 lg:w-auto">
@@ -31,14 +33,24 @@ const HomeView = () => {
         {/* Popular */}
         <div className="flex flex-col gap-10">
           <p className="text-3xl font-semibold border-l-2 pl-4">Popular</p>
-          <UserCard />
-          <UserCard />
+          {rankedDrivers ? (
+            rankedDrivers?.map((driver) => (
+              <UserCard key={driver.id} user={driver} />
+            ))
+          ) : (
+            <p>No hay conductores populares</p>
+          )}
         </div>
         {/* Recent */}
         <div className="flex flex-col gap-10">
           <p className="text-3xl font-semibold border-l-2 pl-4">Recientes</p>
-          <TripCard />
-          <TripCard />
+          {historyTripList ? (
+            historyTripList?.map((trip) => (
+              <TripCard key={trip.id} trip={trip} userType={userType} />
+            ))
+          ) : (
+            <p>No hay contratos recientes</p>
+          )}
         </div>
       </div>
     </div>

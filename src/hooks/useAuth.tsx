@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { IRootState, useAppSelector } from "@core/store";
-import { User } from "@models/user";
+import { type IRootState, useAppSelector } from "@core/store";
+import type { User } from "@models/user";
 
 const useAuth = () => {
   const currentUser: User = useAppSelector(
-    (state: IRootState) => state.user.user,
+    (state: IRootState) => state.user.user
   )!;
   const token: string = useAppSelector(
-    (state: IRootState) => state.user.token,
+    (state: IRootState) => state.user.token
   )!;
   const userType: string = useAppSelector(
-    (state: IRootState) => state.user.userType,
+    (state: IRootState) => state.user.userType
   )!;
 
   const isLoggedIn = !!currentUser;

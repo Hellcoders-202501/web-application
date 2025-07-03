@@ -6,7 +6,7 @@ export interface IUserReduxState {
   vehicles: Vehicle[] | undefined;
   // comments: Comment[] | undefined;
   bankAccount: BankAccount | undefined;
-  rankedDrivers: User[] | undefined;
+  rankedDrivers: RankedDriver[] | undefined;
   driver: User | undefined;
   loading: boolean;
 }
@@ -106,4 +106,13 @@ export interface BankAccount {
   currency: string;
   createdAt: string;
   transactions: [];
+}
+
+export interface RankedDriver {
+  id: number;
+  name: string;
+  firstLastName: string;
+  imageUrl: string | null;
+  phone: string;
+  rating: number;
 }

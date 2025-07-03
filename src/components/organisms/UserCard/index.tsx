@@ -1,15 +1,18 @@
+import type { RankedDriver } from "@models/user";
 import { FaRegUserCircle } from "react-icons/fa";
 
-const UserCard = () => {
-	return (
-		<div className="card flex gap-5 items-center px-10 py-8 min-h-[200px]">
-			<FaRegUserCircle size={120} />
-			<div>
-				<p className="text-2xl font-semibold">Oscar Canellas</p>
-				<p>Número telefónico: 983288372</p>
-				<p>Calificación: 5</p>
-			</div>
-		</div>
-	);
+const UserCard = ({ user }: { user: RankedDriver }) => {
+  return (
+    <div className="card flex gap-5 items-center px-10 py-8 min-h-[200px]">
+      <FaRegUserCircle size={120} />
+      <div>
+        <p className="text-2xl font-semibold">
+          {user.name} {user.firstLastName}
+        </p>
+        <p>Número telefónico: {user.phone}</p>
+        <p>Calificación: {user.rating}</p>
+      </div>
+    </div>
+  );
 };
 export default UserCard;

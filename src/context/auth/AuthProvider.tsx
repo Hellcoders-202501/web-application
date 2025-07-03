@@ -11,6 +11,7 @@ import {
 } from "@redux/common/commonThunk";
 import {
   getCurrentUserById,
+  getMostRankedDrivers,
   setToken,
   setUserType,
   signin,
@@ -81,6 +82,7 @@ const AuthProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
       dispatch(getServiceTypes());
       dispatch(getTripStatus());
       dispatch(getBankAccountTypes());
+      dispatch(getMostRankedDrivers());
     }
   }, [token]);
 
