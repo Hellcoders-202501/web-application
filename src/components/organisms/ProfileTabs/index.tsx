@@ -1,23 +1,25 @@
 "use client";
+import BankAccount from "@components/molecules/BankAccount";
 import Experience from "@components/molecules/Experience";
 import PersonalInformation from "@components/molecules/PersonalInformation";
-import Vehicle from "@components/molecules/Vehicle";
 import Ratings from "@components/molecules/Ratings";
+import Vehicle from "@components/molecules/Vehicle";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import useAuth from "@hooks/useAuth";
+import type { BankAccountType, ServiceType } from "@models/common";
 import type {
-  User,
-  Experience as ExperienceType,
-  Vehicle as VehicleType,
+  Comment,
+  CreateBankAccount,
+  CreateComment,
   CreateExperience,
   CreateVehicle,
-  CreateBankAccount,
-  BankAccount as IBankAccount,
   EditBankAccount,
+  Experience as ExperienceType,
+  BankAccount as IBankAccount,
+  User,
+  Vehicle as VehicleType,
 } from "@models/user";
 import { Fragment } from "react";
-import useAuth from "@hooks/useAuth";
-import { BankAccountType, ServiceType } from "@models/common";
-import BankAccount from "@components/molecules/BankAccount";
 
 const ProfileTabs = ({
   isDriverView = false,
@@ -40,6 +42,12 @@ const ProfileTabs = ({
   handleChangeVehicle,
   createVehicleValidation,
   handleRemoveVehicle,
+  comments,
+  addComment,
+  comment,
+  handleChangeComment,
+  createCommentValidation,
+  handleRemoveComment,
   bankAccountTypes,
   bankAccountData,
   addBankAccount,
@@ -71,6 +79,12 @@ const ProfileTabs = ({
   ) => void;
   createVehicleValidation?: any;
   handleRemoveVehicle?: (id: number) => void;
+  comments: Comment[];
+  addComment?: VoidFunction;
+  comment?: CreateComment;
+  handleChangeComment?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  createCommentValidation?: any;
+  handleRemoveComment?: (id: number) => void;
   bankAccountTypes?: BankAccountType[];
   bankAccountData?: IBankAccount;
   addBankAccount?: VoidFunction;
@@ -141,7 +155,18 @@ const ProfileTabs = ({
           />
         );
       case "ratings":
-        return <Ratings />;
+        return (
+          <Ratings
+            isDriverView={userType === "CLIENT"}
+            comments={comments}
+            addComment={addComment}
+            comment={comment}
+            handleChangeComment={handleChangeComment}
+            createCommentValidation={createCommentValidation}
+            handleRemoveComment={handleRemoveComment}
+            loading={loading}
+          />
+        );
       case "bank_account":
         return (
           <BankAccount

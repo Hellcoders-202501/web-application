@@ -1,6 +1,7 @@
 "use client";
-import { IRootState, useAppDispatch, useAppSelector } from "@core/store";
+import { type IRootState, useAppDispatch, useAppSelector } from "@core/store";
 import {
+  getCommentsByDriverId,
   getDriverById,
   getExperiencesByDriverId,
   getVehiclesByDriverId,
@@ -10,7 +11,7 @@ import { useEffect } from "react";
 const useDriverProfile = ({ driverId }: { driverId: number }) => {
   const dispatch = useAppDispatch();
 
-  const { driver, experiences, vehicles, loading } = useAppSelector(
+  const { driver, experiences, vehicles, comments, loading } = useAppSelector(
     (state: IRootState) => state.user
   );
   const serviceTypes = useAppSelector(
@@ -22,6 +23,7 @@ const useDriverProfile = ({ driverId }: { driverId: number }) => {
       dispatch(getDriverById(driverId));
       dispatch(getExperiencesByDriverId(driverId));
       dispatch(getVehiclesByDriverId(driverId));
+      dispatch(getCommentsByDriverId(driverId));
     }
   }, [driverId]);
 
@@ -29,6 +31,7 @@ const useDriverProfile = ({ driverId }: { driverId: number }) => {
     driver,
     experiences,
     vehicles,
+    comments,
     loading,
     serviceTypes,
   };

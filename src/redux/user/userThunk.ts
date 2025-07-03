@@ -1,6 +1,7 @@
 import store, { type IRootState } from "@core/store";
 import type {
   CreateBankAccount,
+  CreateComment,
   CreateExperience,
   CreateUser,
   CreateVehicle,
@@ -366,23 +367,43 @@ export const addExperience = createAsyncThunk(
   }
 );
 
-// export const addComment = createAsyncThunk(
-//   "ADD_COMMENT",
-//   async (commentInformation: CreateComment, { rejectWithValue }) => {
-//     try {
-//       const response = await userServices.addComment(commentInformation);
-//       if (response) {
-//         return response;
-//       }
-//     } catch (error) {
-//       const err = error as AxiosError;
-//       return rejectWithValue({
-//         status: err.response?.status,
-//         message: err.response?.data,
-//       });
-//     }
-//   },
-// );
+export const addComment = createAsyncThunk(
+  "ADD_COMMENT",
+  async (
+    commentInformation: CreateComment,
+    { rejectWithValue, getState, dispatch }
+  ) => {
+    try {
+      const response = await userServices.addComment(commentInformation);
+      if (response) {
+        const state = getState() as IRootState;
+        const driverId = state.user.user?.id;
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "Comentario añadido correctamente",
+            type: "success",
+          })
+        );
+        await dispatch(getCommentsByDriverId(driverId as number));
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      dispatch(
+        setAlertDialog({
+          open: true,
+          message: "Error al añadir comentario",
+          type: "error",
+        })
+      );
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  }
+);
 
 export const addBankAccount = createAsyncThunk(
   "ADD_BANK_ACCOUNT",
@@ -522,6 +543,41 @@ export const deleteExperienceById = createAsyncThunk(
         setAlertDialog({
           open: true,
           message: "Error al eliminar experiencia",
+          type: "error",
+        })
+      );
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  }
+);
+
+export const deleteCommentById = createAsyncThunk(
+  "DELETE_COMMENT_BY_ID",
+  async (id: number, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const response = await userServices.deleteCommentById(id);
+      if (response) {
+        const state = getState() as IRootState;
+        const driverId = state.user.user?.id;
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "Comentario eliminado correctamente",
+            type: "success",
+          })
+        );
+        await dispatch(getCommentsByDriverId(driverId as number));
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      dispatch(
+        setAlertDialog({
+          open: true,
+          message: "Error al eliminar comentario",
           type: "error",
         })
       );

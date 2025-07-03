@@ -1,12 +1,13 @@
 "use client";
-import { IRootState, useAppDispatch, useAppSelector } from "@core/store";
+import { type IRootState, useAppDispatch, useAppSelector } from "@core/store";
 import useAuth from "@hooks/useAuth";
-import {
+import type {
   CreateBankAccount,
+  CreateComment,
+  CreateExperience,
+  CreateVehicle,
   EditBankAccount,
-  type CreateExperience,
-  type CreateVehicle,
-  type User,
+  User,
 } from "@models/user";
 import {
   getBankAccountTypes,
@@ -14,13 +15,16 @@ import {
 } from "@redux/common/commonThunk";
 import {
   addBankAccount,
+  addComment,
   addExperience,
   addVehicle,
   deleteBankAccountById,
+  deleteCommentById,
   deleteExperienceById,
   deleteVehicleById,
   editBankAccount,
   getBankAccountByDriverId,
+  getCommentsByDriverId,
   getExperiencesByDriverId,
   getVehiclesByDriverId,
   updateUser,
@@ -38,11 +42,12 @@ const useProfile = () => {
   const {
     experiences,
     vehicles,
+    comments,
     loading,
     bankAccount: bankAccountData,
   } = useAppSelector((state: IRootState) => state.user);
   const { serviceTypes, bankAccountTypes } = useAppSelector(
-    (state: IRootState) => state.common,
+    (state: IRootState) => state.common
   );
 
   const region = "PE";
@@ -52,7 +57,7 @@ const useProfile = () => {
       .required("Nombre requerido.")
       .matches(
         /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-        "El nombre de usuario debe tener letras, números, espacios y caracteres especiales.",
+        "El nombre de usuario debe tener letras, números, espacios y caracteres especiales."
       )
       .min(3, "El nombre de usuario debe tener al menos 3 caracteres.")
       .max(50, "El nombre de usuario no puede tener más de 50 caracteres."),
@@ -60,7 +65,7 @@ const useProfile = () => {
       .required("Apellido paterno requerido.")
       .matches(
         /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-        "El nombre debe tener letras, números, espacios y caracteres especiales.",
+        "El nombre debe tener letras, números, espacios y caracteres especiales."
       )
       .min(3, "El nombre debe tener al menos 3 caracteres.")
       .max(50, "El nombre no puede tener más de 50 caracteres."),
@@ -68,7 +73,7 @@ const useProfile = () => {
       .required("Apellido materno requerido.")
       .matches(
         /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-        "El apellido debe tener letras, números, espacios y caracteres especiales.",
+        "El apellido debe tener letras, números, espacios y caracteres especiales."
       )
       .min(3, "El apellido debe tener al menos 3 caracteres.")
       .max(50, "El apellido no puede tener más de 50 caracteres."),
@@ -99,6 +104,8 @@ const useProfile = () => {
     serviceId: Yup.number().required("Servicio requerido."),
   });
 
+  const createCommentValidation = Yup.object().shape({});
+
   const createBankAccountValidation = Yup.object().shape({
     bankName: Yup.string().required("Nombre del banco requerida."),
     accountNumber: Yup.string()
@@ -124,6 +131,7 @@ const useProfile = () => {
   useEffect(() => {
     dispatch(getExperiencesByDriverId(currentUser.id));
     dispatch(getVehiclesByDriverId(currentUser.id));
+    dispatch(getCommentsByDriverId(currentUser.id));
     dispatch(getBankAccountByDriverId(currentUser.id));
     if (!serviceTypes) dispatch(getServiceTypes());
     if (!bankAccountTypes) dispatch(getBankAccountTypes());
@@ -159,13 +167,17 @@ const useProfile = () => {
     driverId: currentUser.id,
   });
 
+  const [comment, setComment] = useState<CreateComment>({
+    rating: 0,
+  });
+
   const [bankAccount, setBankAccount] = useState<
     CreateBankAccount | EditBankAccount
   >({
     driverId: currentUser.id,
     bankName: "",
     accountNumber: "",
-    accountTypeId: 0,
+    accountTypeId: 3,
   });
 
   const handleSubmitExperience = () => {
@@ -174,6 +186,10 @@ const useProfile = () => {
 
   const handleSubmitVehicle = () => {
     dispatch(addVehicle(vehicle));
+  };
+
+  const handleSubmitComment = () => {
+    dispatch(addComment(comment));
   };
 
   const handleSubmitBankAccount = () => {
@@ -189,7 +205,7 @@ const useProfile = () => {
   };
 
   const handleChangeVehicle = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setVehicle((prevState) => ({
@@ -198,8 +214,16 @@ const useProfile = () => {
     }));
   };
 
+  const handleChangeComment = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setComment((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   const handleChangeBankAccount = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setBankAccount((prevState) => ({
@@ -214,6 +238,10 @@ const useProfile = () => {
 
   const handleRemoveVehicle = (id: number) => {
     dispatch(deleteVehicleById(id));
+  };
+
+  const handleRemoveComment = (id: number) => {
+    dispatch(deleteCommentById(id));
   };
 
   const handleRemoveBankAccount = (id: number) => {
@@ -246,6 +274,12 @@ const useProfile = () => {
     handleChangeVehicle,
     createVehicleValidation,
     handleRemoveVehicle,
+    comments,
+    handleSubmitComment,
+    comment,
+    handleChangeComment,
+    createCommentValidation,
+    handleRemoveComment,
     bankAccountTypes,
     bankAccountData,
     handleSubmitBankAccount,

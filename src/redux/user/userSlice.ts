@@ -36,6 +36,7 @@ const initialState: IUserReduxState = {
   userType: null,
   experiences: [],
   vehicles: [],
+  comments: [],
   bankAccount: undefined,
   rankedDrivers: [],
   driver: undefined,

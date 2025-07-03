@@ -1,11 +1,11 @@
 "use client";
 import UserProfile from "@components/molecules/UserProfile";
 import ProfileTabs from "@components/organisms/ProfileTabs";
-import { Experience, User, Vehicle } from "@models/user";
+import type { Comment, Experience, User, Vehicle } from "@models/user";
 import useDriverProfile from "./hooks/useDriverProfile";
 
 const DriverProfileView = ({ userId }: { userId: number }) => {
-  const { driver, experiences, vehicles, loading, serviceTypes } =
+  const { driver, experiences, vehicles, comments, loading, serviceTypes } =
     useDriverProfile({ driverId: userId });
 
   return (
@@ -19,6 +19,7 @@ const DriverProfileView = ({ userId }: { userId: number }) => {
         user={driver as User}
         loading={loading}
         experiences={experiences as Experience[]}
+        comments={comments as Comment[]}
         serviceTypes={serviceTypes}
         vehicles={vehicles as Vehicle[]}
       />
