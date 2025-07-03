@@ -139,7 +139,7 @@ const useProfile = () => {
   useEffect(() => {
     if (bankAccountData)
       setBankAccount({
-        id: currentUser.id,
+        id: bankAccountData.id,
         bankName: bankAccountData.bankName,
         accountNumber: bankAccountData.number,
         accountTypeId: defineAccountTypeId(bankAccountData.type),

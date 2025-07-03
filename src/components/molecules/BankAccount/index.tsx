@@ -217,7 +217,7 @@ const BankAccount = ({
                 disabled={loading}
                 loading={loading}
               >
-                Crear
+                {showEdit ? "Actualizar" : "Crear"}
               </Button>
             </div>
           </Form>
