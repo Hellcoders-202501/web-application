@@ -46,6 +46,9 @@ const declineApplication = (id: number) => {
 };
 
 // Trips
+const getTripById = (tripId: number) => {
+  return requests.get(`/trips/${tripId}`);
+};
 
 const getTripsByDriverIdAndStatusId = (driverId: number, statusId: number) => {
   return requests.get(`/trips/driver/${driverId}/status/${statusId}`);
@@ -89,6 +92,7 @@ export default {
   getApplicationByRequestId,
   createContractByApplicationId,
   declineApplication,
+  getTripById,
   getTripsByDriverIdAndStatusId,
   getTripsByDriverId,
   getTripsByClientIdAndStatusId,

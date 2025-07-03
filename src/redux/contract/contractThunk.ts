@@ -8,6 +8,7 @@ import type { AxiosError } from "axios";
 // Actions
 
 export const clearApplications = createAction("CLEAR_APPLICATIONS");
+export const clearTrip = createAction("CLEAR_TRIP");
 
 // Requests
 
@@ -19,7 +20,7 @@ export const makeRequest = createAsyncThunk(
       serviceId: number;
       trip: Trip;
     },
-    { rejectWithValue, dispatch, getState },
+    { rejectWithValue, dispatch, getState }
   ) => {
     try {
       const response = await contractsService.makeRequest(request);
@@ -30,7 +31,7 @@ export const makeRequest = createAsyncThunk(
             open: true,
             message: "Solicitud realizada!",
             type: "success",
-          }),
+          })
         );
         const state = getState() as IRootState;
         const clientId = state.user.user?.id;
@@ -44,14 +45,14 @@ export const makeRequest = createAsyncThunk(
           open: true,
           message: "Error al realizar la solicitud",
           type: "error",
-        }),
+        })
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const getRequestById = createAsyncThunk(
@@ -70,7 +71,7 @@ export const getRequestById = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const getRequestsByClientId = createAsyncThunk(
@@ -89,7 +90,7 @@ export const getRequestsByClientId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const getRequestsByServiceId = createAsyncThunk(
@@ -108,7 +109,7 @@ export const getRequestsByServiceId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const deleteRequestById = createAsyncThunk(
@@ -122,7 +123,7 @@ export const deleteRequestById = createAsyncThunk(
             open: true,
             message: "Solicitud eliminada con exito!",
             type: "success",
-          }),
+          })
         );
         const state = getState() as IRootState;
         const clientId = state.user.user?.id;
@@ -136,14 +137,14 @@ export const deleteRequestById = createAsyncThunk(
           open: true,
           message: "Error al eliminar la solicitud",
           type: "error",
-        }),
+        })
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 // Applications
@@ -160,7 +161,7 @@ export const createApplication = createAsyncThunk(
             open: true,
             message: "Oferta realizada con exito!",
             type: "success",
-          }),
+          })
         );
         return response;
       }
@@ -171,14 +172,14 @@ export const createApplication = createAsyncThunk(
           open: true,
           message: "Error al realizar la oferta",
           type: "error",
-        }),
+        })
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const getApplicationsByRequestId = createAsyncThunk(
@@ -198,7 +199,7 @@ export const getApplicationsByRequestId = createAsyncThunk(
             open: true,
             message: "No se encontraron ofertas para la solicitud",
             type: "warning",
-          }),
+          })
         );
       }
       return rejectWithValue({
@@ -206,7 +207,7 @@ export const getApplicationsByRequestId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const createContractByApplicationId = createAsyncThunk(
@@ -221,7 +222,7 @@ export const createContractByApplicationId = createAsyncThunk(
             open: true,
             message: "Contrato aceptado con exito!",
             type: "success",
-          }),
+          })
         );
         const state = getState() as IRootState;
         const clientId = state.user.user?.id;
@@ -236,14 +237,14 @@ export const createContractByApplicationId = createAsyncThunk(
           open: true,
           message: "Error al aceptar la oferta",
           type: "error",
-        }),
+        })
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const declineApplication = createAsyncThunk(
@@ -257,7 +258,7 @@ export const declineApplication = createAsyncThunk(
             open: true,
             message: "Oferta rechazada con exito!",
             type: "success",
-          }),
+          })
         );
         return response;
       }
@@ -268,21 +269,40 @@ export const declineApplication = createAsyncThunk(
           open: true,
           message: "Error al rechazar la oferta",
           type: "error",
-        }),
+        })
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 // Trips
 
+export const getTripById = createAsyncThunk(
+  "GET_TRIP_BY_ID",
+  async (tripId: number, { rejectWithValue }) => {
+    try {
+      const response = await contractsService.getTripById(tripId);
+
+      if (response) {
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  }
+);
+
 export const getTripsByDriverId = createAsyncThunk(
   "GET_TRIPS_BY_DRIVER_ID",
-  async (driverId: number, { rejectWithValue, getState }) => {
+  async (driverId: number, { rejectWithValue }) => {
     try {
       // const state = getState() as IRootState;
       // const pendingId = state.common.tripStatus.find(
@@ -301,7 +321,7 @@ export const getTripsByDriverId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const getHistoryTripsByDriverId = createAsyncThunk(
@@ -310,12 +330,12 @@ export const getHistoryTripsByDriverId = createAsyncThunk(
     try {
       const state = getState() as IRootState;
       const completedId = state.common.tripStatus.find(
-        (status) => status.status === "COMPLETED",
+        (status) => status.status === "COMPLETED"
       )?.id as number;
 
       const response = await contractsService.getTripsByDriverIdAndStatusId(
         driverId,
-        completedId,
+        completedId
       );
 
       if (response) {
@@ -328,7 +348,7 @@ export const getHistoryTripsByDriverId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const getTripsByClientId = createAsyncThunk(
@@ -352,7 +372,7 @@ export const getTripsByClientId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const getHistoryTripsByClientId = createAsyncThunk(
@@ -361,12 +381,12 @@ export const getHistoryTripsByClientId = createAsyncThunk(
     try {
       const state = getState() as IRootState;
       const completedId = state.common.tripStatus.find(
-        (status) => status.status === "COMPLETED",
+        (status) => status.status === "COMPLETED"
       )?.id as number;
 
       const response = await contractsService.getTripsByClientIdAndStatusId(
         clientId,
-        completedId,
+        completedId
       );
 
       if (response) {
@@ -379,7 +399,7 @@ export const getHistoryTripsByClientId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const startTripById = createAsyncThunk(
@@ -393,7 +413,7 @@ export const startTripById = createAsyncThunk(
             open: true,
             message: "Contrato iniciado con éxito!",
             type: "success",
-          }),
+          })
         );
         const state = getState() as IRootState;
         const driverId = state.user.user?.id;
@@ -412,14 +432,14 @@ export const startTripById = createAsyncThunk(
           open: true,
           message: "Error al iniciar el contrato",
           type: "error",
-        }),
+        })
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const deleteTripById = createAsyncThunk(
@@ -433,7 +453,7 @@ export const deleteTripById = createAsyncThunk(
             open: true,
             message: "Contrato eliminado con exito!",
             type: "success",
-          }),
+          })
         );
         return response;
       }
@@ -444,14 +464,14 @@ export const deleteTripById = createAsyncThunk(
           open: true,
           message: "Error al eliminar el contrato",
           type: "error",
-        }),
+        })
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const finishTripByClient = createAsyncThunk(
@@ -465,7 +485,7 @@ export const finishTripByClient = createAsyncThunk(
             open: true,
             message: "Contrato finalizado con éxito!",
             type: "success",
-          }),
+          })
         );
         const state = getState() as IRootState;
         const clientId = state.user.user?.id;
@@ -485,14 +505,14 @@ export const finishTripByClient = createAsyncThunk(
           open: true,
           message: "Error al finalizar el contrato",
           type: "error",
-        }),
+        })
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  },
+  }
 );
 
 export const finishTripByDriver = createAsyncThunk(
@@ -506,7 +526,7 @@ export const finishTripByDriver = createAsyncThunk(
             open: true,
             message: "Contrato marcado como finalizado con éxito!",
             type: "success",
-          }),
+          })
         );
         const state = getState() as IRootState;
         const driverId = state.user.user?.id;
@@ -525,12 +545,12 @@ export const finishTripByDriver = createAsyncThunk(
           open: true,
           message: "Error al finalizar el contrato",
           type: "error",
-        }),
+        })
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  },
+  }
 );

@@ -2,6 +2,7 @@ export interface IContractReduxState {
   requestResultList: RequestResult[];
   requestResult: RequestResult | null;
   tripsList: RequestResult[];
+  trip: RequestResult | null;
   pendingTripsList: RequestResult[];
   historyTripsList: RequestResult[];
   applicationList: ApplicationResult | null;
@@ -64,7 +65,7 @@ export interface RequestResult {
       id: number;
       amount: number;
       status: string;
-    }
+    };
   };
 }
 

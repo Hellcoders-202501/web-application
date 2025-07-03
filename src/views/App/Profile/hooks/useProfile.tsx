@@ -1,12 +1,12 @@
 "use client";
-import { IRootState, useAppDispatch, useAppSelector } from "@core/store";
+import { type IRootState, useAppDispatch, useAppSelector } from "@core/store";
 import useAuth from "@hooks/useAuth";
-import {
+import type {
   CreateBankAccount,
+  CreateExperience,
+  CreateVehicle,
   EditBankAccount,
-  type CreateExperience,
-  type CreateVehicle,
-  type User,
+  User,
 } from "@models/user";
 import {
   getBankAccountTypes,
@@ -42,7 +42,7 @@ const useProfile = () => {
     bankAccount: bankAccountData,
   } = useAppSelector((state: IRootState) => state.user);
   const { serviceTypes, bankAccountTypes } = useAppSelector(
-    (state: IRootState) => state.common,
+    (state: IRootState) => state.common
   );
 
   const region = "PE";
@@ -52,7 +52,7 @@ const useProfile = () => {
       .required("Nombre requerido.")
       .matches(
         /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-        "El nombre de usuario debe tener letras, números, espacios y caracteres especiales.",
+        "El nombre de usuario debe tener letras, números, espacios y caracteres especiales."
       )
       .min(3, "El nombre de usuario debe tener al menos 3 caracteres.")
       .max(50, "El nombre de usuario no puede tener más de 50 caracteres."),
@@ -60,7 +60,7 @@ const useProfile = () => {
       .required("Apellido paterno requerido.")
       .matches(
         /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-        "El nombre debe tener letras, números, espacios y caracteres especiales.",
+        "El nombre debe tener letras, números, espacios y caracteres especiales."
       )
       .min(3, "El nombre debe tener al menos 3 caracteres.")
       .max(50, "El nombre no puede tener más de 50 caracteres."),
@@ -68,7 +68,7 @@ const useProfile = () => {
       .required("Apellido materno requerido.")
       .matches(
         /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/,
-        "El apellido debe tener letras, números, espacios y caracteres especiales.",
+        "El apellido debe tener letras, números, espacios y caracteres especiales."
       )
       .min(3, "El apellido debe tener al menos 3 caracteres.")
       .max(50, "El apellido no puede tener más de 50 caracteres."),
@@ -165,7 +165,7 @@ const useProfile = () => {
     driverId: currentUser.id,
     bankName: "",
     accountNumber: "",
-    accountTypeId: 0,
+    accountTypeId: 3,
   });
 
   const handleSubmitExperience = () => {
@@ -189,7 +189,7 @@ const useProfile = () => {
   };
 
   const handleChangeVehicle = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setVehicle((prevState) => ({
@@ -199,7 +199,7 @@ const useProfile = () => {
   };
 
   const handleChangeBankAccount = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setBankAccount((prevState) => ({

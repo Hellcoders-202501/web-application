@@ -6,6 +6,7 @@ import type {
 import { createSlice } from "@reduxjs/toolkit";
 import {
   clearApplications,
+  clearTrip,
   createApplication,
   createContractByApplicationId,
   declineApplication,
@@ -18,6 +19,7 @@ import {
   getRequestById,
   getRequestsByClientId,
   getRequestsByServiceId,
+  getTripById,
   getTripsByClientId,
   getTripsByDriverId,
   makeRequest,
@@ -28,6 +30,7 @@ const initialState: IContractReduxState = {
   requestResultList: [],
   requestResult: null,
   tripsList: [],
+  trip: null,
   pendingTripsList: [],
   historyTripsList: [],
   applicationList: null,
@@ -128,6 +131,19 @@ const contractSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(declineApplication.rejected, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(clearTrip, (state, action) => {
+      state.trip = null;
+    });
+    builder.addCase(getTripById.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(getTripById.fulfilled, (state, action) => {
+      state.loading = false;
+      state.trip = action.payload as RequestResult;
+    });
+    builder.addCase(getTripById.rejected, (state, action) => {
       state.loading = false;
     });
     builder.addCase(getTripsByDriverId.pending, (state, action) => {

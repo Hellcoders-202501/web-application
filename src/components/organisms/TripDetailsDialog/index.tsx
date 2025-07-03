@@ -1,8 +1,7 @@
-import CustomDialog from "@components/molecules/Dialog";
-import { FaEye, FaRegUserCircle } from "react-icons/fa";
-import useTripDetails from "./hooks/useTripDetails";
 import Loading from "@components/atoms/Loading";
-import Link from "next/link";
+import CustomDialog from "@components/molecules/Dialog";
+import { FaRegUserCircle } from "react-icons/fa";
+import useTripDetails from "./hooks/useTripDetails";
 
 const TripDetailsDialog = ({
   show = false,
@@ -13,15 +12,17 @@ const TripDetailsDialog = ({
   onClose: VoidFunction;
   tripId: number;
 }) => {
-  const {
-    requestResult: trip,
-    userType,
-    definePaymentStatus,
-    defineTripStatus,
-  } = useTripDetails(tripId);
+  const { trip, userType, clear, definePaymentStatus, defineTripStatus } =
+    useTripDetails(tripId);
 
   return (
-    <CustomDialog open={show} onClose={onClose}>
+    <CustomDialog
+      open={show}
+      onClose={() => {
+        onClose();
+        clear();
+      }}
+    >
       {trip ? (
         <div className="px-10 py-8">
           <div className="flex justify-between font-semibold text-lg">

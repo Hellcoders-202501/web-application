@@ -1,19 +1,21 @@
-import { IRootState, useAppDispatch, useAppSelector } from "@core/store";
+import { type IRootState, useAppDispatch, useAppSelector } from "@core/store";
 import useAuth from "@hooks/useAuth";
-import { getRequestById } from "@redux/contract/contractThunk";
+import { clearTrip, getTripById } from "@redux/contract/contractThunk";
 import { useEffect } from "react";
 
 const useTripDetails = (tripId: number) => {
   const dispatch = useAppDispatch();
   const { userType } = useAuth();
 
-  const requestResult = useAppSelector(
-    (state: IRootState) => state.contract.requestResult
-  );
+  const trip = useAppSelector((state: IRootState) => state.contract.trip);
 
   useEffect(() => {
-    if (tripId) dispatch(getRequestById(tripId));
+    if (tripId) dispatch(getTripById(tripId));
   }, [tripId]);
+
+  const clear = () => {
+    dispatch(clearTrip());
+  };
 
   const definePaymentStatus = (paymentStatus: string) => {
     if (paymentStatus === "APPROVED") return "Aprobado";
@@ -34,8 +36,9 @@ const useTripDetails = (tripId: number) => {
   };
 
   return {
-    requestResult,
+    trip,
     userType,
+    clear,
     definePaymentStatus,
     defineTripStatus,
   };
