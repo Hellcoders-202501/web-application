@@ -504,6 +504,7 @@ export const finishTripByClient = createAsyncThunk(
         setAlertDialog({
           open: true,
           message: "Error al finalizar el contrato",
+          description: (err.response?.data as any)?.error ?? null,
           type: "error",
         })
       );
@@ -544,6 +545,7 @@ export const finishTripByDriver = createAsyncThunk(
         setAlertDialog({
           open: true,
           message: "Error al finalizar el contrato",
+          description: (err.response?.data as any)?.error ?? null,
           type: "error",
         })
       );

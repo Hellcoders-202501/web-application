@@ -8,7 +8,7 @@ import { IoWarning, IoInformationCircle } from "react-icons/io5";
 const AlertDialog = () => {
   const dispatch = useAppDispatch();
   const alertDialog = useAppSelector(
-    (state: IRootState) => state.common.alertDialog,
+    (state: IRootState) => state.common.alertDialog
   );
 
   const closeDialog = () => {
@@ -34,6 +34,9 @@ const AlertDialog = () => {
     <CustomDialog open={alertDialog.open} onClose={closeDialog}>
       <div className="flex justify-center">{defineIcon()}</div>
       <p className="text-center mt-10 text-lg">{alertDialog.message}</p>
+      {alertDialog.description && (
+        <p className="mt-10 text-sm text-center">{alertDialog.description}</p>
+      )}
     </CustomDialog>
   );
 };

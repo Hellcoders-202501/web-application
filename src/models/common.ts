@@ -10,6 +10,7 @@ export interface AlertDialog {
   open: boolean;
   type: "success" | "error" | "warning" | "info";
   message: string;
+  description?: string;
 }
 
 export interface ServiceType {
