@@ -15,6 +15,7 @@ import {
   deleteExperienceById,
   deleteVehicleById,
   editBankAccount,
+  forgotPassword,
   getBankAccountByDriverId,
   getCurrentUserById,
   getDriverById,
@@ -57,6 +58,15 @@ const userSlice = createSlice({
       .addCase(signin.rejected, (state, action) => {
         state.loading = false;
       });
+    builder.addCase(forgotPassword.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(forgotPassword.fulfilled, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(forgotPassword.rejected, (state, action) => {
+      state.loading = false;
+    });
     builder.addCase(setToken, (state, action) => {
       saveLocalToken(action.payload);
       state.token = action.payload;

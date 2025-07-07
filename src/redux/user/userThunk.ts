@@ -6,6 +6,7 @@ import type {
   CreateVehicle,
   EditBankAccount,
   Experience,
+  ForgotPasswordState,
   LoginState,
   UpdateUser,
   User,
@@ -43,6 +44,46 @@ export const signin = createAsyncThunk(
           setAlertDialog({
             open: true,
             message: "Usuario o contraseña incorrectos",
+            type: "error",
+          })
+        );
+      }
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  }
+);
+
+export const forgotPassword = createAsyncThunk(
+  "FORGOT_PASSWORD",
+  async (payload: ForgotPasswordState, { rejectWithValue, dispatch }) => {
+    try {
+      const response = (await userServices.forgotPassword(
+        payload.email,
+        payload.newPassword
+      )) as { token: string };
+
+      if (response) {
+        // window.location.replace("/login");
+
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "Contraseña cambiada correctamente",
+            type: "success",
+          })
+        );
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.status === 403) {
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "No se pudo cambiar la contraseña",
             type: "error",
           })
         );

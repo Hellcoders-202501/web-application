@@ -16,6 +16,11 @@ export interface LoginState {
   password: string;
 }
 
+export interface ForgotPasswordState {
+  email: string;
+  newPassword: string;
+}
+
 export interface RegisterUser {
   name: string;
   firstLastName: string;

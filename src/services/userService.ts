@@ -12,6 +12,10 @@ const signIn = (email: string, password: string) => {
   return requests.post("/auth", { email, password });
 };
 
+const forgotPassword = (email: string, newPassword: string) => {
+  return requests.post("/auth/change-password", { email, newPassword });
+};
+
 const registerClient = (user: CreateUser) => {
   return requests.post("/clients", user);
 };
@@ -90,6 +94,7 @@ const getMostRankedDrivers = () => {
 
 export default {
   signIn,
+  forgotPassword,
   registerClient,
   registerDriver,
   getClientById,
