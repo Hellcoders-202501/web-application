@@ -4,7 +4,7 @@ export interface IUserReduxState {
   userType: string | null;
   experiences: Experience[] | undefined;
   vehicles: Vehicle[] | undefined;
-  // comments: Comment[] | undefined;
+  comments: Comment[] | undefined;
   bankAccount: BankAccount | undefined;
   rankedDrivers: RankedDriver[] | undefined;
   driver: User | undefined;
@@ -87,6 +87,14 @@ export interface Experience extends ExperienceInfo {
 export interface ExperienceInfo {
   job: string;
   duration: number;
+}
+
+export interface CreateComment {
+  rating: number;
+}
+
+export interface Comment {
+  id: number;
 }
 
 export interface EditBankAccount extends BankAccountInfo {

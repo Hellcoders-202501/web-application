@@ -1,8 +1,8 @@
 "use client";
 import UserProfile from "@components/molecules/UserProfile";
 import ProfileTabs from "@components/organisms/ProfileTabs";
+import type { Comment, Experience, Vehicle } from "@models/user";
 import useProfile from "./hooks/useProfile";
-import { Experience, Vehicle } from "@models/user";
 
 const ProfileView = ({ userId }: { userId?: number }) => {
   const {
@@ -27,6 +27,12 @@ const ProfileView = ({ userId }: { userId?: number }) => {
     handleChangeVehicle,
     createVehicleValidation,
     handleRemoveVehicle,
+    comments,
+    handleSubmitComment,
+    comment,
+    handleChangeComment,
+    createCommentValidation,
+    handleRemoveComment,
     bankAccountTypes,
     bankAccountData,
     handleSubmitBankAccount,
@@ -72,6 +78,12 @@ const ProfileView = ({ userId }: { userId?: number }) => {
         handleChangeVehicle={handleChangeVehicle}
         createVehicleValidation={createVehicleValidation}
         handleRemoveVehicle={handleRemoveVehicle}
+        comments={comments as Comment[]}
+        addComment={handleSubmitComment}
+        comment={comment}
+        handleChangeComment={handleChangeComment}
+        createCommentValidation={createCommentValidation}
+        handleRemoveComment={handleRemoveComment}
         bankAccountTypes={bankAccountTypes}
         bankAccountData={bankAccountData}
         addBankAccount={handleSubmitBankAccount}
