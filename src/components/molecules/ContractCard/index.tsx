@@ -10,8 +10,7 @@ import type { ApplicationInformation, RequestResult } from "@models/contract";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import Link from "next/link";
 import { type FC, useEffect, useState } from "react";
-import { FaRegUserCircle } from "react-icons/fa";
-import { FaEye } from "react-icons/fa";
+import { FaComment, FaEye, FaRegUserCircle } from "react-icons/fa";
 
 export type ContractVariant = "offer" | "pending" | "history" | "request";
 
@@ -208,6 +207,7 @@ const ContractCard: FC<Props> = ({
           <div className="flex justify-between items-center">
             <p className="text-xl font-semibold">Información</p>
             <button
+              className="cursor-pointer"
               type="button"
               onClick={() =>
                 setMoreInformation({
@@ -235,7 +235,7 @@ const ContractCard: FC<Props> = ({
           </div>
           <div
             className="flex justify-between font-semibold text-lg border-t mt-4
-          			pt-2"
+          	pt-2"
           >
             <p>Datos del {userType === "CLIENT" ? "Conductor" : "Cliente"}</p>
             <p>Pago</p>
@@ -304,7 +304,7 @@ const ContractCard: FC<Props> = ({
     if (variant === "history" || variant === "request")
       return (
         <div>
-          <div className="card flex gap-5 px-10 py-8 min-h-[200px] max-w-[405px]">
+          <div className="card flex gap-5 px-10 py-8 min-h-[200px] md:w-[405px] md:max-w-none max-w-[350px]">
             {variant === "history" && (
               <div>
                 <FaRegUserCircle size={100} />
@@ -322,7 +322,14 @@ const ContractCard: FC<Props> = ({
             )}
 
             <div>
-              <p className="font-semibold">Detalles:</p>
+              <div className="flex justify-between items-center">
+                <p className="font-semibold">Detalles:</p>
+                {variant === "history" && (
+                  <button className="cursor-pointer" type="button">
+                    <FaComment />
+                  </button>
+                )}
+              </div>
               <p className="mt-4">
                 Fecha: <b>{request?.trip.date}</b>
               </p>

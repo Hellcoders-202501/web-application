@@ -91,6 +91,8 @@ export interface ExperienceInfo {
 
 export interface CreateComment {
   rating: number;
+  content: string;
+  tripId: number;
 }
 
 export interface Comment {

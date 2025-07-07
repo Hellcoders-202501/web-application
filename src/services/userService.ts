@@ -62,7 +62,7 @@ const addExperience = (experienceInformation: CreateExperience) => {
 };
 
 const addComment = (commentInformation: CreateComment) => {
-  return requests.post("/drivers/comment", commentInformation);
+  return requests.post("/trips/add-comment", commentInformation);
 };
 
 const deleteVehicleById = (id: number) => {
