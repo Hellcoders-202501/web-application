@@ -16,10 +16,10 @@ import * as Yup from "yup";
 const useRequestService = () => {
   const dispatch = useAppDispatch();
   const serviceTypes = useAppSelector(
-    (state: IRootState) => state.common.serviceTypes,
+    (state: IRootState) => state.common.serviceTypes
   );
   const { loading, requestResultList, applicationList } = useAppSelector(
-    (state: IRootState) => state.contract,
+    (state: IRootState) => state.contract
   );
   const { currentUser } = useAuth();
 
@@ -55,7 +55,7 @@ const useRequestService = () => {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
+    >
   ) => {
     const { name, value } = e.target;
     setRequestState((prevState) => ({
@@ -65,18 +65,17 @@ const useRequestService = () => {
   };
 
   const handleSubmit = async (requestDate: Date) => {
-    setRequestState((prevState) => ({
-      ...prevState,
-      date: requestDate.toISOString().split("T")[0],
-    }));
     const { typeService, capacity, ...request } = requestState;
 
     const resultAction = await dispatch(
       makeRequest({
         clientId: currentUser?.id as number,
         serviceId: typeService,
-        trip: request,
-      }),
+        trip: {
+          ...request,
+          date: requestDate.toISOString().split("T")[0],
+        },
+      })
     );
 
     if (makeRequest.fulfilled.match(resultAction)) {

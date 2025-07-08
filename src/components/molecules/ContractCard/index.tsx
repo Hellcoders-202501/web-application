@@ -25,7 +25,7 @@ interface Props {
   deleteOffer?: (id: number) => void;
   declineOffer?: (id: number) => void;
   startContract?: (id: number) => void;
-  // deleteContract?: (id: number) => void;
+  deleteContract?: (id: number) => void;
   completeContract?: (id: number) => void;
   finishContract?: (id: number) => void;
 }
@@ -40,7 +40,7 @@ const ContractCard: FC<Props> = ({
   deleteOffer,
   declineOffer,
   startContract,
-  // deleteContract,
+  deleteContract,
   completeContract,
   finishContract,
 }) => {
@@ -182,7 +182,7 @@ const ContractCard: FC<Props> = ({
                       console.log("Pago cancelado");
                     }}
                   />
-                  <Button
+                  {/* <Button
                     variant="accept"
                     type="button"
                     onClick={() => {
@@ -191,7 +191,7 @@ const ContractCard: FC<Props> = ({
                     }}
                   >
                     Realizar Pago
-                  </Button>
+                  </Button> */}
                   <Button
                     variant="denied"
                     onClick={() => setShowPaypal(false)}
@@ -302,14 +302,17 @@ const ContractCard: FC<Props> = ({
                   </p>
                 ))}
 
-            {/* <Button
-							variant="denied"
-							className="flex-1/2"
-							type="button"
-							onClick={() => deleteContract?.(request?.trip.id as number)}
-						>
-							Cancelar
-						</Button> */}
+            {request?.trip.status !== "FINISHED_BY_DRIVER" &&
+              request?.trip.status !== "FINISHED_BY_CLIENT" && (
+                <Button
+                  variant="denied"
+                  className="flex-1/2"
+                  type="button"
+                  onClick={() => deleteContract?.(request?.id as number)}
+                >
+                  Cancelar
+                </Button>
+              )}
           </div>
         </div>
       );

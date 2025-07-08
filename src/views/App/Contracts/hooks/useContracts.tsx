@@ -3,16 +3,15 @@ import useAuth from "@hooks/useAuth";
 import type { RequestResult } from "@models/contract";
 import { getTripStatus } from "@redux/common/commonThunk";
 import {
-  deleteTripById,
+  cancelContractByRequestId,
   finishTripByClient,
   finishTripByDriver,
   getHistoryTripsByClientId,
   getHistoryTripsByDriverId,
   getTripsByClientId,
   getTripsByDriverId,
-  startTripById,
+  startTripById
 } from "@redux/contract/contractThunk";
-import { getCommentsByDriverId } from "@redux/user/userThunk";
 import { useEffect, useState } from "react";
 
 const useContracts = () => {
@@ -64,7 +63,7 @@ const useContracts = () => {
   };
 
   const deleteContract = (id: number) => {
-    dispatch(deleteTripById(id));
+    dispatch(cancelContractByRequestId(id));
   };
 
   const completeContract = (id: number) => {

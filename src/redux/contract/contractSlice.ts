@@ -5,6 +5,7 @@ import type {
 } from "@models/contract";
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  cancelContractByRequestId,
   clearApplications,
   clearTrip,
   createApplication,
@@ -119,6 +120,15 @@ const contractSlice = createSlice({
       }
     );
     builder.addCase(createContractByApplicationId.rejected, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(cancelContractByRequestId.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(cancelContractByRequestId.fulfilled, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(cancelContractByRequestId.rejected, (state, action) => {
       state.loading = false;
     });
     builder.addCase(clearApplications, (state, action) => {

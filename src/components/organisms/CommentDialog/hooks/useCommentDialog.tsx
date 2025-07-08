@@ -1,14 +1,16 @@
 import { IRootState, useAppDispatch, useAppSelector } from "@core/store";
 import { CreateComment } from "@models/user";
 import { addComment, deleteCommentById } from "@redux/user/userThunk";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import * as Yup from "yup";
 
 const useCommentDialog = (tripId: number) => {
   const dispatch = useAppDispatch();
   const loading = useAppSelector((state: IRootState) => state.user.loading);
 
-  const createCommentValidation = Yup.object().shape({});
+  const createCommentValidation = Yup.object().shape({
+    content: Yup.string().required("Comentario requerido."),
+  });
 
   const [comment, setComment] = useState<CreateComment>({
     content: "",
@@ -16,8 +18,11 @@ const useCommentDialog = (tripId: number) => {
     tripId: tripId,
   });
 
-  const handleSubmitComment = () => {
-    dispatch(addComment(comment));
+  const handleSubmitComment = (tripId: number) => {
+    dispatch(addComment({
+      ...comment,
+      tripId: tripId,
+    }));
   };
 
   const handleChangeComment = (
