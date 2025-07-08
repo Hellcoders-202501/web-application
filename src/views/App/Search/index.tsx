@@ -7,6 +7,7 @@ import Select from "@components/atoms/Select";
 import RequestForm from "@components/organisms/RequestForm";
 import Button from "@components/atoms/Button";
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import Loading from "@components/atoms/Loading";
 
 const SearchView = () => {
   const {
@@ -26,7 +27,12 @@ const SearchView = () => {
     requestValidation,
     amount,
     setAmount,
+    requestId,
   } = useSearch();
+
+  if (requestId && !watchRequest) {
+    return <Loading />;
+  }
 
   if (watchRequest)
     return (

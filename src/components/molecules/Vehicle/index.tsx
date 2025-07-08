@@ -101,7 +101,7 @@ const Vehicle = ({
 
   return (
     <div className="w-full flex flex-col gap-10">
-      <div className="overflow-auto max-h-[500px] px-10">
+      <div className="flex flex-col gap-10 overflow-auto max-h-[500px] px-10">
         {vehicles.map((vehicle, i) => (
           <VehicleCard
             key={i}

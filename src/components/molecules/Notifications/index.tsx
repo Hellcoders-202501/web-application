@@ -15,10 +15,12 @@ const NotificationCard = ({
   type,
   read,
   userType,
+  referenceId,
 }: {
   type: string;
   read: boolean;
   userType: string | null;
+  referenceId: number;
 }) => {
   const defineIcon = () => {
     switch (type) {
@@ -52,7 +54,7 @@ const NotificationCard = ({
             <FaCheckCircle color="green" className="md:hidden" size={80} />
           </>
         );
-      case "declined":
+      case "APPLICATION_DELETED":
         return (
           <>
             <TiDelete color="red" className="hidden md:block" size={150} />
@@ -127,8 +129,12 @@ const NotificationCard = ({
           : "Has recibido una solicitud";
       case "CONTRACT_CREATED":
         return userType === "DRIVER"
-          ? "El cliente ha aceptado tu solicitud"
+          ? "El cliente ha aceptado tu oferta"
           : "Has aceptado una solicitud";
+      case "APPLICATION_DELETED":
+        return userType === "DRIVER"
+          ? "El cliente ha rechazado tu oferta"
+          : "Has rechazado una oferta";
       case "CONTRACT_CANCELED":
         return userType === "DRIVER"
           ? "El cliente ha cancelado un contrato"
@@ -162,6 +168,10 @@ const NotificationCard = ({
         return userType === "DRIVER"
           ? "El contrato ha sido cancelado por el cliente, esto no afectará tu valoración"
           : "El contrato ha sido cancelado, tu dinero se devolverá a tu cuenta";
+      case "APPLICATION_DELETED":
+        return userType === "DRIVER"
+          ? "El cliente ha rechazado tu oferta, te avisaremos de nuevas solicitudes"
+          : "Se notificará del rechazo de la oferta al conductor";
       case "CONTRACT_CREATED":
         return userType === "DRIVER"
           ? "Tu solicitud ha sido aceptada, revisa el nuevo contrato pendiente"
@@ -186,7 +196,13 @@ const NotificationCard = ({
   return (
     <div
       className={`flex justify-between items-center border border-black/50 rounded-lg md:px-10
-			px-5 py-5 md:max-w-lg w-full mx-auto ${read ? "bg-gray-300/50" : ""}`}
+			px-5 py-5 md:max-w-lg w-full mx-auto ${read ? "bg-gray-300/50" : ""}
+      ${type === "REQUEST_PUBLISHED" ? "cursor-pointer" : ""}`}
+      onClick={() => {
+        if (type === "REQUEST_PUBLISHED") {
+          window.location.href = `/search?requestId=${referenceId}`;
+        }
+      }}
     >
       <span>{defineIcon()}</span>
       <div className="flex flex-col md:gap-6 max-w-1/2 w-full">
@@ -245,6 +261,7 @@ const Notifications = ({ userType }: { userType: string | null }) => {
                       <NotificationCard
                         key={index}
                         type={notification.type}
+                        referenceId={notification.referenceId}
                         read={notification.seen}
                         userType={userType}
                       />
