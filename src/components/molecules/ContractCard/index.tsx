@@ -303,7 +303,8 @@ const ContractCard: FC<Props> = ({
                 ))}
 
             {request?.trip.status !== "FINISHED_BY_DRIVER" &&
-              request?.trip.status !== "FINISHED_BY_CLIENT" && (
+              request?.trip.status !== "FINISHED_BY_CLIENT" &&
+              request?.trip.status !== "STARTED" && (
                 <Button
                   variant="denied"
                   className="flex-1/2"
@@ -340,7 +341,7 @@ const ContractCard: FC<Props> = ({
             <div>
               <div className="flex justify-between items-center">
                 <p className="font-semibold">Detalles:</p>
-                {variant === "history" && (
+                {variant === "history" && userType === "CLIENT" && (
                   <button
                     className="cursor-pointer"
                     type="button"

@@ -1,7 +1,11 @@
-import { IRootState } from "@core/store";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import type { IRootState } from "@core/store";
+import type { INotification } from "@models/notification";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import notificationService from "@services/notificationService";
 import type { AxiosError } from "axios";
+
+export const websocketMessage =
+  createAction<INotification>("websocket/message");
 
 export const getNotificationsByUserId = createAsyncThunk(
   "GET_NOTIFICATIONS_BY_USER_ID",

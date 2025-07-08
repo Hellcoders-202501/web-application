@@ -1,8 +1,12 @@
-import type { INotification, INotificationReduxState } from "@models/notification";
+import type {
+  INotification,
+  INotificationReduxState,
+} from "@models/notification";
 import { createSlice } from "@reduxjs/toolkit";
 import {
   getNotificationsByUserId,
   readNotifications,
+  websocketMessage,
 } from "./notificationThunk";
 
 const initialState: INotificationReduxState = {
@@ -33,6 +37,11 @@ const notificationSlice = createSlice({
     });
     builder.addCase(readNotifications.rejected, (state, action) => {
       state.loading = false;
+    });
+    // web socket
+    builder.addCase(websocketMessage, (state, action) => {
+      // Update notifications
+      state.notifications = [...state.notifications, action.payload as INotification];
     });
   },
 });

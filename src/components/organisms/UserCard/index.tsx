@@ -10,7 +10,7 @@ const UserCard = ({ user }: { user: RankedDriver }) => {
           {user.name} {user.firstLastName}
         </p>
         <p>Número telefónico: {user.phone}</p>
-        <p>Calificación: {user.rating}</p>
+        <p>Valoración: {user.rating > 0 ? user.rating : "Sin calificación"}</p>
       </div>
     </div>
   );

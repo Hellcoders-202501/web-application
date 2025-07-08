@@ -1,3 +1,4 @@
+import { websocketMessage } from "@redux/notification/notificationThunk";
 import { Middleware } from "@reduxjs/toolkit";
 
 export const websocketMiddleware = (): Middleware => {
@@ -16,23 +17,24 @@ export const websocketMiddleware = (): Middleware => {
 
       socket.onopen = () => {
         console.log("WebSocket conectado");
-        storeAPI.dispatch({ type: "websocket/open" });
+        // storeAPI.dispatch({ type: "websocket/open" });
       };
 
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        console.log("Mensaje recibido:", data);
-        storeAPI.dispatch({ type: "websocket/message", payload: data });
+        // console.log("Mensaje recibido:", data);
+        // storeAPI.dispatch({ type: "websocket/message", payload: data });
+        storeAPI.dispatch(websocketMessage(data));
       };
 
       socket.onclose = () => {
         console.log("WebSocket cerrado");
-        storeAPI.dispatch({ type: "websocket/close" });
+        // storeAPI.dispatch({ type: "websocket/close" });
       };
 
       socket.onerror = (error) => {
         console.error("WebSocket error:", error);
-        storeAPI.dispatch({ type: "websocket/error", payload: error });
+        // storeAPI.dispatch({ type: "websocket/error", payload: error });
       };
     }
 
