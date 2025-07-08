@@ -182,7 +182,7 @@ const ContractCard: FC<Props> = ({
                       console.log("Pago cancelado");
                     }}
                   />
-                  <Button
+                  {/* <Button
                     variant="accept"
                     type="button"
                     onClick={() => {
@@ -191,7 +191,7 @@ const ContractCard: FC<Props> = ({
                     }}
                   >
                     Realizar Pago
-                  </Button>
+                  </Button> */}
                   <Button
                     variant="denied"
                     onClick={() => setShowPaypal(false)}
