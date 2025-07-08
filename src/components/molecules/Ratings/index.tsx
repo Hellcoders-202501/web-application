@@ -1,6 +1,6 @@
 import type { Comment } from "@models/user";
-import { Rating } from "@smastrom/react-rating";
 import { FaRegUserCircle } from "react-icons/fa";
+import Rating from "../Rating";
 
 const RatingCard = ({ comment }: { comment: Comment }) => {
   return (
@@ -11,7 +11,7 @@ const RatingCard = ({ comment }: { comment: Comment }) => {
           {comment.client.name} {comment.client.firstLastName}
         </p>
         <div className="flex gap-3">
-          <Rating style={{ maxWidth: 150 }} value={comment.rating} readOnly />
+          <Rating value={comment.rating} readOnly />
         </div>
         <p>{comment.content}</p>
       </div>

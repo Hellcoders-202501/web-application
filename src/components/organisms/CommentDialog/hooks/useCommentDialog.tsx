@@ -1,7 +1,7 @@
 import { IRootState, useAppDispatch, useAppSelector } from "@core/store";
 import { CreateComment } from "@models/user";
 import { addComment, deleteCommentById } from "@redux/user/userThunk";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import * as Yup from "yup";
 
 const useCommentDialog = (tripId: number) => {
@@ -18,8 +18,11 @@ const useCommentDialog = (tripId: number) => {
     tripId: tripId,
   });
 
-  const handleSubmitComment = () => {
-    dispatch(addComment(comment));
+  const handleSubmitComment = (tripId: number) => {
+    dispatch(addComment({
+      ...comment,
+      tripId: tripId,
+    }));
   };
 
   const handleChangeComment = (

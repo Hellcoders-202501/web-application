@@ -3,8 +3,8 @@ import CustomDialog from "@components/molecules/Dialog";
 import { ErrorMessage, Form, Formik } from "formik";
 import useCommentDialog from "./hooks/useCommentDialog";
 import Input from "@components/atoms/Input";
-import { Rating } from "@smastrom/react-rating";
 import Button from "@components/atoms/Button";
+import Rating from "@components/molecules/Rating";
 
 const CommentDialog = ({
   show = false,
@@ -15,11 +15,12 @@ const CommentDialog = ({
   onClose: VoidFunction;
   tripId: number;
 }) => {
+
   const {
     comment,
-    handleChangeComment,
     createCommentValidation,
     handleSubmitComment,
+    handleChangeComment,
     loading,
   } = useCommentDialog(tripId);
 
@@ -27,9 +28,10 @@ const CommentDialog = ({
     <CustomDialog open={show} onClose={onClose}>
       <p className="text-2xl font-bold mb-10 text-center">Nuevo Comentario</p>
       <Formik
+        enableReinitialize
         initialValues={comment}
         onSubmit={() => {
-          handleSubmitComment();
+          handleSubmitComment(tripId);
           onClose();
         }}
         validationSchema={createCommentValidation}
@@ -44,7 +46,7 @@ const CommentDialog = ({
                 name="content"
                 id="content"
                 disabled={loading}
-                value={comment?.content}
+                value={comment.content}
                 onChange={handleChangeComment}
               />
             </div>
@@ -57,12 +59,10 @@ const CommentDialog = ({
           <div className="flex justify-between items-center w-full">
             <p className="font-bold">Valoración</p>
             <Rating
-              style={{ maxWidth: 150 }}
               value={comment.rating}
-              onChange={(value: any) =>
-                handleChangeComment({ target: { name: "rating", value } })
-              }
-              isRequired
+              onChange={(value) => {
+                handleChangeComment({ target: { name: "rating", value } });
+              }}
             />
           </div>
           <Button variant="accept" type="submit" disabled={loading}>
