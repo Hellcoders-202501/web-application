@@ -1,8 +1,9 @@
+"use client";
 import CustomDialog from "@components/molecules/Dialog";
 import { ErrorMessage, Form, Formik } from "formik";
 import useCommentDialog from "./hooks/useCommentDialog";
 import Input from "@components/atoms/Input";
-import { Rating as ReactRating } from "@smastrom/react-rating";
+import { Rating } from "@smastrom/react-rating";
 import Button from "@components/atoms/Button";
 
 const CommentDialog = ({
@@ -55,12 +56,13 @@ const CommentDialog = ({
           </div>
           <div className="flex justify-between items-center w-full">
             <p className="font-bold">Valoración</p>
-            <ReactRating
+            <Rating
               style={{ maxWidth: 150 }}
               value={comment.rating}
               onChange={(value: any) =>
                 handleChangeComment({ target: { name: "rating", value } })
               }
+              isRequired
             />
           </div>
           <Button variant="accept" type="submit" disabled={loading}>

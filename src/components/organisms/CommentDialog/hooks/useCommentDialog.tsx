@@ -8,7 +8,9 @@ const useCommentDialog = (tripId: number) => {
   const dispatch = useAppDispatch();
   const loading = useAppSelector((state: IRootState) => state.user.loading);
 
-  const createCommentValidation = Yup.object().shape({});
+  const createCommentValidation = Yup.object().shape({
+    content: Yup.string().required("Comentario requerido."),
+  });
 
   const [comment, setComment] = useState<CreateComment>({
     content: "",

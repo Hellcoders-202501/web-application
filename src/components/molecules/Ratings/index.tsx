@@ -1,5 +1,6 @@
 import type { Comment } from "@models/user";
-import { FaRegUserCircle, FaStar } from "react-icons/fa";
+import { Rating } from "@smastrom/react-rating";
+import { FaRegUserCircle } from "react-icons/fa";
 
 const RatingCard = ({ comment }: { comment: Comment }) => {
   return (
@@ -10,15 +11,7 @@ const RatingCard = ({ comment }: { comment: Comment }) => {
           {comment.client.name} {comment.client.firstLastName}
         </p>
         <div className="flex gap-3">
-          {Array(comment.rating)
-            .fill(0)
-            .map((_, index) => (
-              <FaStar
-                key={index}
-                size={20}
-                className={`${index < comment.rating ? "text-yellow-500" : ""}`}
-              />
-            ))}
+          <Rating style={{ maxWidth: 150 }} value={comment.rating} readOnly />
         </div>
         <p>{comment.content}</p>
       </div>
