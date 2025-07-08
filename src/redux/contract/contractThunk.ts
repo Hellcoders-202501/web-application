@@ -247,6 +247,47 @@ export const createContractByApplicationId = createAsyncThunk(
   }
 );
 
+export const cancelContractByRequestId = createAsyncThunk(
+  "CANCEL_CONTRACT_BY_REQUEST_ID",
+  async (id: number, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const response = await contractsService.cancelContractByRequestId(id);
+
+      if (response) {
+        dispatch(
+          setAlertDialog({
+            open: true,
+            message: "Contrato cancelado con éxito!",
+            type: "success",
+          })
+        );
+        const state = getState() as IRootState;
+        const clientId = state.user.user?.id;
+
+        await Promise.all([
+          dispatch(getTripsByClientId(clientId as number)).unwrap(),
+          dispatch(getHistoryTripsByClientId(clientId as number)).unwrap(),
+        ]);
+
+        return response;
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      dispatch(
+        setAlertDialog({
+          open: true,
+          message: "Error al cancelar el contrato",
+          type: "error",
+        })
+      );
+      return rejectWithValue({
+        status: err.response?.status,
+        message: err.response?.data,
+      });
+    }
+  }
+);
+
 export const declineApplication = createAsyncThunk(
   "DECLINE_APPLICATION",
   async (id: number, { rejectWithValue, dispatch }) => {

@@ -41,6 +41,10 @@ const createContractByApplicationId = (id: number) => {
   return requests.postWithoutBody(`/contracts/${id}/create`);
 };
 
+const cancelContractByRequestId = (id: number) => {
+  return requests.postWithoutBody(`/contracts/${id}/cancel/`);
+};
+
 const declineApplication = (id: number) => {
   return requests.delete(`/applications/${id}`);
 };
@@ -91,6 +95,7 @@ export default {
   createApplication,
   getApplicationByRequestId,
   createContractByApplicationId,
+  cancelContractByRequestId,
   declineApplication,
   getTripById,
   getTripsByDriverIdAndStatusId,

@@ -73,7 +73,7 @@ const ContractsView = () => {
 											userType={userType}
 											request={trip}
 											startContract={startContract}
-											// deleteContract={deleteContract}
+											deleteContract={deleteContract}
 											completeContract={completeContract}
 											finishContract={finishContract}
 										/>
