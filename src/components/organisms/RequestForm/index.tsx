@@ -15,7 +15,7 @@ interface RequestFormProps {
   handleChange: (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => void;
   handleSubmit: (date: Date) => void;
   requestValidation: VoidFunction | any;
@@ -35,10 +35,10 @@ const RequestForm: FC<RequestFormProps> = ({
 }) => {
   const hours = Array.from(
     { length: 24 },
-    (_, i) => `${i.toString().padStart(2, "0")}:00`
+    (_, i) => `${i.toString().padStart(2, "0")}:00`,
   );
   const [selected, setSelected] = useState<Date>(
-    requestState.date ? new Date(requestState.date + "T00:00:00") : new Date()
+    requestState.date ? new Date(requestState.date + "T00:00:00") : new Date(),
   );
 
   return (
@@ -199,7 +199,7 @@ const RequestForm: FC<RequestFormProps> = ({
           </div>
           <div className="flex flex-col">
             <div className="flex justify-between items-center">
-              <label htmlFor="capacity">Capacidad</label>
+              <label htmlFor="capacity">Capacidad (personas)</label>
               <Input
                 name="capacity"
                 id="capacity"
@@ -218,7 +218,7 @@ const RequestForm: FC<RequestFormProps> = ({
           </div>
           <div className="flex flex-col">
             <div className="flex justify-between items-center">
-              <label htmlFor="amount">Pago</label>
+              <label htmlFor="amount">Pago (S/.)</label>
               <Input
                 name="amount"
                 id="amount"

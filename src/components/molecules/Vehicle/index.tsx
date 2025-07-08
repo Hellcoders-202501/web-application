@@ -166,10 +166,10 @@ const Vehicle = ({
               </Select>
             </div>
             {/* <div className="flex flex-col w-full"> */}
-            <div className="flex gap-10 justify-between items-end w-full">
+            {/* <div className="flex gap-10 justify-between items-end w-full">
               <label htmlFor="brand">Image URL</label>
               <Input className="w-8/12 text-center" />
-            </div>
+            </div> */}
             {/* <ErrorMessage
                 component="div"
                 className="text-red-500 text-sm pl-2 mt-2 w-fit self-end"

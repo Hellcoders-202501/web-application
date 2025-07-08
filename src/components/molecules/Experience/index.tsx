@@ -34,7 +34,7 @@ const ExperienceCard = ({
           </p>
         </div>
         <div className="flex gap-10 justify-between items-end w-full">
-          <p className="font-extrabold">Tiempo</p>
+          <p className="font-extrabold">Tiempo (años)</p>
           <p className="text-sm border-b w-8/12 text-center">
             {experience.duration}
           </p>
@@ -142,7 +142,7 @@ const Experience = ({
             <div className="flex flex-col w-full">
               <div className="flex gap-10 justify-between items-end w-full">
                 <label htmlFor="duration" className="font-bold">
-                  Tiempo
+                  Tiempo (años)
                 </label>
                 <Input
                   name="duration"

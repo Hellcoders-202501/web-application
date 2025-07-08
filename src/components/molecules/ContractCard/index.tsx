@@ -162,7 +162,7 @@ const ContractCard: FC<Props> = ({
                           {
                             amount: {
                               currency_code: "USD",
-                              value: "10.00",
+                              value: String(application?.proposedAmount),
                             },
                           },
                         ],

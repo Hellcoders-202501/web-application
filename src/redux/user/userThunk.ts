@@ -29,7 +29,7 @@ export const signin = createAsyncThunk(
     try {
       const response = (await userServices.signIn(
         payload.email,
-        payload.password
+        payload.password,
       )) as { token: string };
 
       if (response?.token) {
@@ -46,7 +46,7 @@ export const signin = createAsyncThunk(
             open: true,
             message: "Usuario o contraseña incorrectos",
             type: "error",
-          })
+          }),
         );
       }
       return rejectWithValue({
@@ -54,7 +54,7 @@ export const signin = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const forgotPassword = createAsyncThunk(
@@ -63,7 +63,7 @@ export const forgotPassword = createAsyncThunk(
     try {
       const response = (await userServices.forgotPassword(
         payload.email,
-        payload.newPassword
+        payload.newPassword,
       )) as { token: string };
 
       if (response) {
@@ -74,7 +74,7 @@ export const forgotPassword = createAsyncThunk(
             open: true,
             message: "Contraseña cambiada correctamente",
             type: "success",
-          })
+          }),
         );
         return response;
       }
@@ -86,7 +86,7 @@ export const forgotPassword = createAsyncThunk(
             open: true,
             message: "No se pudo cambiar la contraseña",
             type: "error",
-          })
+          }),
         );
       }
       return rejectWithValue({
@@ -94,7 +94,7 @@ export const forgotPassword = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const signup = createAsyncThunk(
@@ -104,12 +104,12 @@ export const signup = createAsyncThunk(
       userType: string;
       user: CreateUser;
     },
-    { rejectWithValue }
+    { rejectWithValue, dispatch },
   ) => {
     try {
       if (payload.userType === "CLIENT") {
         const response = (await userServices.registerClient(
-          payload.user
+          payload.user,
         )) as User;
         if (response) {
           return response;
@@ -117,7 +117,7 @@ export const signup = createAsyncThunk(
       }
       if (payload.userType === "DRIVER") {
         const response = (await userServices.registerDriver(
-          payload.user
+          payload.user,
         )) as User;
         if (response) {
           return response;
@@ -125,12 +125,20 @@ export const signup = createAsyncThunk(
       }
     } catch (error) {
       const err = error as AxiosError;
+      dispatch(
+        setAlertDialog({
+          open: true,
+          message: "Error al realizar el registro",
+          description: (err.response?.data as any)?.error ?? null,
+          type: "error",
+        }),
+      );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const getCurrentUserById = createAsyncThunk(
@@ -156,7 +164,7 @@ export const getCurrentUserById = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const getClientById = createAsyncThunk(
@@ -175,7 +183,7 @@ export const getClientById = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const getDriverById = createAsyncThunk(
@@ -194,7 +202,7 @@ export const getDriverById = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const updateUser = createAsyncThunk(
@@ -204,12 +212,12 @@ export const updateUser = createAsyncThunk(
       userInformation: UpdateUser;
       type: string;
     },
-    { rejectWithValue, dispatch }
+    { rejectWithValue, dispatch },
   ) => {
     try {
       if (payload.type === "CLIENT") {
         const response = (await userServices.updateClient(
-          payload.userInformation
+          payload.userInformation,
         )) as User;
         if (response) {
           dispatch(
@@ -217,14 +225,14 @@ export const updateUser = createAsyncThunk(
               open: true,
               message: "Datos actualizados",
               type: "success",
-            })
+            }),
           );
           return response;
         }
       }
       if (payload.type === "DRIVER") {
         const response = (await userServices.updateDriver(
-          payload.userInformation
+          payload.userInformation,
         )) as User;
         if (response) {
           dispatch(
@@ -232,7 +240,7 @@ export const updateUser = createAsyncThunk(
               open: true,
               message: "Datos actualizados",
               type: "success",
-            })
+            }),
           );
           return response;
         }
@@ -244,14 +252,14 @@ export const updateUser = createAsyncThunk(
           open: true,
           message: "Error al actualizar datos",
           type: "error",
-        })
+        }),
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const getExperiencesByDriverId = createAsyncThunk(
@@ -272,7 +280,7 @@ export const getExperiencesByDriverId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const getVehiclesByDriverId = createAsyncThunk(
@@ -293,7 +301,7 @@ export const getVehiclesByDriverId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const getCommentsByDriverId = createAsyncThunk(
@@ -311,7 +319,7 @@ export const getCommentsByDriverId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const getBankAccountByDriverId = createAsyncThunk(
@@ -329,14 +337,14 @@ export const getBankAccountByDriverId = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const addVehicle = createAsyncThunk(
   "ADD_VEHICLE",
   async (
     vehicleInformation: CreateVehicle,
-    { rejectWithValue, getState, dispatch }
+    { rejectWithValue, getState, dispatch },
   ) => {
     try {
       const response = await userServices.addVehicle(vehicleInformation);
@@ -348,7 +356,7 @@ export const addVehicle = createAsyncThunk(
             open: true,
             message: "Vehículo añadido correctamente",
             type: "success",
-          })
+          }),
         );
         await dispatch(getVehiclesByDriverId(driverId as number));
         return response;
@@ -360,21 +368,21 @@ export const addVehicle = createAsyncThunk(
           open: true,
           message: "Error al añadir vehículo",
           type: "error",
-        })
+        }),
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const addExperience = createAsyncThunk(
   "ADD_EXPERIENCE",
   async (
     experienceInformation: CreateExperience,
-    { rejectWithValue, getState, dispatch }
+    { rejectWithValue, getState, dispatch },
   ) => {
     try {
       const response = await userServices.addExperience(experienceInformation);
@@ -386,7 +394,7 @@ export const addExperience = createAsyncThunk(
             open: true,
             message: "Experiencia añadida correctamente",
             type: "success",
-          })
+          }),
         );
         await dispatch(getExperiencesByDriverId(driverId as number));
         return response;
@@ -398,21 +406,21 @@ export const addExperience = createAsyncThunk(
           open: true,
           message: "Error al añadir experiencia",
           type: "error",
-        })
+        }),
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const addComment = createAsyncThunk(
   "ADD_COMMENT",
   async (
     commentInformation: CreateComment,
-    { rejectWithValue, getState, dispatch }
+    { rejectWithValue, getState, dispatch },
   ) => {
     try {
       const response = await userServices.addComment(commentInformation);
@@ -424,7 +432,7 @@ export const addComment = createAsyncThunk(
             open: true,
             message: "Comentario añadido correctamente",
             type: "success",
-          })
+          }),
         );
         await dispatch(getCommentsByDriverId(driverId as number));
         return response;
@@ -435,26 +443,27 @@ export const addComment = createAsyncThunk(
         setAlertDialog({
           open: true,
           message: "Error al añadir comentario",
+          description: (err.response?.data as any)?.error ?? null,
           type: "error",
-        })
+        }),
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const addBankAccount = createAsyncThunk(
   "ADD_BANK_ACCOUNT",
   async (
     bankAccountInformation: CreateBankAccount,
-    { rejectWithValue, getState, dispatch }
+    { rejectWithValue, getState, dispatch },
   ) => {
     try {
       const response = await userServices.addBankAccount(
-        bankAccountInformation
+        bankAccountInformation,
       );
       if (response) {
         const state = getState() as IRootState;
@@ -464,7 +473,7 @@ export const addBankAccount = createAsyncThunk(
             open: true,
             message: "Cuenta bancaria añadida correctamente",
             type: "success",
-          })
+          }),
         );
         dispatch(getBankAccountByDriverId(driverId as number));
         return response;
@@ -476,25 +485,25 @@ export const addBankAccount = createAsyncThunk(
           open: true,
           message: "Error al añadir la cuenta bancaria",
           type: "error",
-        })
+        }),
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const editBankAccount = createAsyncThunk(
   "EDIT_BANK_ACCOUNT",
   async (
     bankAccountInformation: EditBankAccount,
-    { rejectWithValue, getState, dispatch }
+    { rejectWithValue, getState, dispatch },
   ) => {
     try {
       const response = await userServices.editBankAccount(
-        bankAccountInformation
+        bankAccountInformation,
       );
       if (response) {
         const state = getState() as IRootState;
@@ -504,7 +513,7 @@ export const editBankAccount = createAsyncThunk(
             open: true,
             message: "Cuenta bancaria actualizada correctamente",
             type: "success",
-          })
+          }),
         );
         return response;
       }
@@ -515,14 +524,14 @@ export const editBankAccount = createAsyncThunk(
           open: true,
           message: "Error al actualizar la cuenta bancaria",
           type: "error",
-        })
+        }),
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const deleteVehicleById = createAsyncThunk(
@@ -538,7 +547,7 @@ export const deleteVehicleById = createAsyncThunk(
             open: true,
             message: "Vehículo eliminado correctamente",
             type: "success",
-          })
+          }),
         );
         await dispatch(getVehiclesByDriverId(driverId as number));
         return response;
@@ -550,14 +559,14 @@ export const deleteVehicleById = createAsyncThunk(
           open: true,
           message: "Error al eliminar el vehículo",
           type: "error",
-        })
+        }),
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const deleteExperienceById = createAsyncThunk(
@@ -573,7 +582,7 @@ export const deleteExperienceById = createAsyncThunk(
             open: true,
             message: "Experiencia eliminada correctamente",
             type: "success",
-          })
+          }),
         );
         await dispatch(getExperiencesByDriverId(driverId as number));
         return response;
@@ -585,14 +594,14 @@ export const deleteExperienceById = createAsyncThunk(
           open: true,
           message: "Error al eliminar experiencia",
           type: "error",
-        })
+        }),
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const deleteCommentById = createAsyncThunk(
@@ -608,7 +617,7 @@ export const deleteCommentById = createAsyncThunk(
             open: true,
             message: "Comentario eliminado correctamente",
             type: "success",
-          })
+          }),
         );
         await dispatch(getCommentsByDriverId(driverId as number));
         return response;
@@ -620,14 +629,14 @@ export const deleteCommentById = createAsyncThunk(
           open: true,
           message: "Error al eliminar comentario",
           type: "error",
-        })
+        }),
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const deleteBankAccountById = createAsyncThunk(
@@ -641,7 +650,7 @@ export const deleteBankAccountById = createAsyncThunk(
             open: true,
             message: "Cuenta bancaria eliminada correctamente",
             type: "success",
-          })
+          }),
         );
         return response;
       }
@@ -652,14 +661,14 @@ export const deleteBankAccountById = createAsyncThunk(
           open: true,
           message: "Error al eliminar la cuenta bancaria",
           type: "error",
-        })
+        }),
       );
       return rejectWithValue({
         status: err.response?.status,
         message: err.response?.data,
       });
     }
-  }
+  },
 );
 
 export const getMostRankedDrivers = createAsyncThunk(
@@ -677,5 +686,5 @@ export const getMostRankedDrivers = createAsyncThunk(
         message: err.response?.data,
       });
     }
-  }
+  },
 );

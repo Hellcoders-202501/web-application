@@ -54,13 +54,13 @@ const UserProfile = ({
         cols={50}
         onChange={(e) => setDescription?.(e.target.value)}
       />
-      <div className="flex gap-4 items-center">
-        {Array(5)
+      {/* <div className="flex gap-4 items-center">
+        {Array(user.rating)
           .fill(null)
           .map((_, i) => (
             <FaStar key={i} size={20} />
           ))}
-      </div>
+      </div> */}
       {!isDriverView && (
         <Button className="flex gap-2 items-center" onClick={setEditable}>
           <p>{editable ? "Guardar" : "Editar perfil"}</p>
