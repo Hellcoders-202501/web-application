@@ -90,13 +90,22 @@ export interface ExperienceInfo {
 }
 
 export interface CreateComment {
-  rating: number;
   content: string;
+  rating: number;
   tripId: number;
 }
 
 export interface Comment {
   id: number;
+  content: string;
+  rating: number;
+  client: {
+    id: number;
+    name: string;
+    firstLastName: string;
+    phone: string;
+    imageUrl: string;
+  }
 }
 
 export interface EditBankAccount extends BankAccountInfo {

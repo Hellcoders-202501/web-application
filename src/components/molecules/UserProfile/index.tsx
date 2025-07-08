@@ -1,11 +1,11 @@
 import Button from "@components/atoms/Button";
 import TextArea from "@components/atoms/TextArea";
 import { User } from "@models/user";
-import { FaRegUserCircle } from "react-icons/fa";
-import { FaStar } from "react-icons/fa";
-import { MdEdit } from "react-icons/md";
-import { IoArrowBackCircle } from "react-icons/io5";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { FaRegUserCircle, FaStar } from "react-icons/fa";
+import { IoArrowBackCircle } from "react-icons/io5";
+import { MdEdit } from "react-icons/md";
 
 const UserProfile = ({
   isDriverView = false,
@@ -20,13 +20,19 @@ const UserProfile = ({
   user: User;
   setDescription?: (description: string) => void;
 }) => {
+  const searchParams = useSearchParams();
+  const from = searchParams.get("from");
+
   return (
     <div
       className="flex flex-col gap-5 items-center w-10/12 mx-auto lg:max-w-xl lg:w-full
       relative"
     >
       {isDriverView && (
-        <Link href="/requests" className="absolute top-0 md:left-10 left-0">
+        <Link
+          href={`/${from ?? "requests"}`}
+          className="absolute top-0 md:left-10 left-0"
+        >
           <IoArrowBackCircle size={48} />
         </Link>
       )}

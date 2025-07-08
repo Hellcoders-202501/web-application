@@ -6,6 +6,7 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { Provider } from "react-redux";
 import AuthProvider from "@context/auth/AuthProvider";
 import AlertDialog from "@components/organisms/AlertDialog";
+import '@smastrom/react-rating/style.css'
 
 const inter = Inter({
   variable: "--font-inter",

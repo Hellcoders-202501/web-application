@@ -43,11 +43,6 @@ const ProfileTabs = ({
   createVehicleValidation,
   handleRemoveVehicle,
   comments,
-  addComment,
-  comment,
-  handleChangeComment,
-  createCommentValidation,
-  handleRemoveComment,
   bankAccountTypes,
   bankAccountData,
   addBankAccount,
@@ -157,13 +152,7 @@ const ProfileTabs = ({
       case "ratings":
         return (
           <Ratings
-            isDriverView={userType === "CLIENT"}
             comments={comments}
-            addComment={addComment}
-            comment={comment}
-            handleChangeComment={handleChangeComment}
-            createCommentValidation={createCommentValidation}
-            handleRemoveComment={handleRemoveComment}
             loading={loading}
           />
         );

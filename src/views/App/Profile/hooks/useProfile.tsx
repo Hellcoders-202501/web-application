@@ -3,7 +3,6 @@ import { type IRootState, useAppDispatch, useAppSelector } from "@core/store";
 import useAuth from "@hooks/useAuth";
 import type {
   CreateBankAccount,
-  CreateComment,
   CreateExperience,
   CreateVehicle,
   EditBankAccount,
@@ -15,11 +14,9 @@ import {
 } from "@redux/common/commonThunk";
 import {
   addBankAccount,
-  addComment,
   addExperience,
   addVehicle,
   deleteBankAccountById,
-  deleteCommentById,
   deleteExperienceById,
   deleteVehicleById,
   editBankAccount,
@@ -104,8 +101,6 @@ const useProfile = () => {
     serviceId: Yup.number().required("Servicio requerido."),
   });
 
-  const createCommentValidation = Yup.object().shape({});
-
   const createBankAccountValidation = Yup.object().shape({
     bankName: Yup.string().required("Nombre del banco requerida."),
     accountNumber: Yup.string()
@@ -129,12 +124,14 @@ const useProfile = () => {
   };
 
   useEffect(() => {
-    dispatch(getExperiencesByDriverId(currentUser.id));
-    dispatch(getVehiclesByDriverId(currentUser.id));
-    dispatch(getCommentsByDriverId(currentUser.id));
-    dispatch(getBankAccountByDriverId(currentUser.id));
-    if (!serviceTypes) dispatch(getServiceTypes());
-    if (!bankAccountTypes) dispatch(getBankAccountTypes());
+    if (userType === "DRIVER") {
+      dispatch(getExperiencesByDriverId(currentUser.id));
+      dispatch(getVehiclesByDriverId(currentUser.id));
+      dispatch(getCommentsByDriverId(currentUser.id));
+      dispatch(getBankAccountByDriverId(currentUser.id));
+      if (!serviceTypes) dispatch(getServiceTypes());
+      if (!bankAccountTypes) dispatch(getBankAccountTypes());
+    }
   }, []);
 
   const defineAccountTypeId = (type: string) => {
@@ -167,10 +164,6 @@ const useProfile = () => {
     driverId: currentUser.id,
   });
 
-  const [comment, setComment] = useState<CreateComment>({
-    rating: 0,
-  });
-
   const [bankAccount, setBankAccount] = useState<
     CreateBankAccount | EditBankAccount
   >({
@@ -186,10 +179,6 @@ const useProfile = () => {
 
   const handleSubmitVehicle = () => {
     dispatch(addVehicle(vehicle));
-  };
-
-  const handleSubmitComment = () => {
-    dispatch(addComment(comment));
   };
 
   const handleSubmitBankAccount = () => {
@@ -214,14 +203,6 @@ const useProfile = () => {
     }));
   };
 
-  const handleChangeComment = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setComment((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
   const handleChangeBankAccount = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -238,10 +219,6 @@ const useProfile = () => {
 
   const handleRemoveVehicle = (id: number) => {
     dispatch(deleteVehicleById(id));
-  };
-
-  const handleRemoveComment = (id: number) => {
-    dispatch(deleteCommentById(id));
   };
 
   const handleRemoveBankAccount = (id: number) => {
@@ -275,11 +252,6 @@ const useProfile = () => {
     createVehicleValidation,
     handleRemoveVehicle,
     comments,
-    handleSubmitComment,
-    comment,
-    handleChangeComment,
-    createCommentValidation,
-    handleRemoveComment,
     bankAccountTypes,
     bankAccountData,
     handleSubmitBankAccount,

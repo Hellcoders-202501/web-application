@@ -28,11 +28,6 @@ const ProfileView = ({ userId }: { userId?: number }) => {
     createVehicleValidation,
     handleRemoveVehicle,
     comments,
-    handleSubmitComment,
-    comment,
-    handleChangeComment,
-    createCommentValidation,
-    handleRemoveComment,
     bankAccountTypes,
     bankAccountData,
     handleSubmitBankAccount,
@@ -79,11 +74,6 @@ const ProfileView = ({ userId }: { userId?: number }) => {
         createVehicleValidation={createVehicleValidation}
         handleRemoveVehicle={handleRemoveVehicle}
         comments={comments as Comment[]}
-        addComment={handleSubmitComment}
-        comment={comment}
-        handleChangeComment={handleChangeComment}
-        createCommentValidation={createCommentValidation}
-        handleRemoveComment={handleRemoveComment}
         bankAccountTypes={bankAccountTypes}
         bankAccountData={bankAccountData}
         addBankAccount={handleSubmitBankAccount}

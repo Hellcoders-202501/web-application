@@ -4,6 +4,7 @@ import type {
   IUserReduxState,
   RankedDriver,
   Vehicle,
+  Comment,
 } from "@models/user";
 import { createSlice } from "@reduxjs/toolkit";
 import { saveLocalToken } from "@util/storageUtil";
@@ -17,6 +18,7 @@ import {
   editBankAccount,
   forgotPassword,
   getBankAccountByDriverId,
+  getCommentsByDriverId,
   getCurrentUserById,
   getDriverById,
   getExperiencesByDriverId,
@@ -146,16 +148,16 @@ const userSlice = createSlice({
       .addCase(getVehiclesByDriverId.rejected, (state, action) => {
         state.loading = false;
       });
-    /* builder.addCase(getCommentsByDriverId.pending, (state, action) => {
+    builder.addCase(getCommentsByDriverId.pending, (state, action) => {
       state.loading = true;
     });
     builder.addCase(getCommentsByDriverId.fulfilled, (state, action) => {
-      state.comments = action.payload as CreateComment[];
+      state.comments = action.payload as Comment[];
       state.loading = false;
     });
     builder.addCase(getCommentsByDriverId.rejected, (state, action) => {
       state.loading = false;
-    }); */
+    });
     builder
       .addCase(getBankAccountByDriverId.pending, (state, action) => {
         state.loading = true;

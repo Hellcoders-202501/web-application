@@ -1,48 +1,44 @@
-import type { Comment, CreateComment } from "@models/user";
+import type { Comment } from "@models/user";
 import { FaRegUserCircle, FaStar } from "react-icons/fa";
 
-const RatingCard = () => {
+const RatingCard = ({ comment }: { comment: Comment }) => {
   return (
-    <div className="flex gap-5 items-center max-w-xl w-full">
-      <FaRegUserCircle size={120} />
-      <div className="max-w-xl">
-        <p className="font-semibold text-lg">Oscar Canellas</p>
-        <p className="text-sm">Este servicio fue muy bueno, lo recomiendo!</p>
-      </div>
-      <div>
-        <span>5</span>
-        <FaStar size={20} />
+    <div className="flex gap-5 max-w-xl items-center w-full">
+      <FaRegUserCircle size={100} />
+      <div className="flex flex-col gap-2">
+        <p className="font-semibold text-lg">
+          {comment.client.name} {comment.client.firstLastName}
+        </p>
+        <div className="flex gap-3">
+          {Array(comment.rating)
+            .fill(0)
+            .map((_, index) => (
+              <FaStar
+                key={index}
+                size={20}
+                className={`${index < comment.rating ? "text-yellow-500" : ""}`}
+              />
+            ))}
+        </div>
+        <p>{comment.content}</p>
       </div>
     </div>
   );
 };
 
 const Ratings = ({
-  isDriverView = false,
   comments,
-  addComment,
-  comment,
-  handleChangeComment,
-  createCommentValidation,
-  handleRemoveComment,
   loading,
 }: {
   isDriverView?: boolean;
   comments: Comment[];
-  addComment?: VoidFunction;
-  comment?: CreateComment;
-  handleChangeComment?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  createCommentValidation?: any;
-  handleRemoveComment?: (id: number) => void;
   loading: boolean;
 }) => {
   return (
     <div className="flex flex-col gap-5 items-center overflow-scroll max-h-[500px] px-10 w-full">
-      {Array(5)
-        .fill(null)
-        .map((_, i) => (
-          <RatingCard key={i} />
-        ))}
+      {comments.map((comment) => (
+        <RatingCard key={comment.id} comment={comment} />
+      ))}
     </div>
   );
 };

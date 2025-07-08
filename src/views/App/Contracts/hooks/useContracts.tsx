@@ -1,6 +1,7 @@
 import { type IRootState, useAppDispatch, useAppSelector } from "@core/store";
 import useAuth from "@hooks/useAuth";
-import { useEffect, useState } from "react";
+import type { RequestResult } from "@models/contract";
+import { getTripStatus } from "@redux/common/commonThunk";
 import {
   deleteTripById,
   finishTripByClient,
@@ -11,8 +12,8 @@ import {
   getTripsByDriverId,
   startTripById,
 } from "@redux/contract/contractThunk";
-import { getTripStatus } from "@redux/common/commonThunk";
-import type { RequestResult, TripResult } from "@models/contract";
+import { getCommentsByDriverId } from "@redux/user/userThunk";
+import { useEffect, useState } from "react";
 
 const useContracts = () => {
   const dispatch = useAppDispatch();

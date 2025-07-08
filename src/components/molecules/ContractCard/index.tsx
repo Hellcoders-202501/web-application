@@ -1,4 +1,5 @@
 import Button from "@components/atoms/Button";
+import CommentDialog from "@components/organisms/CommentDialog";
 import TripDetailsDialog from "@components/organisms/TripDetailsDialog";
 import {
   Description,
@@ -45,6 +46,10 @@ const ContractCard: FC<Props> = ({
 }) => {
   const [showPaypal, setShowPaypal] = useState(false);
   const [moreInformation, setMoreInformation] = useState({
+    show: false,
+    tripId: 0,
+  });
+  const [comment, setComment] = useState({
     show: false,
     tripId: 0,
   });
@@ -245,7 +250,15 @@ const ContractCard: FC<Props> = ({
               <div className="flex gap-2 items-center">
                 <FaRegUserCircle size={32} />
                 <div className="text-sm">
-                  <p>
+                  <p
+                    className={`${
+                      userType === "CLIENT" ? "cursor-pointer" : ""
+                    }`}
+                    onClick={() => {
+                      if (userType === "CLIENT")
+                        window.location.href = `/driver/${request?.contract.driver.id}?from=contracts`;
+                    }}
+                  >
                     {userType === "CLIENT"
                       ? request?.contract.driver.name
                       : request?.client.name}
@@ -325,7 +338,16 @@ const ContractCard: FC<Props> = ({
               <div className="flex justify-between items-center">
                 <p className="font-semibold">Detalles:</p>
                 {variant === "history" && (
-                  <button className="cursor-pointer" type="button">
+                  <button
+                    className="cursor-pointer"
+                    type="button"
+                    onClick={() =>
+                      setComment({
+                        show: true,
+                        tripId: request?.trip.id as number,
+                      })
+                    }
+                  >
                     <FaComment />
                   </button>
                 )}
@@ -380,6 +402,16 @@ const ContractCard: FC<Props> = ({
           })
         }
         tripId={moreInformation.tripId}
+      />
+      <CommentDialog
+        show={comment.show}
+        onClose={() =>
+          setComment({
+            show: false,
+            tripId: comment.tripId,
+          })
+        }
+        tripId={comment.tripId}
       />
     </>
   );

@@ -50,7 +50,7 @@ const getVehiclesByDriverId = (driverId: number) => {
 };
 
 const getCommentsByDriverId = (driverId: number) => {
-  return requests.get(`/drivers/${driverId}/comment`);
+  return requests.get(`/drivers/${driverId}/comment/`);
 };
 
 const addVehicle = (vehicleInformation: CreateVehicle) => {
