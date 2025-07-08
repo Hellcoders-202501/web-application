@@ -64,16 +64,17 @@ export interface User {
 
 export interface CreateVehicle extends VehicleInfo {
   driverId: number;
+  serviceId: number;
 }
 
 export interface Vehicle extends VehicleInfo {
   id: number;
+  services: string[];
 }
 
 export interface VehicleInfo {
   brand: string;
   imageUrl: string;
-  serviceId: number;
 }
 
 export interface CreateExperience extends Experience {

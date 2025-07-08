@@ -29,14 +29,16 @@ const VehicleCard = ({
           showActions ? "w-10/12" : "w-full"
         }`}
       >
-        <div className="flex gap-10 justify-between items-end">
-          <p className="font-extrabold">Marca</p>
-          <p className="text-sm border-b">{vehicle.brand}</p>
+        <div className="flex flex-col gap-10 justify-between items-end">
+          <div className="flex gap-10 justify-between items-end">
+            <p className="font-extrabold">Marca</p>
+            <p className="text-sm border-b">{vehicle.brand}</p>
+          </div>
+          <div className="flex gap-10 justify-between items-end w-full">
+            <p className="font-extrabold">Tipo de servicio</p>
+            <p className="text-sm border-b">{vehicle.services.join(", ")}</p>
+          </div>
         </div>
-        {/* <div className="flex gap-10 justify-between items-end w-full">
-        <label htmlFor="service">Tipo de servicio</label>
-        <p>{vehicle.serviceId}</p>
-      </div> */}
         {vehicle.imageUrl ? (
           <Image
             className="mx-auto rounded-lg border border-black/50"

@@ -8,6 +8,7 @@ import { IoCheckmarkDoneCircle } from "react-icons/io5";
 import { FaFileContract } from "react-icons/fa6";
 import { IoAlertCircle } from "react-icons/io5";
 import { FaCar } from "react-icons/fa";
+import { HiMiniBellAlert } from "react-icons/hi2";
 import useNotification from "@hooks/useNotifications";
 
 const NotificationCard = ({
@@ -36,6 +37,8 @@ const NotificationCard = ({
             />
           </>
         );
+      case "REQUEST_PUBLISHED":
+        return <HiMiniBellAlert color="orange" size={120} />;
       case "REQUEST_APPLIED":
         return <IoAlertCircle color="orange" size={120} />;
       case "REQUEST_DECLINED":
@@ -114,6 +117,8 @@ const NotificationCard = ({
 
   const defineTitle = () => {
     switch (type) {
+      case "REQUEST_PUBLISHED":
+        return "Nueva solicitud";
       case "TRIP_STARTED":
         return "El viaje ha comenzado";
       case "REQUEST_APPLIED":
@@ -143,6 +148,8 @@ const NotificationCard = ({
 
   const defineText = () => {
     switch (type) {
+      case "REQUEST_PUBLISHED":
+        return "Hay una nueva solicitud que se ajusta a tus servicios";
       case "TRIP_STARTED":
         return userType === "DRIVER"
           ? "Has comenzado un viaje"

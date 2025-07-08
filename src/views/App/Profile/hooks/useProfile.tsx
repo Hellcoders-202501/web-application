@@ -160,7 +160,7 @@ const useProfile = () => {
   const [vehicle, setVehicle] = useState<CreateVehicle>({
     brand: "",
     imageUrl: "",
-    serviceId: 0,
+    serviceId: 1,
     driverId: currentUser.id,
   });
 
