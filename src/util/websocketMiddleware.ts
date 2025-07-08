@@ -4,7 +4,7 @@ import { Middleware } from "@reduxjs/toolkit";
 export const websocketMiddleware = (): Middleware => {
   let socket: WebSocket | null = null;
 
-  return (storeAPI) => (next) => (action) => {
+  return (storeAPI) => (next) => (action: any) => {
     // Iniciar conexión
     if (action.type === "websocket/connect") {
       if (socket !== null) socket.close();
@@ -12,7 +12,7 @@ export const websocketMiddleware = (): Middleware => {
       const { token } = storeAPI.getState().user;
       // socket = new WebSocket(process.env.NEXT_PUBLIC_WEBSOCKET_URL!);
       socket = new WebSocket(
-        `${process.env.NEXT_PUBLIC_WEBSOCKET_URL!}?token=${token}`
+        `${process.env.NEXT_PUBLIC_WEBSOCKET_URL!}?token=${token}`,
       );
 
       socket.onopen = () => {

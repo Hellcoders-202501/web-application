@@ -56,6 +56,13 @@ const NotificationCard = ({
             <TiDelete color="red" className="md:hidden" size={100} />
           </>
         );
+      case "CONTRACT_CANCELED":
+        return (
+          <>
+            <TiDelete color="red" className="hidden md:block" size={150} />
+            <TiDelete color="red" className="md:hidden" size={100} />
+          </>
+        );
       case "CONTRACT_CREATED":
         return (
           <>
@@ -101,7 +108,7 @@ const NotificationCard = ({
           </>
         );
       default:
-        return null;
+        return type;
     }
   };
 
@@ -117,6 +124,10 @@ const NotificationCard = ({
         return userType === "DRIVER"
           ? "El cliente ha aceptado tu solicitud"
           : "Has aceptado una solicitud";
+      case "CONTRACT_CANCELED":
+        return userType === "DRIVER"
+          ? "El cliente ha cancelado un contrato"
+          : "Has cancelado un contrato";
       case "offer":
         return "New offer";
       case "TRIP_FINISHED_BY_DRIVER":
@@ -140,6 +151,10 @@ const NotificationCard = ({
         return userType === "DRIVER"
           ? "Has realizado una solicitud, el cliente la verá pronto"
           : "Has recibido nuevas solicitudes a tu oferta";
+      case "CONTRACT_CANCELED":
+        return userType === "DRIVER"
+          ? "El contrato ha sido cancelado por el cliente, esto no afectará tu valoración"
+          : "El contrato ha sido cancelado, tu dinero se devolverá a tu cuenta";
       case "CONTRACT_CREATED":
         return userType === "DRIVER"
           ? "Tu solicitud ha sido aceptada, revisa el nuevo contrato pendiente"
