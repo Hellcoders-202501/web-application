@@ -15,7 +15,7 @@ interface RequestFormProps {
   handleChange: (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
+    >
   ) => void;
   handleSubmit: (date: Date) => void;
   requestValidation: VoidFunction | any;
@@ -35,9 +35,11 @@ const RequestForm: FC<RequestFormProps> = ({
 }) => {
   const hours = Array.from(
     { length: 24 },
-    (_, i) => `${i.toString().padStart(2, "0")}:00`,
+    (_, i) => `${i.toString().padStart(2, "0")}:00`
   );
-  const [selected, setSelected] = useState<Date>(new Date());
+  const [selected, setSelected] = useState<Date>(
+    requestState.date ? new Date(requestState.date + "T00:00:00") : new Date()
+  );
 
   return (
     <Formik
