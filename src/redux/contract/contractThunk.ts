@@ -171,6 +171,7 @@ export const createApplication = createAsyncThunk(
         setAlertDialog({
           open: true,
           message: "Error al realizar la oferta",
+          description: (err.response?.data as any)?.error ?? null,
           type: "error",
         })
       );

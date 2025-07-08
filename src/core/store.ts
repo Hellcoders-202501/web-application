@@ -1,9 +1,16 @@
 import rootReducer from "@redux/rootReducer";
 import { configureStore } from "@reduxjs/toolkit";
-import { type TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { websocketMiddleware } from "@util/websocketMiddleware";
+import {
+  type TypedUseSelectorHook,
+  useDispatch,
+  useSelector,
+} from "react-redux";
 
 const store = configureStore({
   reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(websocketMiddleware()),
 });
 
 export default store;

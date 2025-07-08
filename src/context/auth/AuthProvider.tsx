@@ -54,6 +54,8 @@ const AuthProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
   useEffect(() => {
     setisClient(true);
 
+    dispatch({ type: "websocket/connect" });
+
     const sessionToken = token || getLocalToken();
     if (!sessionToken) {
       router.replace("/login");
