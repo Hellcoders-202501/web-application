@@ -9,11 +9,37 @@ import Link from "next/link";
 import Input from "@components/atoms/Input";
 import { Form, Formik } from "formik";
 import TextArea from "@components/atoms/TextArea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FrequentQuestionsDialog from "@components/organisms/FrequentQuestionsDialog";
+import { useForm, ValidationError } from "@formspree/react";
+import { useAppDispatch } from "@core/store";
+import { setAlertDialog } from "@redux/common/commonThunk";
 
 const SupportView = () => {
   const [showFrequentQuestions, setShowFrequentQuestions] = useState(false);
+  const [state, handleSubmit] = useForm("xpwrgold");
+  const [contact, setContact] = useState({
+    email: "",
+    message: "",
+  });
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (state.succeeded) {
+      // setContact({
+      //   email: "",
+      //   message: "",
+      // });
+      //
+      dispatch(
+        setAlertDialog({
+          open: true,
+          message: "Mensaje enviado correctamente",
+          type: "success",
+        }),
+      );
+    }
+  }, [state]);
 
   return (
     <div
@@ -23,25 +49,55 @@ const SupportView = () => {
       {/* Left */}
       <div>
         <p className="text-6xl font-bold text-center">Necesitas ayuda?</p>
-        <Formik initialValues={{}} onSubmit={() => {}}>
-          <Form className="flex flex-col gap-10 my-20 mx-10">
+        {/* <Formik initialValues={contact} onSubmit={handleSubmit}> */}
+        {/*   <Form > */}
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-10 my-20 mx-10"
+        >
+          <div className="flex flex-col gap-5">
+            <label htmlFor="name">Correo electrónico</label>
+            <Input
+              type="email"
+              id="email"
+              name="email"
+              value={contact.email}
+              onChange={(e) =>
+                setContact({ ...contact, email: e.target.value })
+              }
+            />
+          </div>
+          {/* 
             <div className="flex flex-col md:flex-row gap-5 justify-between">
               <div className="flex flex-col gap-5 md:w-5/12">
                 <label htmlFor="">Nombre</label>
-                <Input />
-              </div>
-              <div className="flex flex-col gap-5 md:w-5/12">
-                <label htmlFor="">Correo electrónico</label>
-                <Input />
-              </div>
+                <Input
+                  id="name"
+                  type="text"
+                  value={contact.name}
+                  onChange={(e) =>
+                    setContact({ ...contact, name: e.target.value })
+                  }
+                />
             </div>
-            <div className="flex flex-col gap-5">
-              <label htmlFor="">Mensaje</label>
-              <TextArea />
-            </div>
-            <Button>Enviar mensaje</Button>
-          </Form>
-        </Formik>
+              </div> */}
+          <div className="flex flex-col gap-5">
+            <label htmlFor="message">Mensaje</label>
+            <TextArea
+              id="message"
+              name="message"
+              value={contact.message}
+              onChange={(e) =>
+                setContact({ ...contact, message: e.target.value })
+              }
+            />
+          </div>
+          <Button type="submit" disabled={state.submitting}>
+            Enviar mensaje
+          </Button>
+          {/* </Form>
+        </Formik> */}
+        </form>
       </div>
       {/* Right */}
       <div className="flex flex-col gap-6">
